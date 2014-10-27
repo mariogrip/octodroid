@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OctoPrint</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="machine_state">Machine State:</string>
+    <string name="file">File:</string>
+    <string name="filament">Filament:</string>
+    <string name="estimated_print_time">Estimated Print Time:</string>
+    <string name="timelapse">Timelapse:</string>
+    <string name="height">Height:</string>
+    <string name="print_time">Print Time:</string>
+    <string name="print_time_left">Print Time Left</string>
+    <string name="printed">Printed:</string>
+    <string name="stauts">Stauts:</string>
+    <string name="set_ip">Set Octoprint IP</string>
+    <string name="ip_text">Set your Octoprint IP or Address</string>
+    <string name="api">Set Api Key</string>
+    <string name="api_text">Set your Octoprint API key</string>
+    <string name="refresh">Refresh frequency</string>
+    <string name="refresh_text">set the Refresh frequency</string>
+    <string name="push">Push notification</string>
+    <string name="push_text">Push notification when print is done</string>
+    <string name="server_settings">Server Settings</string>
+    <string name="update_setting">Update Settings</string>
+    <string name="current_temp">Current Temp:</string>
+    <string name="target_temp">Target Temp:</string>
+    <string name="bed_current_temp">Bed Current Temp:</string>
+    <string name="bed_target_temp">Bed Target Temp:</string>
+
+
+
+
+</resources>
