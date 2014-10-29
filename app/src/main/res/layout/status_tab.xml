@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/print_time"
-            android:id="@+id/textView18"
+            android:id="@+id/textView8"
             android:layout_below="@+id/textView7" />
 
         <TextView
@@ -146,8 +146,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/current_temp"
-            android:id="@+id/textView19"
-            android:layout_below="@+id/textView18" />
+            android:id="@+id/textView9"
+            android:layout_below="@+id/textView8" />
 
 
 
@@ -158,7 +158,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/target_temp"
         android:id="@+id/textView20"
-        android:layout_below="@+id/textView19" />
+        android:layout_below="@+id/textView9" />
 
         <TextView
             android:layout_marginLeft="7dp"
@@ -185,8 +185,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
+        android:text="dsfds"
         android:id="@+id/textView10_maci"
+            android:layout_below="@id/textView39"
         android:layout_toEndOf="@id/textView"
         android:layout_toRightOf="@id/textView"/>
     <TextView
@@ -194,97 +195,101 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
+        android:layout_below="@id/textView"
         android:id="@+id/textView11_file"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_toEndOf="@id/textView2"
+        android:layout_toRightOf="@id/textView2"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
+        android:layout_below="@id/textView2"
         android:id="@+id/textView12_fila"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_toEndOf="@id/textView3"
+        android:layout_toRightOf="@id/textView3"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
+        android:layout_below="@id/textView3"
         android:id="@+id/textView13_est"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_toEndOf="@id/textView4"
+        android:layout_toRightOf="@id/textView4"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
+        android:layout_below="@id/textView4"
         android:id="@+id/textView14_timel"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_toEndOf="@id/textView5"
+        android:layout_toRightOf="@id/textView5"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
+        android:layout_below="@id/textView5"
         android:id="@+id/textView15_hei"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_toEndOf="@id/textView6"
+        android:layout_toRightOf="@id/textView6"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
-        android:id="@+id/textView16_pri_time"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_below="@id/textView6"
+        android:id="@+id/textView16_printed"
+        android:layout_toEndOf="@id/textView7"
+        android:layout_toRightOf="@id/textView7"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
-        android:id="@+id/textView17_pri_left"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_below="@id/textView7"
+        android:id="@+id/textView17_print_time"
+        android:layout_toEndOf="@id/textView8"
+        android:layout_toRightOf="@id/textView8"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
-        android:id="@+id/textView18_pri"
-        android:layout_toEndOf="@id/textView"
-        android:layout_toRightOf="@id/textView"/>
+        android:layout_below="@id/textView8"
+        android:id="@+id/textView18_cur_T"
+        android:layout_toEndOf="@id/textView9"
+        android:layout_toRightOf="@id/textView9"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
-            android:id="@+id/textView18_cur_T"
-            android:layout_toEndOf="@id/textView"
-            android:layout_toRightOf="@id/textView"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
+            android:layout_below="@id/textView9"
             android:id="@+id/textView18_tar_t"
-            android:layout_toEndOf="@id/textView"
-            android:layout_toRightOf="@id/textView"/>
+            android:layout_toEndOf="@id/textView20"
+            android:layout_toRightOf="@id/textView20"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
+            android:layout_below="@id/textView20"
             android:id="@+id/textView18_Bcur_T"
-            android:layout_toEndOf="@id/textView"
-            android:layout_toRightOf="@id/textView"/>
+            android:layout_toEndOf="@id/textView21"
+            android:layout_toRightOf="@id/textView21"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
-            android:id="@+id/textView18_B"
-            android:layout_toEndOf="@id/textView"
-            android:layout_toRightOf="@id/textView"/>
+            android:layout_below="@id/textView21"
+            android:id="@+id/textView18_Btar_T"
+            android:layout_toEndOf="@id/textView22"
+            android:layout_toRightOf="@id/textView22"/>
 </RelativeLayout>
 </RelativeLayout>

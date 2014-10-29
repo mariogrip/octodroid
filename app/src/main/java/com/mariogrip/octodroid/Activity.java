@@ -1,4 +1,4 @@
-package com.mariogrip.octoprint;
+package com.mariogrip.octodroid;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import java.util.TimerTask;
 
 
 public class Activity extends ActionBarActivity {
+    public static String jsonData_job;
+    public static String jsonData_connetion;
     protected SharedPreferences prefs;
     private get get_class;
     protected String ip;
@@ -38,6 +41,7 @@ public class Activity extends ActionBarActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
         ip = prefs.getString("ip", "localhost");
         get_class = new get();
+        Log.d("OctoPrint","test");
         runner();
 
     }
@@ -49,8 +53,35 @@ public class Activity extends ActionBarActivity {
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        TextView text = (TextView)findViewById(R.id.textView11_time);
-                        text.setText(get.getData("job","printTime").toString());
+                        get.refreshJson("http://mariogrip.com/OctoPrint");
+                        TextView texttime = (TextView)findViewById(R.id.textView11_time);
+                        TextView textpri = (TextView)findViewById(R.id.textView16_printed);
+                        TextView textest = (TextView)findViewById(R.id.textView13_est);
+                        TextView texthei = (TextView)findViewById(R.id.textView15_hei);
+                        TextView textfile = (TextView)findViewById(R.id.textView11_file);
+                        TextView textmaci = (TextView)findViewById(R.id.textView10_maci);
+                        TextView texttarT = (TextView)findViewById(R.id.textView18_tar_t);
+                        TextView textcurT = (TextView)findViewById(R.id.textView18_cur_T);
+                        TextView textBcur = (TextView)findViewById(R.id.textView18_Bcur_T);
+                        TextView textBtar = (TextView)findViewById(R.id.textView18_Btar_T);
+
+                        if (get.getData("job","filepos").toString() == "null" || get.getData("job","size").toString() == "null" || get.getData("job","size").toString() == "" ){
+                            textpri.setText("-/-");
+                        }else{
+                           textpri.setText(get.toMBGB(Double.parseDouble(get.getData("job","filepos").toString())) + "/" + get.toMBGB(Double.parseDouble(get.getData("job","size").toString())));
+
+                        }
+
+
+                        texttime.setText(get.getData("job","printTimeLeft").toString());
+                        textest.setText(get.getData("job","estimatedPrintTime").toString());
+                        texthei.setText(get.getData("job","printTime").toString());
+                        textfile.setText(get.getData("job","printTime").toString());
+                        textmaci.setText(get.getData("job","printTime").toString());
+                        texttarT.setText(get.getData("job","printTime").toString());
+                        textcurT.setText(get.getData("job","printTime").toString());
+                        textBcur.setText(get.getData("job","printTime").toString());
+                        textBtar.setText(get.getData("job","printTime").toString());
                     }
                 });
                 }

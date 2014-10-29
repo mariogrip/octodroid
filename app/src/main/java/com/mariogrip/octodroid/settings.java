@@ -1,4 +1,4 @@
-package com.mariogrip.octoprint;
+package com.mariogrip.octodroid;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

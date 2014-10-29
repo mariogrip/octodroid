@@ -1,4 +1,4 @@
-package com.mariogrip.octoprint;
+package com.mariogrip.octodroid;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
