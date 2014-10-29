@@ -1,6 +1,8 @@
 package com.mariogrip.octodroid;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -45,6 +47,23 @@ public class Activity extends ActionBarActivity {
         get_class = new get();
         Log.d("OctoPrint","test");
         runner();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Warning!");
+        builder.setMessage("I understand that this application is experimental and might crash. There are some functions that do not work like push notifications. Please report bugs!");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Activity.this.finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void runner(){
@@ -56,6 +75,7 @@ public class Activity extends ActionBarActivity {
                     public void run() {
                         get.refreshJson(ip, "job");
                         get.refreshJson(ip, "printer");
+
                         if (server_status) {
                             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                             progress.setProgress(get.getProgress());
