@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_gravity="left|top"
-        android:layout_below="@id/textView11_time"/>
+        android:layout_below="@id/textView11_time" />
 
 
 

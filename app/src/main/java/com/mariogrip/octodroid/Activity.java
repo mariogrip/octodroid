@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -20,6 +21,7 @@ import java.util.TimerTask;
 public class Activity extends ActionBarActivity {
     public static String jsonData_job;
     public static String jsonData_connetion;
+    public static String jsonData_printer;
     protected SharedPreferences prefs;
     private get get_class;
     protected String ip;
@@ -52,43 +54,49 @@ public class Activity extends ActionBarActivity {
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        get.refreshJson("http://mariogrip.com/OctoPrint");
-                        TextView texttime = (TextView)findViewById(R.id.textView11_time);
-                        TextView textpri = (TextView)findViewById(R.id.textView16_printed);
-                        TextView textest = (TextView)findViewById(R.id.textView13_est);
-                        TextView texthei = (TextView)findViewById(R.id.textView15_hei);
-                        TextView textfile = (TextView)findViewById(R.id.textView11_file);
-                        TextView textmaci = (TextView)findViewById(R.id.textView10_maci);
-                        TextView texttarT = (TextView)findViewById(R.id.textView18_tar_t);
-                        TextView textcurT = (TextView)findViewById(R.id.textView18_cur_T);
-                        TextView textBcur = (TextView)findViewById(R.id.textView18_Bcur_T);
-                        TextView textBtar = (TextView)findViewById(R.id.textView18_Btar_T);
-                        TextView textprinttime = (TextView)findViewById(R.id.textView17_print_time);
-                        TextView textfila = (TextView)findViewById(R.id.textView12_fila);
+                        get.refreshJson(ip, "job");
+                        get.refreshJson(ip, "printer");
+                        if (server_status) {
+                            ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+                            progress.setProgress(get.getProgress());
+                            TextView texttime = (TextView) findViewById(R.id.textView11_time);
+                            TextView textpri = (TextView) findViewById(R.id.textView16_printed);
+                            TextView textest = (TextView) findViewById(R.id.textView13_est);
+                            TextView texthei = (TextView) findViewById(R.id.textView15_hei);
+                            TextView textfile = (TextView) findViewById(R.id.textView11_file);
+                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                            TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
+                            TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
+                            TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
+                            TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
+                            TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
+                            TextView textfila = (TextView) findViewById(R.id.textView12_fila);
+                            TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
 
-                        if (get.getData("job","filepos").toString() == "null" || get.getData("job","size").toString() == "null" || get.getData("job","size").toString() == "" ){
-                            textpri.setText("-/-");
-                        }else{
-                            Log.d("test",get.getData("job","size"));
-                           textpri.setText(get.toMBGB(Double.parseDouble(get.getData("job","filepos").toString())).toString() + "/" + get.toMBGB(Double.parseDouble(get.getData("job","size").toString())).toString());
+                            if (get.getData("job", "filepos").toString() == "null" || get.getData("job", "size").toString() == "null" || get.getData("job", "size").toString() == "") {
+                                textpri.setText(" " + "-/-");
+                            } else {
+                                textpri.setText(" " + get.toMBGB(Double.parseDouble(get.getData("job", "filepos").toString())).toString() + "/" + get.toMBGB(Double.parseDouble(get.getData("job", "size").toString())).toString());
+                            }
+                            texttime.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "printTimeLeft"))));
+                            textest.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "estimatedPrintTime").toString())));
+                            texthei.setText(" " + "-");
+                            textfile.setText(" " + get.getData("job", "name").toString());
+                            textmaci.setText(" " + get.getData("job", "state").toString());
+                            texttarT.setText(" " + get.getData("printer", "target") + "°C");
+                            textcurT.setText(" " + get.getData("printer", "actual") + "°C");
+                            textBcur.setText(" " + get.getData("printer", "Bactual") + "°C");
+                            textBtar.setText(" " + get.getData("printer", "Btarget") + "°C");
+                            textfila.setText(" " + "-");
+                            texttimel.setText(" " + "-");
+                            textprinttime.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "printTime").toString())));
                         }
-                        texttime.setText(get.toHumanRead(Double.parseDouble(get.getData("job","printTimeLeft"))));
-                        textest.setText(get.toHumanRead(Double.parseDouble(get.getData("job","estimatedPrintTime").toString())));
-                        texthei.setText("-");
-                        textfile.setText(get.getData("job","name").toString());
-                        textmaci.setText("-");
-                        texttarT.setText("-");
-                        textcurT.setText("-");
-                        textBcur.setText("-");
-                        textBtar.setText("-");
-                        textfila.setText("-");
-                        textprinttime.setText(get.toHumanRead(Double.parseDouble(get.getData("job","printTime").toString())));
                     }
                 });
                 }
 
         };
-        timer.schedule(timerTask, 0, 10000);
+        timer.schedule(timerTask, 0, 3000);
 
 
 
@@ -120,7 +128,8 @@ public class Activity extends ActionBarActivity {
 
         switch (requestCode) {
             case RESULT_SETTINGS:
-
+                prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
+                ip = prefs.getString("ip", "localhost");
                 break;
 
         }
