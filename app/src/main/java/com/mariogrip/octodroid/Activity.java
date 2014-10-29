@@ -43,7 +43,6 @@ public class Activity extends ActionBarActivity {
         get_class = new get();
         Log.d("OctoPrint","test");
         runner();
-
     }
 
     public void runner(){
@@ -64,24 +63,26 @@ public class Activity extends ActionBarActivity {
                         TextView textcurT = (TextView)findViewById(R.id.textView18_cur_T);
                         TextView textBcur = (TextView)findViewById(R.id.textView18_Bcur_T);
                         TextView textBtar = (TextView)findViewById(R.id.textView18_Btar_T);
+                        TextView textprinttime = (TextView)findViewById(R.id.textView17_print_time);
+                        TextView textfila = (TextView)findViewById(R.id.textView12_fila);
 
                         if (get.getData("job","filepos").toString() == "null" || get.getData("job","size").toString() == "null" || get.getData("job","size").toString() == "" ){
                             textpri.setText("-/-");
                         }else{
-                           textpri.setText(get.toMBGB(Double.parseDouble(get.getData("job","filepos").toString())) + "/" + get.toMBGB(Double.parseDouble(get.getData("job","size").toString())));
-
+                            Log.d("test",get.getData("job","size"));
+                           textpri.setText(get.toMBGB(Double.parseDouble(get.getData("job","filepos").toString())).toString() + "/" + get.toMBGB(Double.parseDouble(get.getData("job","size").toString())).toString());
                         }
-
-
-                        texttime.setText(get.getData("job","printTimeLeft").toString());
-                        textest.setText(get.getData("job","estimatedPrintTime").toString());
-                        texthei.setText(get.getData("job","printTime").toString());
-                        textfile.setText(get.getData("job","printTime").toString());
-                        textmaci.setText(get.getData("job","printTime").toString());
-                        texttarT.setText(get.getData("job","printTime").toString());
-                        textcurT.setText(get.getData("job","printTime").toString());
-                        textBcur.setText(get.getData("job","printTime").toString());
-                        textBtar.setText(get.getData("job","printTime").toString());
+                        texttime.setText(get.toHumanRead(Double.parseDouble(get.getData("job","printTimeLeft"))));
+                        textest.setText(get.toHumanRead(Double.parseDouble(get.getData("job","estimatedPrintTime").toString())));
+                        texthei.setText("-");
+                        textfile.setText(get.getData("job","name").toString());
+                        textmaci.setText("-");
+                        texttarT.setText("-");
+                        textcurT.setText("-");
+                        textBcur.setText("-");
+                        textBtar.setText("-");
+                        textfila.setText("-");
+                        textprinttime.setText(get.toHumanRead(Double.parseDouble(get.getData("job","printTime").toString())));
                     }
                 });
                 }
@@ -96,19 +97,14 @@ public class Activity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.my, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, settings.class);
             startActivityForResult(i, RESULT_SETTINGS);

@@ -21,16 +21,30 @@ public class get extends  Activity{
 
     public static String toMBGB(double bytes){
         String returnData;
-        double fileSizeInKB = bytes / 1024;
-        double fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB <= 1){
-            returnData = fileSizeInMB + "MB";
+        Double fileSizeInKB = bytes / 1024;
+        Double fileSizeInMB = fileSizeInKB / 1024;
+        Double fileSizeInKBformat = roundDown5(fileSizeInKB);
+        Double fileSizeInMBformat = roundDown5(fileSizeInMB);
+        if (fileSizeInMB >= 1){
+            returnData = fileSizeInMBformat.toString() + "MB";
         }else{
-            returnData = fileSizeInKB + "KB";
+            returnData = fileSizeInKBformat.toString() + "KB";
         }
         return returnData;
     }
+    public static double roundDown5(double d) {
+        return (long) (d * 1e2) / 1e2;
+    }
+    public static String toHumanRead(double biggy)
+    {
+        int hours = (int) biggy / 3600;
+        int remainder = (int) biggy - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
 
+        return hours + ":" + mins + ":" + secs;
+    }
     public static String getData(String job,String cmd){
         String returnData = new String();
         boolean noerr;
@@ -49,21 +63,23 @@ public class get extends  Activity{
                     }
                     if (cmd == "filepos"){
                         JSONObject printTime_json = new JSONObject(json.getString("progress"));
-
                         returnData = printTime_json.getString("filepos");
                     }
                     if (cmd == "completion"){
                         JSONObject printTime_json = new JSONObject(json.getString("progress"));
                         returnData = printTime_json.getString("completion");
                     }
-                    //files
+                    //file
                     if (cmd == "name"){
-                        JSONObject printTime_json = new JSONObject(json.getString("file"));
-                        returnData = printTime_json.getString("name");
+
+                        JSONObject printTime_json = new JSONObject(json.getString("job"));
+                        JSONObject printTime_json2 = new JSONObject(printTime_json.getString("file"));
+                        returnData = printTime_json2.getString("name");
                     }
                     if (cmd == "size"){
-                        JSONObject printTime_json = new JSONObject(json.getString("file"));
-                        returnData = printTime_json.getString("size");
+                        JSONObject printTime_json = new JSONObject(json.getString("job"));
+                        JSONObject printTime_json2 = new JSONObject(printTime_json.getString("file"));
+                        returnData = printTime_json2.getString("size");
                     }
 
                     //job
