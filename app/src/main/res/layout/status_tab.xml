@@ -185,7 +185,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="dsfds"
+        android:text=""
         android:id="@+id/textView10_maci"
             android:layout_below="@id/textView39"
         android:layout_toEndOf="@id/textView"

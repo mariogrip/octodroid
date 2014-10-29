@@ -206,7 +206,7 @@ public class get extends  Activity{
         return returnData;
     }
 
-    public static void refreshJson(String ip, String api){
+    public static void refreshJson(String ip, String api, String key){
         if (ip == null || ip.equals("")){
 
         }else {
@@ -214,9 +214,9 @@ public class get extends  Activity{
             HttpClient client = new DefaultHttpClient();
             HttpGet httpGet;
             if (ip.startsWith("http://")){
-                httpGet = new HttpGet(ip + "/api/"+api);
+                httpGet = new HttpGet(ip + "/api/"+api + "?apikey=" + key);
             }else{
-                httpGet = new HttpGet("http://"+ ip + "/api/"+api);
+                httpGet = new HttpGet("http://"+ ip + "/api/"+api + "?apikey=" + key);
             }
             try {
                 HttpResponse response = client.execute(httpGet);

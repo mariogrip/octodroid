@@ -27,6 +27,7 @@ public class Activity extends ActionBarActivity {
     protected SharedPreferences prefs;
     private get get_class;
     protected String ip;
+    protected String key;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     public static boolean server_status = false;
@@ -44,6 +45,7 @@ public class Activity extends ActionBarActivity {
         setContentView(R.layout.status_tab);
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
         ip = prefs.getString("ip", "localhost");
+        key = prefs.getString("api", "0");
         get_class = new get();
         Log.d("OctoPrint","test");
         runner();
@@ -73,8 +75,8 @@ public class Activity extends ActionBarActivity {
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        get.refreshJson(ip, "job");
-                        get.refreshJson(ip, "printer");
+                        get.refreshJson(ip, "job", key);
+                        get.refreshJson(ip, "printer", key);
 
                         if (server_status) {
                             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
@@ -150,6 +152,7 @@ public class Activity extends ActionBarActivity {
             case RESULT_SETTINGS:
                 prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
                 ip = prefs.getString("ip", "localhost");
+                key = prefs.getString("api", "0");
                 break;
 
         }
