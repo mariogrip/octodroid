@@ -26,12 +26,22 @@ public class Activity extends ActionBarActivity {
     public static String jsonData_printer;
     protected SharedPreferences prefs;
     private get get_class;
-    protected String ip;
-    protected String key;
+    private boolean senderr = false;
+    protected static boolean running = false;
+    protected static boolean printing;
+    protected static boolean push = true;
+    protected static boolean servicerunning =false;
+    protected static String ip;
+    protected static String key;
     private Timer timer = new Timer();
     private TimerTask timerTask;
+    private Timer timer2 = new Timer();
+    private TimerTask timerTask2;
     public static boolean server_status = false;
     private static final int RESULT_SETTINGS = 1;
+
+
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +51,17 @@ public class Activity extends ActionBarActivity {
         ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_tab);
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
+        senderr = prefs.getBoolean("err", true);
+        push = prefs.getBoolean("push", true);
         get_class = new get();
         Log.d("OctoPrint","test");
+        running = false;
         runner();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -63,24 +77,71 @@ public class Activity extends ActionBarActivity {
                 Activity.this.finish();
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
+        if (push) {
+            if (!servicerunning) {
+                servicerunning = true;
+                Intent mServiceIntent = new Intent(this, service.class);
+                this.startService(mServiceIntent);
+            }
+        }else{
+            if (servicerunning){
+                servicerunning = false;
+                Intent mServiceIntent = new Intent(this, service.class);
+                this.stopService(mServiceIntent);
+            }
+        }
     }
 
+    public void servererr(){
+        timerTask2 = new TimerTask() {
+            @Override
+            public void run() {
+                get.refreshJson(ip, "job", key);
+                if (server_status){
+                    runner();
+                    timerTask2.cancel();
+                    return;
+                }
+            }
+
+        };
+        timer2.schedule(timerTask2, 0, 10000);
+    }
+
+    public void logD(String e){
+        Log.d("OctoDroid",e);
+    }
     public void runner(){
+        get.refreshJson(ip, "job", key);
+        if (running){
+            logD("Stopping runner, Might started twice");
+            return;
+        }
+        if (!running){
+            logD("OneRunStarted");
+            running = true;
+        }
         timerTask = new TimerTask() {
             @Override
             public void run() {
+                if (!server_status){
+                    logD("Server Error");
+                    running = false;
+                    servererr();
+                    timerTask.cancel();
+                    return;
+                }
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        get.refreshJson(ip, "job", key);
                         get.refreshJson(ip, "printer", key);
-
+                        get.decodeJson();
+                        logD("Running runner");
                         if (server_status) {
+                            Log.d("test123",get.getData("job", "printTime"));
                             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                            progress.setProgress(get.getProgress());
                             TextView texttime = (TextView) findViewById(R.id.textView11_time);
                             TextView textpri = (TextView) findViewById(R.id.textView16_printed);
                             TextView textest = (TextView) findViewById(R.id.textView13_est);
@@ -112,6 +173,7 @@ public class Activity extends ActionBarActivity {
                             textfila.setText(" " + "-");
                             texttimel.setText(" " + "-");
                             textprinttime.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "printTime").toString())));
+                            progress.setProgress(get.getProgress());
                         }
                     }
                 });
@@ -153,9 +215,42 @@ public class Activity extends ActionBarActivity {
                 prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
                 ip = prefs.getString("ip", "localhost");
                 key = prefs.getString("api", "0");
+                push = prefs.getBoolean("push", true);
+                if (push) {
+                    if (!servicerunning) {
+                        servicerunning = true;
+                        Intent mServiceIntent = new Intent(this, service.class);
+                        this.startService(mServiceIntent);
+                    }
+                }else{
+                    if (servicerunning){
+                        servicerunning = false;
+                        Intent mServiceIntent = new Intent(this, service.class);
+                        this.stopService(mServiceIntent);
+                    }
+                }
                 break;
 
         }
 
     }
+    public void onPause(){
+        super.onPause();
+        running = false;
+        timerTask.cancel();
+    }
+    public void onResume(){
+        super.onResume();
+        runner();
+    }
+    public void onStop(){
+        super.onStop();
+        running = false;
+        timerTask.cancel();
+    }
+    public void onStart(){
+        super.onStart();
+        runner();
+    }
+
 }

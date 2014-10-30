@@ -14,7 +14,7 @@
 
     <PreferenceCategory android:title="@string/update_setting" >
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="push"
             android:summary="@string/push_text"
             android:title="@string/push" >
@@ -22,10 +22,19 @@
 
         <ListPreference
             android:key="sync"
+            android:enabled="false"
             android:entries="@array/syncFrequency"
             android:summary="@string/refresh_text"
             android:entryValues="@array/syncFrequencyValues"
             android:title="@string/refresh" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/error_report" >
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="err"
+        android:summary="@string/send_error_info"
+        android:title="@string/send_error" >
+    </CheckBoxPreference>
     </PreferenceCategory>
 
 </PreferenceScreen>

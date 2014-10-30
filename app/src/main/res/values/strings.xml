@@ -28,6 +28,9 @@
     <string name="target_temp">Target Temp:</string>
     <string name="bed_current_temp">Bed Current Temp:</string>
     <string name="bed_target_temp">Bed Target Temp:</string>
+    <string name="send_error">Send error report</string>
+    <string name="error_report">Error report</string>
+    <string name="send_error_info">Send anonymous error data</string>
 
 
 

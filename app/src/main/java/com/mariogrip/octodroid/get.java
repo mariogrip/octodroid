@@ -23,6 +23,9 @@ import java.io.InputStreamReader;
 public class get extends  Activity{
 
     public static String toMBGB(double bytes){
+        if (!Activity.server_status){
+            return "-/-";
+        }
         String returnData;
         Double fileSizeInKB = bytes / 1024;
         Double fileSizeInMB = fileSizeInKB / 1024;
@@ -40,143 +43,182 @@ public class get extends  Activity{
     }
     public static String toHumanRead(double biggy)
     {
+        if (!Activity.server_status){
+            return "00:00:00";
+        }
         int hours = (int) biggy / 3600;
         int remainder = (int) biggy - hours * 3600;
         int mins = remainder / 60;
         remainder = remainder - mins * 60;
         int secs = remainder;
 
-        return hours + ":" + mins + ":" + secs;
+        return String.format("%02d", hours) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
+    }
+    private static JSONObject jsonData_job_job;
+
+    private static JSONObject jsonData_job_job_progress;
+    private static JSONObject jsonData_job_job_file;
+    private static JSONObject jsonData_job_job_job;
+    private static JSONObject jsonData_printer_printer;
+    private static JSONObject jsonData_printer_printer_temps;
+    private static boolean jsonData_printer_status;
+
+    public static void decodeJson(){
+        if (!Activity.server_status){
+            return;
+        }
+        try {
+            jsonData_job_job = new JSONObject(jsonData_job);
+            jsonData_job_job_progress = new JSONObject(jsonData_job_job.getString("progress"));
+            jsonData_job_job_job = new JSONObject(jsonData_job_job.getString("job"));
+            jsonData_job_job_file = new JSONObject(jsonData_job_job_job.getString("file"));
+            if (jsonData_printer.equals("Printer is not operational")){
+                jsonData_printer_status = false;
+            }else{
+                jsonData_printer_status = true;
+                jsonData_printer_printer = new JSONObject(jsonData_printer);
+                jsonData_printer_printer_temps = new JSONObject(jsonData_printer_printer.getString("temps"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void decodeJsonService(){
+        if (!Activity.server_status){
+            return;
+        }
+        try {
+            jsonData_job_job = new JSONObject(jsonData_job);
+            jsonData_job_job_progress = new JSONObject(jsonData_job_job.getString("progress"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public static String getData(String job,String cmd){
+        if (!Activity.server_status){
+            return "-";
+        }
         String returnData = new String();
         boolean noerr;
         if (Activity.server_status) {
             try {
-                if (job == "job"){
-                    JSONObject json = new JSONObject(jsonData_job);
+                if (job == "job") {
                     //Progress
-                    if (cmd == "printTime"){
-                        JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                        returnData = printTime_json.getString("printTime");
+                    if (cmd == "printTime") {
+                        returnData = jsonData_job_job_progress.getString("printTime");
                     }
-                    if (cmd == "printTimeLeft"){
-                        JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                        returnData = printTime_json.getString("printTimeLeft");
+                    if (cmd == "printTimeLeft") {
+                        returnData = jsonData_job_job_progress.getString("printTimeLeft");
                     }
-                    if (cmd == "filepos"){
-                        JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                        returnData = printTime_json.getString("filepos");
+                    if (cmd == "filepos") {
+                        returnData = jsonData_job_job_progress.getString("filepos");
                     }
-                    if (cmd == "completion"){
-                        JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                        returnData = printTime_json.getString("completion");
+                    if (cmd == "completion") {
+                        returnData = jsonData_job_job_progress.getString("completion");
                     }
-                    //file
-                    if (cmd == "name"){
-                        JSONObject printTime_json = new JSONObject(json.getString("job"));
-                        JSONObject printTime_json2 = new JSONObject(printTime_json.getString("file"));
-                        returnData = printTime_json2.getString("name");
-                    }
-                    if (cmd == "size"){
-                        JSONObject printTime_json = new JSONObject(json.getString("job"));
-                        JSONObject printTime_json2 = new JSONObject(printTime_json.getString("file"));
-                        String string1 = printTime_json2.getString("size");
+                    //job
+                    if (cmd == "name") {
+                        String string1 = jsonData_job_job_file.getString("name");
                         if (string1.equals("null") || string1.equals("")){
-                            returnData = "0";
+                            returnData = "-";
                         }else{
                             returnData = string1;
                         }
-                    }
 
-                    //job
-                    if (cmd == "estimatedPrintTime"){
-                        JSONObject printTime_json = new JSONObject(json.getString("job"));
-                        String string1 = printTime_json.getString("estimatedPrintTime");
-                        if (string1.equals("null") || string1.equals("")){
+                    }
+                    if (cmd == "size") {
+                        String string1 = jsonData_job_job_file.getString("size");
+                        if (string1.equals("null") || string1.equals("")) {
                             returnData = "0";
-                        }else{
+                        } else {
+                            returnData = string1;
+                        }
+                    }
+                    if (cmd == "estimatedPrintTime") {
+                        String string1 = jsonData_job_job_job.getString("estimatedPrintTime");
+                        if (string1.equals("null") || string1.equals("")) {
+                            returnData = "0";
+                        } else {
                             returnData = string1;
                         }
 
                     }
                     //no under
-                    if (cmd == "state"){
-                        if (json.getString("state").equals("")){
+                    if (cmd == "state") {
+                        if (jsonData_job_job.getString("state").equals("")) {
                             returnData = "-";
-                        }else{
-                            returnData = json.getString("state");
-                        }
-                    }
-
-                }
-                if (job == "connetion"){
-
-
-                }
-                if (job == "printer"){
-                    JSONObject json = new JSONObject(jsonData_printer);
-                    JSONObject printTime_json = new JSONObject(json.getString("temps"));
-
-                    if (cmd == "Bactual") {
-                        JSONObject temp = new JSONObject(printTime_json.getString("bed"));
-                        String string1 = temp.getString("actual");
-                        if (string1.equals("null") || string1.equals("")) {
-                            returnData = "0";
                         } else {
-                            returnData = string1;
+                            returnData = jsonData_job_job.getString("state");
                         }
                     }
-                    if (cmd == "Btarget"){
-
-                        JSONObject temp = new JSONObject(printTime_json.getString("bed"));
-                        String string1 = temp.getString("target");
-                        if (string1.equals("null") || string1.equals("")){
-                            returnData = "0";
-                        }else{
-                            returnData = string1;
-                        }
-                    }
-                    if (cmd == "actual") {
-                        JSONObject temp = new JSONObject(printTime_json.getString("tool0"));
-                        String string1 = temp.getString("actual");
-                        if (string1.equals("null") || string1.equals("")) {
-                            returnData = "0";
-                        } else {
-                            returnData = string1;
-                        }
-                    }
-                    if (cmd == "target"){
-                        JSONObject temp = new JSONObject(printTime_json.getString("tool0"));
-                        String string1 = temp.getString("target");
-                        if (string1.equals("null") || string1.equals("")){
-                            returnData = "0";
-                        }else{
-                            returnData = string1;
-                        }
-                    }
-
-
 
                 }
-                if (job == "files"){
+                if (job == "printer") {
+                    if (jsonData_printer_status) {
 
+                        if (cmd == "Bactual") {
+                            JSONObject temp = new JSONObject(jsonData_printer_printer_temps.getString("bed"));
+                            String string1 = temp.getString("actual");
+                            if (string1.equals("null") || string1.equals("")) {
+                                returnData = "0";
+                            } else {
+                                returnData = string1;
+                            }
+                        }
+                        if (cmd == "Btarget") {
 
+                            JSONObject temp = new JSONObject(jsonData_printer_printer_temps.getString("bed"));
+                            String string1 = temp.getString("target");
+                            if (string1.equals("null") || string1.equals("")) {
+                                returnData = "0";
+                            } else {
+                                returnData = string1;
+                            }
+                        }
+                        if (cmd == "actual") {
+                            JSONObject temp = new JSONObject(jsonData_printer_printer_temps.getString("tool0"));
+                            String string1 = temp.getString("actual");
+                            if (string1.equals("null") || string1.equals("")) {
+                                returnData = "0";
+                            } else {
+                                returnData = string1;
+                            }
+                        }
+                        if (cmd == "target") {
+                            JSONObject temp = new JSONObject(jsonData_printer_printer_temps.getString("tool0"));
+                            String string1 = temp.getString("target");
+                            if (string1.equals("null") || string1.equals("")) {
+                                returnData = "0";
+                            } else {
+                                returnData = string1;
+                            }
+                        }
+                    }else{
+                        returnData = "0";
+                    }
+                    }
+                    if (job == "connetion") {
+                    }
+                    if (job == "files") {
+                    }
+                    if (job == "version") {
+                    }
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                    Log.e("OctoDroid", "Exception");
                 }
-                if (job == "version"){
 
-
-                }
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         if (returnData.equals("null") || returnData.equals("")){
             returnData = "0";
+        }
+        if (returnData.length() > 15){
+            if (cmd == "state"){
+                returnData = returnData.substring(0, 15);
+                returnData = returnData + "...";
+            }
         }
         if (returnData.length() > 20){
             returnData = returnData.substring(0, 20);
@@ -186,12 +228,20 @@ public class get extends  Activity{
 }
     public static int getProgress(){
         int returnData = 0;
+        double acom = 0;
         if (Activity.server_status) {
             JSONObject json = null;
             try {
             json = new JSONObject(jsonData_job);
             JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                double acom = Double.parseDouble(printTime_json.getString("completion"));
+                String comp = printTime_json.getString("completion");
+                if (comp.equals("") || comp.equals("null")){
+                    try {
+                        acom = Double.parseDouble(comp);
+                    }catch (NumberFormatException e){
+                        acom = 0;
+                    }
+                }
                if (acom < 0){
                     returnData = 0;
                 }else{
@@ -200,6 +250,7 @@ public class get extends  Activity{
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.e("OctoDroid","printStackTrace");
             }
 
         }
@@ -207,6 +258,7 @@ public class get extends  Activity{
     }
 
     public static void refreshJson(String ip, String api, String key){
+        boolean nono = false;
         if (ip == null || ip.equals("")){
 
         }else {
@@ -222,30 +274,31 @@ public class get extends  Activity{
                 HttpResponse response = client.execute(httpGet);
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
-                if (statusCode == 200) {
-                    Activity.server_status = true;
-                    HttpEntity entity = response.getEntity();
-                    InputStream content = entity.getContent();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        builder.append(line);
-                    }
-                } else {
-                    Activity.server_status = false;
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
                 }
             } catch (ClientProtocolException e) {
                 Log.e("OctoDroid", "ClientProtocolException");
                 Log.d("OctoDroid", ip);
+                nono = true;
                 Activity.server_status = false;
+                return;
             } catch (IOException e) {
                 Log.e("OctoDroid", "IOException");
                 Log.d("OctoDroid", ip);
+                nono = true;
                 Activity.server_status = false;
+                return;
             } catch (IllegalStateException e){
                 Log.e("OctoDroid", "IllegalStateException");
                 Log.d("OctoDroid", ip);
+                nono = true;
                 Activity.server_status = false;
+                return;
             }
             if (api.equals("job")){
                  jsonData_job = builder.toString();
@@ -253,6 +306,33 @@ public class get extends  Activity{
             if (api.equals("printer")){
                 jsonData_printer = builder.toString();
             }
+            if (!nono) {
+                Activity.server_status = true;
+            }
         }
+    }
+    private void sendError(String er){
+        StringBuilder builder = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpGet httpGet;
+        httpGet = new HttpGet("http://mariogrip.com/OctoPrint/api/error.php?e=" + er);
+        try {
+            HttpResponse response = client.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+            }
+        } catch (ClientProtocolException e) {
+            Log.e("OctoDroid", "ClientProtocolException");
+        } catch (IOException e) {
+            Log.e("OctoDroid", "IOException");
+        } catch (IllegalStateException e){
+            Log.e("OctoDroid", "IllegalStateException");
+        }
+
     }
 }
