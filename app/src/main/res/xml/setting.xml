@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
     <PreferenceCategory android:title="@string/server_settings" >
         <EditTextPreference
             android:title="@string/set_ip"
@@ -11,7 +10,6 @@
             android:summary="@string/api_text"
             android:key="api"/>
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/update_setting" >
         <CheckBoxPreference
             android:defaultValue="true"
@@ -19,7 +17,6 @@
             android:summary="@string/push_text"
             android:title="@string/push" >
         </CheckBoxPreference>
-
         <ListPreference
             android:key="sync"
             android:enabled="false"
@@ -36,5 +33,4 @@
         android:title="@string/send_error" >
     </CheckBoxPreference>
     </PreferenceCategory>
-
 </PreferenceScreen>

@@ -4,11 +4,15 @@ import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,13 +20,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mariogrip on 27.10.14.
+ *
+ * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
-public class get extends  Activity{
+public class util extends  Activity{
 
+    //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
+        //Checks if the app has contact with the server.
         if (!Activity.server_status){
             return "-/-";
         }
@@ -310,6 +320,43 @@ public class get extends  Activity{
                 Activity.server_status = true;
             }
         }
+    }
+    public static void sendcmd(String ip ,String api, String cmd, String value, String key){
+        Log.e("OctoDroid", api + " " + ip + " " + key + " " + cmd + "" + value);
+        StringBuilder builder = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpPost httpPost;
+        if (ip.startsWith("http://")){
+            httpPost = new HttpPost(ip + "/api/"+api);
+        }else{
+            httpPost = new HttpPost("http://"+ ip + "/api/"+api);
+        }
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+            nameValuePairs.add(new BasicNameValuePair("apikey", key));
+            nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+            nameValuePairs.add(new BasicNameValuePair("x", value));
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = client.execute(httpPost);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 204) {
+                Log.e("OctoDroid", "yeah");
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                Log.e("OctoDroid", "Yeah2");
+            }else{            Log.e("OctoDroid", statusCode + "");}
+        } catch (ClientProtocolException e) {
+            Log.e("OctoDroid", "ClientProtocolException");
+        } catch (IOException e) {
+            Log.e("OctoDroid", "IOException");
+        } catch (IllegalStateException e){
+            Log.e("OctoDroid", "IllegalStateException");
+        }
+
     }
     private void sendError(String er){
         StringBuilder builder = new StringBuilder();

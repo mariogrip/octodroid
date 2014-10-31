@@ -1,38 +1,60 @@
 package com.mariogrip.octodroid;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.mariogrip.octodroid.iu.controls;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * Created by mariogrip on 27.10.14.
+ *
+ * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ */
 public class Activity extends ActionBarActivity {
+    protected int pos;
+    private String[] nawTitle;
+    private DrawerLayout nawlay;
+    private ListView nawList;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
     public static String jsonData_job;
     public static String jsonData_connetion;
     public static String jsonData_printer;
     protected SharedPreferences prefs;
-    private get get_class;
+    private util get_class;
     private boolean senderr = false;
     protected static boolean running = false;
     protected static boolean printing;
     protected static boolean push = true;
     protected static boolean servicerunning =false;
-    protected static String ip;
-    protected static String key;
+    public static String ip;
+    public static String key;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Timer timer2 = new Timer();
@@ -42,7 +64,6 @@ public class Activity extends ActionBarActivity {
 
 
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Just for testing, allow network access in the main thread
@@ -53,13 +74,55 @@ public class Activity extends ActionBarActivity {
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.status_tab);
+        setContentView(R.layout.nawdraw);
+
+
+        mTitle = mDrawerTitle = getTitle();
+        nawTitle = getResources().getStringArray(R.array.nawbars);
+        nawlay = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nawList = (ListView) findViewById(R.id.left_drawer);
+        nawList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.nawlist, nawTitle));
+        nawList.setOnItemClickListener(new DrawerItemClickListener());
+
+
+
+
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                nawlay,
+                R.drawable.ic_drawer,
+                R.string.drawer_open,
+                R.string.drawer_close
+        ) {
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu();
+            }
+        };
+        nawlay.setDrawerListener(mDrawerToggle);
+
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+
+
+
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
-        get_class = new get();
+        get_class = new util();
         Log.d("OctoPrint","test");
         running = false;
         runner();
@@ -98,7 +161,7 @@ public class Activity extends ActionBarActivity {
         timerTask2 = new TimerTask() {
             @Override
             public void run() {
-                get.refreshJson(ip, "job", key);
+                util.refreshJson(ip, "job", key);
                 if (server_status){
                     runner();
                     timerTask2.cancel();
@@ -114,7 +177,7 @@ public class Activity extends ActionBarActivity {
         Log.d("OctoDroid",e);
     }
     public void runner(){
-        get.refreshJson(ip, "job", key);
+        util.refreshJson(ip, "job", key);
         if (running){
             logD("Stopping runner, Might started twice");
             return;
@@ -136,11 +199,13 @@ public class Activity extends ActionBarActivity {
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        get.refreshJson(ip, "printer", key);
-                        get.decodeJson();
+                        switch (pos){
+                            case 0:
+                        util.refreshJson(ip, "printer", key);
+                        util.decodeJson();
                         logD("Running runner");
                         if (server_status) {
-                            Log.d("test123",get.getData("job", "printTime"));
+                            Log.d("test123", util.getData("job", "printTime"));
                             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                             TextView texttime = (TextView) findViewById(R.id.textView11_time);
                             TextView textpri = (TextView) findViewById(R.id.textView16_printed);
@@ -156,24 +221,34 @@ public class Activity extends ActionBarActivity {
                             TextView textfila = (TextView) findViewById(R.id.textView12_fila);
                             TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
 
-                            if (get.getData("job", "filepos").toString() == "null" || get.getData("job", "size").toString() == "null" || get.getData("job", "size").toString() == "") {
+                            if (util.getData("job", "filepos").toString() == "null" || util.getData("job", "size").toString() == "null" || util.getData("job", "size").toString() == "") {
                                 textpri.setText(" " + "-/-");
                             } else {
-                                textpri.setText(" " + get.toMBGB(Double.parseDouble(get.getData("job", "filepos").toString())).toString() + "/" + get.toMBGB(Double.parseDouble(get.getData("job", "size").toString())).toString());
+                                textpri.setText(" " + util.toMBGB(Double.parseDouble(util.getData("job", "filepos").toString())).toString() + "/" + util.toMBGB(Double.parseDouble(util.getData("job", "size").toString())).toString());
                             }
-                            texttime.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "printTimeLeft"))));
-                            textest.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "estimatedPrintTime").toString())));
+                            texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                            textest.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "estimatedPrintTime").toString())));
                             texthei.setText(" " + "-");
-                            textfile.setText(" " + get.getData("job", "name").toString());
-                            textmaci.setText(" " + get.getData("job", "state").toString());
-                            texttarT.setText(" " + get.getData("printer", "target") + "°C");
-                            textcurT.setText(" " + get.getData("printer", "actual") + "°C");
-                            textBcur.setText(" " + get.getData("printer", "Bactual") + "°C");
-                            textBtar.setText(" " + get.getData("printer", "Btarget") + "°C");
+                            textfile.setText(" " + util.getData("job", "name").toString());
+                            textmaci.setText(" " + util.getData("job", "state").toString());
+                            texttarT.setText(" " + util.getData("printer", "target") + "°C");
+                            textcurT.setText(" " + util.getData("printer", "actual") + "°C");
+                            textBcur.setText(" " + util.getData("printer", "Bactual") + "°C");
+                            textBtar.setText(" " + util.getData("printer", "Btarget") + "°C");
                             textfila.setText(" " + "-");
                             texttimel.setText(" " + "-");
-                            textprinttime.setText(" " + get.toHumanRead(Double.parseDouble(get.getData("job", "printTime").toString())));
-                            progress.setProgress(get.getProgress());
+                            textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTime").toString())));
+                            progress.setProgress(util.getProgress());
+
+                        }
+                         break;
+                            case 1:
+                                ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar_controls);
+                                TextView texttime = (TextView) findViewById(R.id.printTimeControls);
+                                texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                                progress.setProgress(util.getProgress());
+                                break;
+
                         }
                     }
                 });
@@ -186,6 +261,11 @@ public class Activity extends ActionBarActivity {
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean drawerOpen = nawlay.isDrawerOpen(nawList);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,8 +273,12 @@ public class Activity extends ActionBarActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
@@ -251,6 +335,78 @@ public class Activity extends ActionBarActivity {
     public void onStart(){
         super.onStart();
         runner();
+    }
+
+    // NAW
+
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(final int position) {
+        pos = position;
+        Fragment fragment = new PlanetFragment();
+        switch (position) {
+            case 0:
+                fragment = new PlanetFragment();
+                break;
+            case 1:
+                fragment = new controls();
+                break;
+            default:
+                break;
+        }
+        Bundle args = new Bundle();
+        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
+        // update selected item and title, then close the drawer
+        nawList.setItemChecked(position, true);
+        setTitle(nawTitle[position]);
+        nawlay.closeDrawer(nawList);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public static class PlanetFragment extends Fragment {
+        public static final String ARG_PLANET_NUMBER = "planet_number";
+
+        public PlanetFragment(){}
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView;
+            int i = getArguments().getInt(ARG_PLANET_NUMBER);
+            String naws = getResources().getStringArray(R.array.nawbars)[i];
+            rootView = inflater.inflate(R.layout.status_tab, container, false);
+            getActivity().setTitle(naws);
+            return rootView;
+        }
     }
 
 }
