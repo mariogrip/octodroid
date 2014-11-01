@@ -239,7 +239,6 @@ public class Activity extends ActionBarActivity {
                             texttimel.setText(" " + "-");
                             textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTime").toString())));
                             progress.setProgress(util.getProgress());
-
                         }
                          break;
                             case 1:

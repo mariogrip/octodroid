@@ -245,14 +245,16 @@ public class util extends  Activity{
             json = new JSONObject(jsonData_job);
             JSONObject printTime_json = new JSONObject(json.getString("progress"));
                 String comp = printTime_json.getString("completion");
-                if (comp.equals("") || comp.equals("null")){
+                if (comp.equals("") || comp.equals("null")) {
+                    acom = 0;
+                }else{
                     try {
                         acom = Double.parseDouble(comp);
                     }catch (NumberFormatException e){
                         acom = 0;
                     }
                 }
-               if (acom < 0){
+               if (acom < 1){
                     returnData = 0;
                 }else{
                    returnData = (int) acom;
