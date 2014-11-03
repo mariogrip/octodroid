@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -68,9 +67,9 @@ public class Activity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //Just for testing, allow network access in the main thread
         //NEVER use this is productive code
-        StrictMode.ThreadPolicy policy = new StrictMode.
-        ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.
+          //      ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
 
         super.onCreate(savedInstanceState);
@@ -84,9 +83,6 @@ public class Activity extends ActionBarActivity {
         nawList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.nawlist, nawTitle));
         nawList.setOnItemClickListener(new DrawerItemClickListener());
-
-
-
 
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,23 +106,15 @@ public class Activity extends ActionBarActivity {
             }
         };
         nawlay.setDrawerListener(mDrawerToggle);
-
         if (savedInstanceState == null) {
             selectItem(0);
         }
-
-
-
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
-        get_class = new util();
-        Log.d("OctoPrint","test");
         running = false;
-        runner();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning!");
         builder.setMessage("I understand that this application is experimental and might crash. There are some functions that do not work like push notifications. Please report bugs!");
@@ -142,19 +130,43 @@ public class Activity extends ActionBarActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-        if (push) {
-            if (!servicerunning) {
-                servicerunning = true;
-                Intent mServiceIntent = new Intent(this, service.class);
-                this.startService(mServiceIntent);
+        logD("Done!");
+    }
+    public void startrunner(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                textmaci.setText("Offline");
+                runner();
+                logD("Done startrunner()");
             }
-        }else{
-            if (servicerunning){
-                servicerunning = false;
-                Intent mServiceIntent = new Intent(this, service.class);
-                this.stopService(mServiceIntent);
+        };
+        new Thread(runnable).start();
+    }
+    public void startservice(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                logD("Starting Service");
+
+                if (push) {
+                    if (!servicerunning) {
+                        servicerunning = true;
+                        Intent mServiceIntent = new Intent(Activity.this, service.class);
+                        Activity.this.startService(mServiceIntent);
+                    }
+                }else{
+                    if (servicerunning){
+                        servicerunning = false;
+                        Intent mServiceIntent = new Intent(Activity.this, service.class);
+                        Activity.this.stopService(mServiceIntent);
+                    }
+                }
+                logD("Done startservice()");
             }
-        }
+        };
+        new Thread(runnable).start();
     }
 
     public void servererr(){
@@ -189,16 +201,19 @@ public class Activity extends ActionBarActivity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                if (!server_status){
-                    logD("Server Error");
-                    running = false;
-                    servererr();
-                    timerTask.cancel();
-                    return;
-                }
+
 
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
+                        if (!server_status){
+                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                            textmaci.setText("Cannot connect to\n" + ip);
+                            logD("Server Error");
+                            running = false;
+                            servererr();
+                            timerTask.cancel();
+                            return;
+                        }
                         switch (pos){
                             case 0:
                         util.refreshJson(ip, "printer", key);
@@ -239,6 +254,9 @@ public class Activity extends ActionBarActivity {
                             texttimel.setText(" " + "-");
                             textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTime").toString())));
                             progress.setProgress(util.getProgress());
+                        }else{
+                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                            textmaci.setText("Cannot connect to\n" + ip);
                         }
                          break;
                             case 1:
@@ -324,7 +342,7 @@ public class Activity extends ActionBarActivity {
     }
     public void onResume(){
         super.onResume();
-        runner();
+        startrunner();
     }
     public void onStop(){
         super.onStop();
@@ -333,7 +351,7 @@ public class Activity extends ActionBarActivity {
     }
     public void onStart(){
         super.onStart();
-        runner();
+//        runner(); - not needed
     }
 
     // NAW

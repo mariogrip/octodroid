@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="syncFrequency">
-        <item name="1">5 Minutes</item>
+        <item name="1">30 Sec</item>
         <item name="2">10 Minutes</item>
         <item name="3">30 Minutes</item>
         <item name="4">1 Hour</item>
