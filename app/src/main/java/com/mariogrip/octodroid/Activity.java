@@ -3,6 +3,7 @@ package com.mariogrip.octodroid;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -110,16 +111,22 @@ public class Activity extends ActionBarActivity {
             selectItem(0);
         }
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
+
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
+
         running = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning!");
         builder.setMessage("I understand that this application is experimental and might crash. There are some functions that do not work like push notifications. Please report bugs!");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("warning", false);
+                editor.commit();
                 dialog.dismiss();
             }
         });
@@ -129,7 +136,10 @@ public class Activity extends ActionBarActivity {
             }
         });
         AlertDialog dialog = builder.create();
-        dialog.show();
+        SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
+        if (sharedPref.getBoolean("warning", true)){
+            dialog.show();
+        }
         logD("Done!");
     }
     public void startrunner(){
@@ -201,8 +211,6 @@ public class Activity extends ActionBarActivity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-
-
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         if (!server_status){
@@ -338,7 +346,7 @@ public class Activity extends ActionBarActivity {
     public void onPause(){
         super.onPause();
         running = false;
-        timerTask.cancel();
+        timerTask.cancel(); //TODO CRASH NullPointerException
     }
     public void onResume(){
         super.onResume();

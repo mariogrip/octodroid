@@ -43,7 +43,7 @@
 
 
 
-    </RelativeLayout>
+</RelativeLayout>
 <FrameLayout
     android:layout_width="match_parent"
     android:background="#9f000000"
@@ -292,4 +292,5 @@
             android:layout_toEndOf="@id/textView22"
             android:layout_toRightOf="@id/textView22"/>
 </RelativeLayout>
+
 </RelativeLayout>

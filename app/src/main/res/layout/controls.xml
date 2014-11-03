@@ -89,4 +89,53 @@
 
     </RelativeLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Z"
+        android:id="@+id/buttonZ"
+        android:layout_toRightOf="@id/button_down"
+        android:layout_below="@id/button_right"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        android:id="@+id/buttonY"
+        android:layout_above="@+id/button_home"
+        android:layout_toLeftOf="@id/buttonUp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/buttonX"
+        android:layout_above="@+id/button_home"
+        android:layout_toRightOf="@id/buttonUp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Print"
+        android:id="@+id/button_start"
+        android:layout_below="@id/layout1"
+        android:layout_alignParentRight="true"
+ />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pause Print"
+        android:id="@+id/button_pause"
+        android:layout_below="@id/layout1"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Print"
+        android:id="@+id/button_stop"
+        android:layout_below="@id/layout1"
+ />
+
 </RelativeLayout>
