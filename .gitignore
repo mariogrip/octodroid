@@ -4,7 +4,7 @@
 /.idea/libraries
 .DS_Store
 /build
-*.apk
+build/*.apk
 *.ap_
 *.dex
 *.class

@@ -66,17 +66,8 @@ public class Activity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Just for testing, allow network access in the main thread
-        //NEVER use this is productive code
-        //StrictMode.ThreadPolicy policy = new StrictMode.
-          //      ThreadPolicy.Builder().permitAll().build();
-        //StrictMode.setThreadPolicy(policy);
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nawdraw);
-
-
         mTitle = mDrawerTitle = getTitle();
         nawTitle = getResources().getStringArray(R.array.nawbars);
         nawlay = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -84,11 +75,8 @@ public class Activity extends ActionBarActivity {
         nawList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.nawlist, nawTitle));
         nawList.setOnItemClickListener(new DrawerItemClickListener());
-
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 nawlay,
@@ -111,12 +99,10 @@ public class Activity extends ActionBarActivity {
             selectItem(0);
         }
         prefs = PreferenceManager.getDefaultSharedPreferences(Activity.this);
-
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
-
         running = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning!");
@@ -345,8 +331,10 @@ public class Activity extends ActionBarActivity {
     }
     public void onPause(){
         super.onPause();
-        running = false;
-        timerTask.cancel(); //TODO CRASH NullPointerException
+        if (running) {
+            running = false;
+            timerTask.cancel(); //TODO CRASH NullPointerException
+        }
     }
     public void onResume(){
         super.onResume();
@@ -354,8 +342,10 @@ public class Activity extends ActionBarActivity {
     }
     public void onStop(){
         super.onStop();
-        running = false;
-        timerTask.cancel();
+        if (running) {
+            running = false;
+            timerTask.cancel();
+        }
     }
     public void onStart(){
         super.onStart();

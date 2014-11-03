@@ -14,6 +14,8 @@ import com.mariogrip.octodroid.util;
 
 /**
  * Created by mariogrip on 31.10.14.
+ *
+ * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
 public class controls extends Fragment {
 

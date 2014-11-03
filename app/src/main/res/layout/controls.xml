@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="37dp"
-            android:text="00:00"
+            android:text="00:00:00"
             android:layout_centerHorizontal="true"
             android:id="@+id/printTimeControls"
             android:layout_below="@id/printTimeControlsText"/>
