@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -25,8 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.mariogrip.octodroid.iu.controls;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -112,7 +111,7 @@ public class Activity extends ActionBarActivity {
         running = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning!");
-        builder.setMessage("I understand that this application is experimental and might crash. There are some functions that do not work like push notifications. Please report bugs!");
+        builder.setMessage("Thank you for downloading this app!\nplease note that this app is under heavy development, so there will be a lot more to be added (example: controls,start,stop and pause) and there might be some bugs, so please report bugs!");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
@@ -263,11 +262,13 @@ public class Activity extends ActionBarActivity {
                             textmaci.setText("Cannot connect to\n" + ip);
                         }
                          break;
-                            case 1:
+                            case 2:
                                 ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar_controls);
                                 TextView texttime = (TextView) findViewById(R.id.printTimeControls);
                                 texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
                                 progress.setProgress(util.getProgress());
+                                break;
+                            default:
                                 break;
 
                         }
@@ -277,9 +278,6 @@ public class Activity extends ActionBarActivity {
 
         };
         timer.schedule(timerTask, 0, 3000);
-
-
-
     }
 
     @Override
@@ -307,6 +305,16 @@ public class Activity extends ActionBarActivity {
             startActivityForResult(i, RESULT_SETTINGS);
             return true;
         }
+        if (id == R.id.action_bug) {
+            Intent i1 = new Intent(this, sendbug.class);
+            startActivity(i1);
+            return true;
+        }
+        if (id == R.id.action_git){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/mariogrip/octodroid"));
+            startActivity(browserIntent);
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -359,11 +367,7 @@ public class Activity extends ActionBarActivity {
     }
     public void onStart(){
         super.onStart();
-//        runner(); - not needed
     }
-
-    // NAW
-
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -372,7 +376,7 @@ public class Activity extends ActionBarActivity {
         }
     }
 
-    private void selectItem(final int position) {
+    private void selectItem(int position) {
         pos = position;
         Fragment fragment = new PlanetFragment();
         switch (position) {
@@ -380,7 +384,12 @@ public class Activity extends ActionBarActivity {
                 fragment = new PlanetFragment();
                 break;
             case 1:
-                fragment = new controls();
+                fragment = new PlanetFragment();
+                pos = 0;
+                position = 0;
+                Intent i = new Intent(this, settings.class);
+                startActivityForResult(i, RESULT_SETTINGS);
+                //fragment = new controls();
                 break;
             default:
                 break;
@@ -419,9 +428,7 @@ public class Activity extends ActionBarActivity {
 
     public static class PlanetFragment extends Fragment {
         public static final String ARG_PLANET_NUMBER = "planet_number";
-
         public PlanetFragment(){}
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

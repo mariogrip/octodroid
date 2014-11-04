@@ -27,12 +27,11 @@ public class service extends IntentService {
     private int intcom;
 
     public service() {
-        super("MyIntentService");
+        super("OctoDroidService");
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-
         runner();
     }
 
@@ -44,20 +43,19 @@ public class service extends IntentService {
                     util.refreshJson(Activity.ip, "job", Activity.key);
                     util.decodeJsonService();
                     Log.d("OctoDroid Service", "runner" + Activity.printing);
-
                     if (Activity.printing) {
                         Activity.printing = true;
                         timerTask.cancel();
                         startPrintService();
                         return;
                     }
-                    if (util.getData("job", "state").equals("Printing") && Activity.printing == false) {
+                    if (util.getData("job", "state").equals("Printing") && !Activity.printing) {
                         Activity.printing = true;
                         timerTask.cancel();
                         startPrintService();
                         return;
                     }
-                    if (!util.getData("job", "state").equals("Printing") && Activity.printing == true) {
+                    if (!util.getData("job", "state").equals("Printing") && Activity.printing) {
                         Activity.printing = false;
                     }
                 }
@@ -75,7 +73,6 @@ public class service extends IntentService {
         mBuilder.setContentTitle("OctoDroid")
                 .setContentText("Print in progress")
                 .setSmallIcon(R.drawable.octoprint);
-
         timerTask2 = new TimerTask() {
             @Override
             public void run() {
@@ -85,7 +82,7 @@ public class service extends IntentService {
                 complete = Double.parseDouble(util.getData("job", "completion"));
 
 
-                if (!util.getData("job", "state").equals("Printing") && Activity.printing == true) {
+                if (!util.getData("job", "state").equals("Printing") && Activity.printing) {
                     Activity.printing = false;
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")

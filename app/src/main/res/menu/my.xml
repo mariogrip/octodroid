@@ -4,6 +4,14 @@
     tools:context=".MyActivity" >
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
    />
+    <item android:id="@+id/action_bug"
+        android:title="@string/report_bug"
+        android:orderInCategory="2"
+        />
+    <item android:id="@+id/action_git"
+        android:title="Show on Github"
+        android:orderInCategory="3"
+        />
 </menu>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comments about the problem below:"
+        android:id="@+id/textView_commen"></TextView>
+
+    <EditText
+        android:layout_below="@id/textView_commen"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:inputType="textMultiLine"
+        android:id="@+id/editText_bug"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_below="@id/editText_bug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Send_bug"
+        android:id="@+id/button_send_bug"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1" />
+
+
+</RelativeLayout>

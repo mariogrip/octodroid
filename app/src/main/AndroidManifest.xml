@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mariogrip.octodroid" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/octoprint"
+        android:icon="@drawable/octodroid"
         android:label="@string/app_name"
         android:theme="@style/Theme.Base.AppCompat.Light" >
         <activity
@@ -20,9 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.mariogrip.octodroid.sendbug"
+            android:label="@string/Send_bug" >
+        </activity>
+
         <service
-            android:name=".service"
-            android:exported="false"/>
+            android:name="com.mariogrip.octodroid.service"
+            android:exported="false" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

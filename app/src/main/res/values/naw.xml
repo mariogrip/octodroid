@@ -1,7 +1,8 @@
 <resources>
     <string-array name="nawbars">
         <item>Status</item>
-        <item>Controls-WORK-IN-PROGRESS</item>
+        <item>Settings</item>
+        <!-- <item>Controls-WORK-IN-PROGRESS</item>-->
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

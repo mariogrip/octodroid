@@ -360,7 +360,7 @@ public class util extends  Activity{
         }
 
     }
-    private void sendError(String er){
+    protected static void sendError(String er){
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet;
