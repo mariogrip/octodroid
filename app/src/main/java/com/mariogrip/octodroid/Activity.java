@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -66,7 +67,12 @@ public class Activity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO Rmove StrictMode and add AsyncTask!
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.
+        ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.nawdraw);
         mTitle = mDrawerTitle = getTitle();
         nawTitle = getResources().getStringArray(R.array.nawbars);
@@ -132,8 +138,12 @@ public class Activity extends ActionBarActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                textmaci.setText("Offline");
+                Activity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                        textmaci.setText("Offline");
+                    }
+                 });
                 runner();
                 logD("Done startrunner()");
             }
