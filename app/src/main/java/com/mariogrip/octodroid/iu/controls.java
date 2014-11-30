@@ -30,7 +30,6 @@ public class controls extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("OctoDroid","button up Pressed");
-                util.sendcmd(Activity.ip, "printer/printhead", "jog", "10", Activity.key);
             }
         });
 

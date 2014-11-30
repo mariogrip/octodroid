@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -113,7 +115,47 @@ public class main_card extends Fragment {
             //Very important with different inner layouts
             return 1;
         }
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            Button up = (Button) parent.findViewById(R.id.buttonUp);
+            up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button up Pressed");
+                }
+            });
 
+            final Button button = (Button) parent.findViewById(R.id.button_down);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button Down Pressed");
+                }
+            });
+
+
+            Button right = (Button) parent.findViewById(R.id.button_right);
+            right.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button right Pressed");
+                }
+            });
+
+            Button left = (Button) parent.findViewById(R.id.button_left);
+            left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button left Pressed");
+                }
+            });
+
+            Button home = (Button) parent.findViewById(R.id.button_home);
+            home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button home Pressed");
+                }
+            });
+        }
     }
 
 

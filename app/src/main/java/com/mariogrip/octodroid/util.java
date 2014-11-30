@@ -323,7 +323,7 @@ public class util extends  Activity{
             }
         }
     }
-    public static void sendcmd(String ip ,String api, String cmd, String value, String key){
+    public static void sendcmd(String ip ,String api, String cmd, List<NameValuePair> value){
         Log.e("OctoDroid", api + " " + ip + " " + key + " " + cmd + "" + value);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -334,22 +334,17 @@ public class util extends  Activity{
             httpPost = new HttpPost("http://"+ ip + "/api/"+api);
         }
         try {
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-            nameValuePairs.add(new BasicNameValuePair("apikey", key));
-            nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-            nameValuePairs.add(new BasicNameValuePair("x", value));
-
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            httpPost.setEntity(new UrlEncodedFormEntity(value));
             HttpResponse response = client.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
             if (statusCode == 204) {
-                Log.e("OctoDroid", "yeah");
+                Log.e("OctoDroid", "204");
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
-                Log.e("OctoDroid", "Yeah2");
+                Log.e("OctoDroid", "205");
             }else{            Log.e("OctoDroid", statusCode + "");}
         } catch (ClientProtocolException e) {
             Log.e("OctoDroid", "ClientProtocolException");
@@ -383,5 +378,48 @@ public class util extends  Activity{
             Log.e("OctoDroid", "IllegalStateException");
         }
 
+    }
+
+    protected static void goX(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("x", value));
+    }
+    protected static void goZ(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("z", value));
+    }
+    protected static void goY(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("z", value));
+    }
+    protected static void goHome(){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    }
+    protected static void goHomeY(){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    }
+    protected static void goHomeZ(){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    }
+    protected static void goHomeX(){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
+        nameValuePairs.add(new BasicNameValuePair("home", ""));
     }
 }
