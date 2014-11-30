@@ -113,25 +113,27 @@ public class Activity extends ActionBarActivity {
         push = prefs.getBoolean("push", true);
         running = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Warning!");
-        builder.setMessage("Thank you for downloading this app!\nplease note that this app is under heavy development, so there will be a lot more to be added (example: controls,start,stop and pause) and there might be some bugs. \nPlease report bugs!");
+        builder.setTitle("Configure");
+        builder.setMessage("Do you want to configure OctoDroid?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("warning", false);
+                editor.putBoolean("setup", false);
                 editor.commit();
+                Intent i = new Intent(Activity.this, settings.class);
+                startActivityForResult(i, RESULT_SETTINGS);
                 dialog.dismiss();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Activity.this.finish();
+                dialog.dismiss();
             }
         });
         AlertDialog dialog = builder.create();
         SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("warning", true)){
+        if (sharedPref.getBoolean("setup", true)){
             dialog.show();
         }
         logD("Done!");
@@ -143,10 +145,10 @@ public class Activity extends ActionBarActivity {
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-//                        textmaci.setText("Offline");
+                     //   textmaci.setText("Offline");
                     }
                  });
-  //              runner();
+               runner();
                 logD("Done startrunner()");
             }
         };

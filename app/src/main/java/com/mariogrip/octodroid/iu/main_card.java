@@ -28,11 +28,9 @@ public class main_card extends Fragment {
 
     public main_card(){}
     private static final String TAG = "CardListActivity";
-    private cardAdapter cardArrayAdapter;
-    private cardAdapter cardArrayAdapter2;
     private ListView listView;
     private View rootView;
-    public ViewGroup test123;
+    public static ViewGroup test123;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +43,9 @@ public class main_card extends Fragment {
         cards.add(card);
         cardtest2 card2 = new cardtest2(rootView.getContext(),"controls", "controls");
         cards.add(card2);
+        cardtest2 card3 = new cardtest2(rootView.getContext(),"controls3", "controls3");
+        cards.add(card3);
+
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
@@ -53,8 +54,6 @@ public class main_card extends Fragment {
         if (listView!=null){
             listView.setAdapter(mCardArrayAdapter);
         }
-        TextView textmaci = (TextView) rootView.findViewById(R.id.textView10_maci);
-        textmaci.setText("Offline");
         return rootView;
 
             }
@@ -117,9 +116,6 @@ public class main_card extends Fragment {
             return 1;
         }
 
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-           test123 = parent;
-        }
     }
 
 
