@@ -396,7 +396,6 @@ public class Activity extends ActionBarActivity {
                 position = 0;
                 Intent i = new Intent(this, settings.class);
                 startActivityForResult(i, RESULT_SETTINGS);
-                //fragment = new controls();
                 break;
             case 2:
                 fragment = new controls();

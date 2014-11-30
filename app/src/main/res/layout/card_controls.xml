@@ -2,25 +2,101 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Print"
-        android:id="@+id/button_start"
-        android:layout_alignParentRight="true"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause Print"
-        android:id="@+id/button_pause"
-        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Print"
-        android:id="@+id/button_stop"
+        android:text="⇧"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/buttonUp"/>
+
+    <Button
+        android:id="@+id/button_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:layout_below="@id/buttonUp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_below="@id/button_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⇩"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_down" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/buttonX"
+        android:layout_above="@+id/button_home"
+        android:layout_toRightOf="@id/buttonUp" />
+
+    <Button
+        android:layout_toRightOf="@id/button_home"
+        android:layout_below="@id/buttonX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⇨"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_right"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        android:id="@+id/buttonY"
+        android:layout_above="@+id/button_home"
+        android:layout_toLeftOf="@id/buttonUp" />
+    <Button
+        android:layout_toLeftOf="@id/button_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⇦"
+        android:layout_below="@id/buttonY"
+        android:id="@+id/button_left" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Z"
+        android:id="@+id/buttonZ"
+        android:layout_toRightOf="@id/button_down"
+        android:layout_below="@id/button_right"/>
+
+
+
+
+<!---
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton_1"
+        android:textOff="1"
+        android:textOn="1"
+        android:layout_below="@+id/button_down"
+        android:layout_centerHorizontal="true"/>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="10"
+        android:textOn="10"
+        android:id="@+id/toggleButton_10"
+        android:layout_below="@+id/button_down"
+        android:layout_toRightOf="@id/toggleButton_1"
         />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.1"
+        android:layout_toLeftOf="@id/toggleButton_1"
+        android:textOff="0.1"
+        android:textOn="0.1"
+        android:id="@+id/toggleButton_0.1"
+        android:layout_below="@+id/button_down"/>
+        -->
 
 </RelativeLayout>

@@ -225,4 +225,30 @@
         android:id="@+id/textView18_Btar_T"
         android:layout_toEndOf="@id/textView22"
         android:layout_toRightOf="@id/textView22"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Print"
+        android:layout_below="@id/textView22"
+        android:id="@+id/button_start"
+        android:layout_alignParentRight="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pause Print"
+        android:layout_below="@id/textView22"
+        android:id="@+id/button_pause"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Print"
+        android:id="@+id/button_stop"
+        android:layout_below="@id/textView22"
+        />
 </RelativeLayout>

@@ -41,10 +41,8 @@ public class main_card extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"Status", "Status");
         cards.add(card);
-        cardtest2 card2 = new cardtest2(rootView.getContext(),"controls", "controls");
+        cardtest2 card2 = new cardtest2(rootView.getContext(),"Controls", "Controls");
         cards.add(card2);
-        cardtest2 card3 = new cardtest2(rootView.getContext(),"controls3", "controls3");
-        cards.add(card3);
 
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
