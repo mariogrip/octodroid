@@ -27,6 +27,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mariogrip.octodroid.iu.controls;
+import com.mariogrip.octodroid.iu.main_card;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,7 +69,7 @@ public class Activity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO Rmove StrictMode and add AsyncTask!
+        //TODO Remove StrictMode and add AsyncTask!
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.
         ThreadPolicy.Builder().permitAll().build();
@@ -111,8 +114,8 @@ public class Activity extends ActionBarActivity {
         running = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning!");
-        builder.setMessage("Thank you for downloading this app!\nplease note that this app is under heavy development, so there will be a lot more to be added (example: controls,start,stop and pause) and there might be some bugs, so please report bugs!");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage("Thank you for downloading this app!\nplease note that this app is under heavy development, so there will be a lot more to be added (example: controls,start,stop and pause) and there might be some bugs. \nPlease report bugs!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -121,7 +124,7 @@ public class Activity extends ActionBarActivity {
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Activity.this.finish();
             }
@@ -140,10 +143,10 @@ public class Activity extends ActionBarActivity {
                 Activity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                        textmaci.setText("Offline");
+//                        textmaci.setText("Offline");
                     }
                  });
-                runner();
+  //              runner();
                 logD("Done startrunner()");
             }
         };
@@ -154,7 +157,6 @@ public class Activity extends ActionBarActivity {
             @Override
             public void run() {
                 logD("Starting Service");
-
                 if (push) {
                     if (!servicerunning) {
                         servicerunning = true;
@@ -163,6 +165,7 @@ public class Activity extends ActionBarActivity {
                     }
                 }else{
                     if (servicerunning){
+                        logD("starting runner");
                         servicerunning = false;
                         Intent mServiceIntent = new Intent(Activity.this, service.class);
                         Activity.this.stopService(mServiceIntent);
@@ -356,6 +359,8 @@ public class Activity extends ActionBarActivity {
     }
     public void onResume(){
         super.onResume();
+        servicerunning = false;
+        startservice();
         startrunner();
     }
     public void onStop(){
@@ -378,10 +383,10 @@ public class Activity extends ActionBarActivity {
 
     private void selectItem(int position) {
         pos = position;
-        Fragment fragment = new PlanetFragment();
+        Fragment fragment = new main_card();
         switch (position) {
             case 0:
-                fragment = new PlanetFragment();
+                fragment = new main_card();
                 break;
             case 1:
                 fragment = new PlanetFragment();
@@ -390,6 +395,12 @@ public class Activity extends ActionBarActivity {
                 Intent i = new Intent(this, settings.class);
                 startActivityForResult(i, RESULT_SETTINGS);
                 //fragment = new controls();
+                break;
+            case 2:
+                fragment = new controls();
+                break;
+            case 3:
+                fragment = new main_card();
                 break;
             default:
                 break;
@@ -437,6 +448,7 @@ public class Activity extends ActionBarActivity {
             String naws = getResources().getStringArray(R.array.nawbars)[i];
             rootView = inflater.inflate(R.layout.status_tab, container, false);
             getActivity().setTitle(naws);
+
             return rootView;
         }
     }

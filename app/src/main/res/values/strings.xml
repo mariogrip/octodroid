@@ -32,8 +32,9 @@
     <string name="send_error_info">Send anonymous error data</string>
     <string name="report_bug">Report bug</string>
     <string name="donate">Donate</string>
-    <string name="Send_bug">Send bug rapport</string>
+    <string name="Send_bug">Submit bug rapport</string>
     <string name="title_activity_sendbug">sendbug</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_card_list">CardList</string>
 
 </resources>

@@ -137,5 +137,34 @@
         android:id="@+id/button_stop"
         android:layout_below="@id/layout1"
  />
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton_1"
+        android:textOff="1"
+        android:textOn="1"
+        android:layout_below="@+id/button_down"
+        android:layout_centerHorizontal="true"/>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="10"
+        android:textOn="10"
+        android:id="@+id/toggleButton_10"
+        android:layout_below="@+id/button_down"
+        android:layout_toRightOf="@id/toggleButton_1"
+        />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.1"
+        android:layout_toLeftOf="@id/toggleButton_1"
+        android:textOff="0.1"
+        android:textOn="0.1"
+        android:id="@+id/toggleButton_0.1"
+        android:layout_below="@+id/button_down"/>
+
 
 </RelativeLayout>

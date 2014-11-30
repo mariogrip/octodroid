@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:background="#fff3f3f3"
     android:layout_height="match_parent">
-
+<!--
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -31,7 +31,9 @@
         android:layout_below="@id/textView10"/>
 
     <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
+        android:maxHeight="17dp"
+        android:minHeight="17dp"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="fill_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -41,6 +43,16 @@
         android:layout_gravity="left|top"
         android:layout_below="@id/textView11_time" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:id="@+id/button"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
@@ -292,5 +304,5 @@
             android:layout_toEndOf="@id/textView22"
             android:layout_toRightOf="@id/textView22"/>
 </RelativeLayout>
-
+-->
 </RelativeLayout>

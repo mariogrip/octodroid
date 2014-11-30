@@ -72,7 +72,7 @@ public class service extends IntentService {
         Log.d("OctoDroid Service", "printService");
         mBuilder.setContentTitle("OctoDroid")
                 .setContentText("Print in progress")
-                .setSmallIcon(R.drawable.octoprint);
+                .setSmallIcon(R.drawable.octodroid_smal);
         timerTask2 = new TimerTask() {
             @Override
             public void run() {
