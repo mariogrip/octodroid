@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleButton" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Extruder"
+        android:textSize="35dp"
+        android:layout_toRightOf="@id/toggleButton"
+        android:id="@+id/textView_Text" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="100C"
+        android:layout_below="@id/toggleButton"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textView_max" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set to 100"
+        android:layout_below="@id/seekBar"
+        android:id="@+id/button2" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="19C"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textView_CurentTemp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="0C"
+        android:layout_below="@id/toggleButton"
+        android:id="@+id/textView11"
+        android:layout_gravity="center_vertical" />
+
+    <SeekBar
+       android:layout_below="@id/toggleButton"
+        android:layout_toRightOf="@id/textView11"
+        android:layout_toLeftOf="@id/textView_max"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar" />
+</RelativeLayout>

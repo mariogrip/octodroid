@@ -28,7 +28,7 @@ import java.util.List;
  *
  * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
-public class util extends  Activity{
+public abstract class util extends Activity{
 
     //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
@@ -334,6 +334,7 @@ public class util extends  Activity{
             httpPost = new HttpPost("http://"+ ip + "/api/"+cmd);
         }
         try {
+            httpPost.addHeader("X-Api-Key", api);
             httpPost.setEntity(new UrlEncodedFormEntity(value));
             HttpResponse response = client.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
@@ -381,8 +382,8 @@ public class util extends  Activity{
     }
 
     public static void goX(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+       // nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("x", value));
         sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
@@ -443,4 +444,5 @@ public class util extends  Activity{
         sendcmd(Activity.ip, Activity.key, "job", value);
         return true;
     }
+
 }
