@@ -44,8 +44,8 @@ public class main_card extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"Status", "Status");
         cards.add(card);
-        cardtest2 card2 = new cardtest2(rootView.getContext(),"Controls", "Controls");
-        cards.add(card2);
+      //  cardtest2 card2 = new cardtest2(rootView.getContext(),"Controls", "Controls");
+      //  cards.add(card2);
 
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
@@ -93,14 +93,14 @@ public class main_card extends Fragment {
             up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("OctoDroid", "button up Pressed");
+                    util.stopprint();
                 }
             });
 
-            final Button button = (Button) parent.findViewById(R.id.button_start);
+            Button button = (Button) parent.findViewById(R.id.button_start);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.d("OctoDroid", "button Down Pressed");
+                    util.startprint();
                 }
             });
 
@@ -108,7 +108,7 @@ public class main_card extends Fragment {
             Button right = (Button) parent.findViewById(R.id.button_pause);
             right.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.d("OctoDroid", "button right Pressed");
+                    util.pauseprint();
                 }
             });
 
@@ -144,45 +144,7 @@ public class main_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-            Button up = (Button) parent.findViewById(R.id.buttonUp);
-            up.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("OctoDroid", "button up Pressed");
-                    util.goY("1");
-                }
-            });
 
-            final Button button = (Button) parent.findViewById(R.id.button_down);
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Log.d("OctoDroid", "button Down Pressed");
-                }
-            });
-
-
-            Button right = (Button) parent.findViewById(R.id.button_right);
-            right.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Log.d("OctoDroid", "button right Pressed");
-                }
-            });
-
-            Button left = (Button) parent.findViewById(R.id.button_left);
-            left.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("OctoDroid", "button left Pressed");
-                }
-            });
-
-            Button home = (Button) parent.findViewById(R.id.button_home);
-            home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("OctoDroid", "button home Pressed");
-                }
-            });
         }
     }
 

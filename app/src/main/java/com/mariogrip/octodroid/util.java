@@ -11,6 +11,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -323,7 +324,7 @@ public abstract class util extends Activity{
             }
         }
     }
-    public static void sendcmd(String ip ,String api, String cmd, List<NameValuePair> value){
+    public static void sendcmd(String ip ,String api, String cmd, String value){
         Log.e("OctoDroid", api + " " + ip + " " + key + " " + cmd + "" + value);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -335,16 +336,14 @@ public abstract class util extends Activity{
         }
         try {
             httpPost.addHeader("X-Api-Key", api);
-            httpPost.setEntity(new UrlEncodedFormEntity(value));
+            httpPost.addHeader("content-type", "application/json");
+            httpPost.setEntity(new StringEntity(value));
             HttpResponse response = client.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
             if (statusCode == 204) {
                 Log.e("OctoDroid", "204");
                 HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
                 Log.e("OctoDroid", "205");
             }else{            Log.e("OctoDroid", statusCode + "");}
         } catch (ClientProtocolException e) {
@@ -382,67 +381,91 @@ public abstract class util extends Activity{
     }
 
     public static void goX(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-       // nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("x", value));
-        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
+        String sendvalue = "{\n" +
+                "  \"command\": \"jog\",\n" +
+                "  \"x\": "+value+"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
     public static void goZ(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("z", value));
-        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
+        String sendvalue = "{\n" +
+                "  \"command\": \"jog\",\n" +
+                "  \"z\": "+value+"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
     public static void goY(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("y", value));
-        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
+        String sendvalue = "{\n" +
+                "  \"command\": \"jog\",\n" +
+                "  \"y\": "+value+"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
-    protected static void goHome(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    public static void goHome(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"home\",\n" +
+                "  \"axes\": [\"x\", \"y\", \"z\"]\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
-    protected static void goHomeY(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    public static void goHomeY(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"home\",\n" +
+                "  \"axes\": [\"y\"]\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
-    protected static void goHomeZ(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    public static void goHomeZ(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"home\",\n" +
+                "  \"axes\": [\"z\"]\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
-    protected static void goHomeX(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
-        nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("home", ""));
+    public static void goHomeX(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"home\",\n" +
+                "  \"axes\": [\"x\"]\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", sendvalue);
     }
-    protected static boolean stopprint(){
-        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
-        value.add(new BasicNameValuePair("command", "cancel"));
-        sendcmd(Activity.ip, Activity.key, "job", value);
+    public static boolean stopprint(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"cancel\"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "job", sendvalue);
         return true;
     }
-    protected static boolean startprint(){
-        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
-        value.add(new BasicNameValuePair("command", "start"));
-        sendcmd(Activity.ip, Activity.key, "job", value);
+    public static boolean startprint(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"start\"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "job", sendvalue);
         return true;
     }
-    protected static boolean pauseprint(){
-        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
-        value.add(new BasicNameValuePair("command", "pause"));
-        sendcmd(Activity.ip, Activity.key, "job", value);
+    public static boolean pauseprint(){
+        String sendvalue = "{\n" +
+                "  \"command\": \"pause\"\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "job", sendvalue);
         return true;
     }
-
+    public static void setBedTemp(String temp){
+        String sendvalue = "{\n" +
+                "  \"command\": \"temp\",\n" +
+                "  \"temps\": {\n" +
+                "    \"bed\": " + temp +"\n" +
+                "  }\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/heater", sendvalue);
+    }
+    public static void setExtTemp(String temp){
+        String sendvalue = "{\n" +
+                "  \"command\": \"temp\",\n" +
+                "  \"temps\": {\n" +
+                "    \"hotend\": " + temp +"\n" +
+                "  }\n" +
+                "}";
+        sendcmd(Activity.ip, Activity.key, "printer/heater", sendvalue);
+    }
 }

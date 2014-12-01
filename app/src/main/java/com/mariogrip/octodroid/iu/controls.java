@@ -40,7 +40,6 @@ public class controls extends Fragment {
             }
         });
 
-
         Button right = (Button) rootView.findViewById(R.id.button_right);
         right.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -27,8 +27,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mariogrip.octodroid.iu.cont_card;
 import com.mariogrip.octodroid.iu.controls;
 import com.mariogrip.octodroid.iu.main_card;
+import com.mariogrip.octodroid.iu.temp_card;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -199,90 +201,119 @@ public class Activity extends ActionBarActivity {
         Log.d("OctoDroid",e);
     }
     public void runner(){
-        util.refreshJson(ip, "job", key);
-        if (running){
-            logD("Stopping runner, Might started twice");
-            return;
-        }
-        if (!running){
-            logD("OneRunStarted");
-            running = true;
-        }
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Activity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (!server_status){
-                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                            textmaci.setText("Cannot connect to\n" + ip);
-                            logD("Server Error");
-                            running = false;
-                            servererr();
-                            timerTask.cancel();
-                            return;
-                        }
-                        switch (pos){
-                            case 0:
-                        util.refreshJson(ip, "printer", key);
-                        util.decodeJson();
-                        logD("Running runner");
-                        if (server_status) {
-                            Log.d("test123", util.getData("job", "printTime"));
-                            ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                            TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                            TextView textpri = (TextView) findViewById(R.id.textView16_printed);
-                            TextView textest = (TextView) findViewById(R.id.textView13_est);
-                            TextView texthei = (TextView) findViewById(R.id.textView15_hei);
-                            TextView textfile = (TextView) findViewById(R.id.textView11_file);
-                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                            TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
-                            TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
-                            TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
-                            TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
-                            TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
-                            TextView textfila = (TextView) findViewById(R.id.textView12_fila);
-                            TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
-
-                            if (util.getData("job", "filepos").toString() == "null" || util.getData("job", "size").toString() == "null" || util.getData("job", "size").toString() == "") {
-                                textpri.setText(" " + "-/-");
-                            } else {
-                                textpri.setText(" " + util.toMBGB(Double.parseDouble(util.getData("job", "filepos").toString())).toString() + "/" + util.toMBGB(Double.parseDouble(util.getData("job", "size").toString())).toString());
+        try {
+            util.refreshJson(ip, "job", key);
+            if (running) {
+                logD("Stopping runner, Might started twice");
+                return;
+            }
+            if (!running) {
+                logD("OneRunStarted");
+                running = true;
+            }
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Activity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (!server_status) {
+                                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                                textmaci.setText("Cannot connect to\n" + ip);
+                                logD("Server Error");
+                                running = false;
+                                servererr();
+                                timerTask.cancel();
+                                return;
                             }
-                            texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
-                            textest.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "estimatedPrintTime").toString())));
-                            texthei.setText(" " + "-");
-                            textfile.setText(" " + util.getData("job", "name").toString());
-                            textmaci.setText(" " + util.getData("job", "state").toString());
-                            texttarT.setText(" " + util.getData("printer", "target") + "°C");
-                            textcurT.setText(" " + util.getData("printer", "actual") + "°C");
-                            textBcur.setText(" " + util.getData("printer", "Bactual") + "°C");
-                            textBtar.setText(" " + util.getData("printer", "Btarget") + "°C");
-                            textfila.setText(" " + "-");
-                            texttimel.setText(" " + "-");
-                            textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTime").toString())));
-                            progress.setProgress(util.getProgress());
-                        }else{
-                            TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                            textmaci.setText("Cannot connect to\n" + ip);
-                        }
-                         break;
-                            case 2:
-                                ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar_controls);
-                                TextView texttime = (TextView) findViewById(R.id.printTimeControls);
-                                texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
-                                progress.setProgress(util.getProgress());
-                                break;
-                            default:
-                                break;
+                            switch (pos) {
+                                case 0:
+                                    try{
+                                    util.refreshJson(ip, "printer", key);
+                                    util.decodeJson();
+                                    logD("Running runner");
+                                    if (server_status) {
+                                        Log.d("test123", util.getData("job", "printTime"));
+                                        ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+                                        TextView texttime = (TextView) findViewById(R.id.textView11_time);
+                                        TextView textpri = (TextView) findViewById(R.id.textView16_printed);
+                                        TextView textest = (TextView) findViewById(R.id.textView13_est);
+                                        TextView texthei = (TextView) findViewById(R.id.textView15_hei);
+                                        TextView textfile = (TextView) findViewById(R.id.textView11_file);
+                                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                                        TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
+                                        TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
+                                        TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
+                                        TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
+                                        TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
+                                        TextView textfila = (TextView) findViewById(R.id.textView12_fila);
+                                        TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
 
+                                        if (util.getData("job", "filepos").toString() == "null" || util.getData("job", "size").toString() == "null" || util.getData("job", "size").toString() == "") {
+                                            textpri.setText(" " + "-/-");
+                                        } else {
+                                            textpri.setText(" " + util.toMBGB(Double.parseDouble(util.getData("job", "filepos").toString())).toString() + "/" + util.toMBGB(Double.parseDouble(util.getData("job", "size").toString())).toString());
+                                        }
+                                        texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                                        textest.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "estimatedPrintTime").toString())));
+                                        texthei.setText(" " + "-");
+                                        textfile.setText(" " + util.getData("job", "name").toString());
+                                        textmaci.setText(" " + util.getData("job", "state").toString());
+
+                                        //ToDo OwnFunc
+                                        memory.bedTempTarget = util.getData("printer", "Btarget");
+                                        memory.ExtTempTarget = util.getData("printer", "target");
+                                        memory.bedTempCurrent = util.getData("printer", "Bactual");
+                                        memory.ExtTempCurrent = util.getData("printer", "actual");
+
+
+                                        texttarT.setText(" " + memory.ExtTempCurrent + "°C");
+                                        textcurT.setText(" " + memory.ExtTempTarget + "°C");
+                                        textBcur.setText(" " + memory.bedTempCurrent + "°C");
+                                        textBtar.setText(" " + memory.bedTempTarget + "°C");
+                                        textfila.setText(" " + "-");
+                                        texttimel.setText(" " + "-");
+                                        textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTime").toString())));
+                                        progress.setProgress(util.getProgress());
+                                    } else {
+                                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                                        textmaci.setText("Cannot connect to\n" + ip);
+                                    }
+                                    }catch (NullPointerException v){}
+                                    break;
+                                case 2:
+                                    try{
+                                    ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+                                    TextView texttime = (TextView) findViewById(R.id.textView11_time);
+                                    texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                                    progress.setProgress(util.getProgress());
+                                    }catch (NullPointerException v){}
+                                    break;
+                                case 1:
+                                    try {
+                                    ProgressBar progresss = (ProgressBar) findViewById(R.id.progressBar);
+                                    TextView texttimes = (TextView) findViewById(R.id.textView11_time);
+                                    texttimes.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                                    progresss.setProgress(util.getProgress());
+                                    memory.bedTempCurrent = util.getData("printer", "Bactual");
+                                    memory.ExtTempCurrent = util.getData("printer", "actual");
+                                    TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed);
+                                    TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext);
+                                    textbed.setText(memory.bedTempCurrent + "°C");
+                                    textext.setText(memory.ExtTempCurrent + "°C");
+                                    }catch (NullPointerException v){}
+                                    break;
+                                default:
+                                    break;
+
+                            }
                         }
-                    }
-                });
+                    });
                 }
 
-        };
-        timer.schedule(timerTask, 0, 3000);
+            };
+            timer.schedule(timerTask, 0, 3000);
+        }catch (NullPointerException v){
+        }
     }
 
     @Override
@@ -390,18 +421,18 @@ public class Activity extends ActionBarActivity {
             case 0:
                 fragment = new main_card();
                 break;
-            case 1:
-                fragment = new PlanetFragment();
+            case 3:
+                fragment = new main_card();
                 pos = 0;
                 position = 0;
                 Intent i = new Intent(this, settings.class);
                 startActivityForResult(i, RESULT_SETTINGS);
                 break;
-            case 2:
-                fragment = new controls();
+            case 1:
+                fragment = new temp_card();
                 break;
-            case 3:
-                fragment = new main_card();
+            case 2:
+                fragment = new cont_card();
                 break;
             default:
                 break;

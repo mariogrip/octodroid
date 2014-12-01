@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.util;
@@ -118,18 +120,60 @@ public class cont_card extends Fragment {
             return 1;
         }
         @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
+        public void setupInnerViewElements(final ViewGroup parent, View view) {
 
-
+            final RadioGroup Group = (RadioGroup) parent.findViewById(R.id.radiogrrr);
             Button up = (Button) parent.findViewById(R.id.buttonUp);
             up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button up Pressed");
-                    util.goY("1");
+                    int selectedId = Group.getCheckedRadioButtonId();
+                    RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
+                    util.goY(radiobuttons.getText().toString());
                 }
             });
 
+            final Button button = (Button) parent.findViewById(R.id.button_down);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button Down Pressed");
+                    int selectedId = Group.getCheckedRadioButtonId();
+                    RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
+                    util.goY("-" + radiobuttons.getText().toString());
+                }
+            });
+
+
+            Button right = (Button) parent.findViewById(R.id.button_right);
+            right.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button right Pressed");
+                    int selectedId = Group.getCheckedRadioButtonId();
+                    RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
+                    util.goX(radiobuttons.getText().toString());
+                }
+            });
+
+            Button left = (Button) parent.findViewById(R.id.button_left);
+            left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button left Pressed");
+                    int selectedId = Group.getCheckedRadioButtonId();
+                    RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
+                    util.goX("-"  + radiobuttons.getText().toString());
+                }
+            });
+
+            Button home = (Button) parent.findViewById(R.id.button_home);
+            home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button home Pressed");
+                    util.goHome();
+                }
+            });
 
         }
     }

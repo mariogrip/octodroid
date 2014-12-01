@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ public class temp_card extends Fragment {
     private static final String TAG = "CardListActivity";
     private ListView listView;
     private View rootView;
+    private Integer setExt = 0;
+    private Integer setBed = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,16 +63,16 @@ public class temp_card extends Fragment {
         protected String mTitleMain;
 
         public cardtest(Context context,String titleHeader,String titleMain) {
-            super(context, R.layout.card_heat);
+            super(context, R.layout.card_bead);
             this.mTitleHeader=titleHeader;
             this.mTitleMain=titleMain;
             init();
         }
 
         private void init(){
-            CardHeader header = new CardHeader(rootView.getContext());
-            header.setTitle(mTitleHeader);
-            addCardHeader(header);
+          //  CardHeader header = new CardHeader(rootView.getContext());
+            //header.setTitle(mTitleHeader);
+           // addCardHeader(header);
            // setTitle(mTitleMain);
         }
 
@@ -78,6 +83,36 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+            SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_bed);
+            final Button setbutton = (Button) parent.findViewById(R.id.button_setBed);
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                int progress = 0;
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                    progress = progresValue;
+                    setBed = progress;
+                    setbutton.setText("Set to " + setBed + "°C");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    setBed = progress;
+                    setbutton.setText("Set to " + setBed + "°C");
+                }
+            });
+
+            Button button2 = (Button) parent.findViewById(R.id.button_setBed);
+            button2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    util.setBedTemp(setBed.toString());
+                }
+            });
 
 
         }
@@ -96,9 +131,9 @@ public class temp_card extends Fragment {
         }
 
         private void init(){
-            CardHeader header = new CardHeader(rootView.getContext());
-            header.setTitle(mTitleHeader);
-            addCardHeader(header);
+           // CardHeader header = new CardHeader(rootView.getContext());
+            //header.setTitle(mTitleHeader);
+           // addCardHeader(header);
            // setTitle(mTitleMain);
         }
 
@@ -110,9 +145,35 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+            SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_ext);
+            final Button setbutton = (Button) parent.findViewById(R.id.button_ext);
 
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                int progress = 0;
 
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                    progress = progresValue;
+                    setExt = progress * 3;
+                    setbutton.setText("Set to " + setExt + "°C");
+                }
 
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    setExt = progress * 3;
+                    setbutton.setText("Set to " + setExt + "°C");
+                }
+            });
+            Button button = (Button) parent.findViewById(R.id.button_ext);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    util.setExtTemp(setExt.toString());
+                }
+            });
         }
     }
 

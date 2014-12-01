@@ -20,37 +20,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="100C"
+        android:text="300°C"
         android:layout_below="@id/toggleButton"
         android:layout_alignParentRight="true"
         android:id="@+id/textView_max" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set to 100"
-        android:layout_below="@id/seekBar"
-        android:id="@+id/button2" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="19C"
-        android:layout_alignParentRight="true"
-        android:id="@+id/textView_CurentTemp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0C"
-        android:layout_below="@id/toggleButton"
-        android:id="@+id/textView11"
-        android:layout_gravity="center_vertical" />
-
     <SeekBar
-       android:layout_below="@id/toggleButton"
+        android:layout_below="@id/toggleButton"
         android:layout_toRightOf="@id/textView11"
         android:layout_toLeftOf="@id/textView_max"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar" />
+        android:id="@+id/seekBar_ext" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set to 0°C"
+        android:layout_below="@id/seekBar_ext"
+        android:id="@+id/button_ext" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0°C"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textView_CurentTemp_ext" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="0°C"
+        android:layout_below="@id/toggleButton"
+        android:id="@+id/textView11"
+        android:layout_gravity="center_vertical" />
+
+
 </RelativeLayout>

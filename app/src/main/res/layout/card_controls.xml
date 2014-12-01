@@ -65,38 +65,41 @@
         android:layout_toRightOf="@id/button_down"
         android:layout_below="@id/button_right"/>
 
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/button_down"
+        android:id="@+id/radiogrrr"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-
-
-<!---
-    <ToggleButton
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.1"
+            android:id="@+id/toggleButton_0.1"/>
+    <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/toggleButton_1"
-        android:textOff="1"
-        android:textOn="1"
-        android:layout_below="@+id/button_down"
-        android:layout_centerHorizontal="true"/>
+        android:checked="true"
+        android:text="1"/>
 
-    <ToggleButton
+    <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="10"
-        android:textOn="10"
+        android:text="10"
         android:id="@+id/toggleButton_10"
-        android:layout_below="@+id/button_down"
-        android:layout_toRightOf="@id/toggleButton_1"
         />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:id="@+id/toggleButton_100"/>
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0.1"
-        android:layout_toLeftOf="@id/toggleButton_1"
-        android:textOff="0.1"
-        android:textOn="0.1"
-        android:id="@+id/toggleButton_0.1"
-        android:layout_below="@+id/button_down"/>
-        -->
+
+
+
+    </RadioGroup>
 
 </RelativeLayout>
