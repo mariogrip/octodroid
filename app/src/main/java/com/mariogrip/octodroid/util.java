@@ -329,9 +329,9 @@ public class util extends  Activity{
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost;
         if (ip.startsWith("http://")){
-            httpPost = new HttpPost(ip + "/api/"+api);
+            httpPost = new HttpPost(ip + "/api/"+cmd);
         }else{
-            httpPost = new HttpPost("http://"+ ip + "/api/"+api);
+            httpPost = new HttpPost("http://"+ ip + "/api/"+cmd);
         }
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(value));
@@ -380,38 +380,41 @@ public class util extends  Activity{
 
     }
 
-    protected static void goX(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+    public static void goX(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("x", value));
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
     }
-    protected static void goZ(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+    public static void goZ(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("z", value));
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
     }
-    protected static void goY(String value){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
-        nameValuePairs.add(new BasicNameValuePair("apikey", key));
+    public static void goY(String value){
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("apikey", Activity.key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
-        nameValuePairs.add(new BasicNameValuePair("z", value));
+        nameValuePairs.add(new BasicNameValuePair("y", value));
+        sendcmd(Activity.ip, Activity.key, "printer/printhead", nameValuePairs);
     }
     protected static void goHome(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("apikey", key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("home", ""));
     }
     protected static void goHomeY(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("apikey", key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("home", ""));
     }
     protected static void goHomeZ(){
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("apikey", key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("home", ""));
@@ -421,5 +424,23 @@ public class util extends  Activity{
         nameValuePairs.add(new BasicNameValuePair("apikey", key));
         nameValuePairs.add(new BasicNameValuePair("command", "jog"));
         nameValuePairs.add(new BasicNameValuePair("home", ""));
+    }
+    protected static boolean stopprint(){
+        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
+        value.add(new BasicNameValuePair("command", "cancel"));
+        sendcmd(Activity.ip, Activity.key, "job", value);
+        return true;
+    }
+    protected static boolean startprint(){
+        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
+        value.add(new BasicNameValuePair("command", "start"));
+        sendcmd(Activity.ip, Activity.key, "job", value);
+        return true;
+    }
+    protected static boolean pauseprint(){
+        List<NameValuePair> value = new ArrayList<NameValuePair>(1);
+        value.add(new BasicNameValuePair("command", "pause"));
+        sendcmd(Activity.ip, Activity.key, "job", value);
+        return true;
     }
 }

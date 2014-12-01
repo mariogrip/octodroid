@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,32 @@ public class main_card extends Fragment {
             //Very important with different inner layouts
             return 0;
         }
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            Button up = (Button) parent.findViewById(R.id.button_stop);
+            up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button up Pressed");
+                }
+            });
+
+            final Button button = (Button) parent.findViewById(R.id.button_start);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button Down Pressed");
+                }
+            });
+
+
+            Button right = (Button) parent.findViewById(R.id.button_pause);
+            right.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button right Pressed");
+                }
+            });
+
+        }
     }
 
     public class cardtest2 extends Card{
@@ -122,6 +149,7 @@ public class main_card extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button up Pressed");
+                    util.goY("1");
                 }
             });
 
