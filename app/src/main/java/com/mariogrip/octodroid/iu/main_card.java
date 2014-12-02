@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.util;
+import com.mariogrip.octodroid.util_send;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,14 +94,14 @@ public class main_card extends Fragment {
             up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    util.stopprint();
+                    util_send.stopprint();
                 }
             });
 
             Button button = (Button) parent.findViewById(R.id.button_start);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    util.startprint();
+                    util_send.startprint();
                 }
             });
 
@@ -108,7 +109,7 @@ public class main_card extends Fragment {
             Button right = (Button) parent.findViewById(R.id.button_pause);
             right.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    util.pauseprint();
+                    util_send.pauseprint();
                 }
             });
 

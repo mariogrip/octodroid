@@ -28,7 +28,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mariogrip.octodroid.iu.cont_card;
-import com.mariogrip.octodroid.iu.controls;
 import com.mariogrip.octodroid.iu.main_card;
 import com.mariogrip.octodroid.iu.temp_card;
 

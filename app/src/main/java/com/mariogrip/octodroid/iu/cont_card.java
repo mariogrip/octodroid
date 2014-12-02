@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.util;
+import com.mariogrip.octodroid.util_send;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +131,7 @@ public class cont_card extends Fragment {
                     Log.d("OctoDroid", "button up Pressed");
                     int selectedId = Group.getCheckedRadioButtonId();
                     RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
-                    util.goY(radiobuttons.getText().toString());
+                    util_send.goY(radiobuttons.getText().toString());
                 }
             });
 
@@ -140,7 +141,7 @@ public class cont_card extends Fragment {
                     Log.d("OctoDroid", "button Down Pressed");
                     int selectedId = Group.getCheckedRadioButtonId();
                     RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
-                    util.goY("-" + radiobuttons.getText().toString());
+                    util_send.goY("-" + radiobuttons.getText().toString());
                 }
             });
 
@@ -151,7 +152,7 @@ public class cont_card extends Fragment {
                     Log.d("OctoDroid", "button right Pressed");
                     int selectedId = Group.getCheckedRadioButtonId();
                     RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
-                    util.goX(radiobuttons.getText().toString());
+                    util_send.goX(radiobuttons.getText().toString());
                 }
             });
 
@@ -162,7 +163,7 @@ public class cont_card extends Fragment {
                     Log.d("OctoDroid", "button left Pressed");
                     int selectedId = Group.getCheckedRadioButtonId();
                     RadioButton radiobuttons = (RadioButton) parent.findViewById(selectedId);
-                    util.goX("-"  + radiobuttons.getText().toString());
+                    util_send.goX("-"  + radiobuttons.getText().toString());
                 }
             });
 
@@ -171,7 +172,7 @@ public class cont_card extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button home Pressed");
-                    util.goHome();
+                    util_send.goHome();
                 }
             });
 

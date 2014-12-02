@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.util;
+import com.mariogrip.octodroid.util_send;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,7 @@ public class temp_card extends Fragment {
             Button button2 = (Button) parent.findViewById(R.id.button_setBed);
             button2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    util.setBedTemp(setBed.toString());
+                    util_send.setBedTemp(setBed.toString());
                 }
             });
 
@@ -171,7 +172,7 @@ public class temp_card extends Fragment {
             Button button = (Button) parent.findViewById(R.id.button_ext);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    util.setExtTemp(setExt.toString());
+                    util_send.setExtTemp(setExt.toString());
                 }
             });
         }
