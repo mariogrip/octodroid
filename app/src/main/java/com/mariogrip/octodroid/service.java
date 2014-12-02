@@ -61,7 +61,7 @@ public class service extends IntentService {
                 }
             }
         };
-        timer.schedule(timerTask, 0, 3000);
+        timer.schedule(timerTask, 0, 7000);
 
     }
 

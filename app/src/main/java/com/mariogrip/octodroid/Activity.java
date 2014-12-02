@@ -113,30 +113,7 @@ public class Activity extends ActionBarActivity {
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
         running = false;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Configure");
-        builder.setMessage("Do you want to configure OctoDroid?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("setup", false);
-                editor.commit();
-                Intent i = new Intent(Activity.this, settings.class);
-                startActivityForResult(i, RESULT_SETTINGS);
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("setup", true)){
-            dialog.show();
-        }
+
         logD("Done!");
     }
     public void startrunner(){
@@ -394,6 +371,30 @@ public class Activity extends ActionBarActivity {
         servicerunning = false;
         startservice();
         startrunner();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Configure");
+        builder.setMessage("Do you want to configure OctoDroid?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("setup", false);
+                editor.commit();
+                Intent i = new Intent(Activity.this, settings.class);
+                startActivityForResult(i, RESULT_SETTINGS);
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        SharedPreferences sharedPref = Activity.this.getPreferences(Context.MODE_PRIVATE);
+        if (sharedPref.getBoolean("setup", true)){
+            dialog.show();
+        }
     }
     public void onStop(){
         super.onStop();
