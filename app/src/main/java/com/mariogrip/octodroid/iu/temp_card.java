@@ -169,8 +169,7 @@ public class temp_card extends Fragment {
                     setbutton.setText("Set to " + setExt + "°C");
                 }
             });
-            Button button = (Button) parent.findViewById(R.id.button_ext);
-            button.setOnClickListener(new View.OnClickListener() {
+            setbutton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     util_send.setExtTemp(setExt.toString());
                 }

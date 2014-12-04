@@ -76,21 +76,19 @@ public class util_send extends util {
     }
     public static void setBedTemp(String temp){
         String sendvalue = "{\n" +
-                "  \"command\": \"temp\",\n" +
-                "  \"temps\": {\n" +
-                "    \"bed\": " + temp +"\n" +
-                "  }\n" +
+                "  \"command\": \"target\",\n" +
+                "  \"target\": "+temp+"\n" +
                 "}";
-        sendcmd(Activity.ip, Activity.key, "printer/heater", sendvalue);
+        sendcmd(Activity.ip, Activity.key, "printer/bed", sendvalue);
     }
     public static void setExtTemp(String temp){
         String sendvalue = "{\n" +
-                "  \"command\": \"temp\",\n" +
-                "  \"temps\": {\n" +
-                "    \"hotend\": " + temp +"\n" +
+                "  \"command\": \"target\",\n" +
+                "  \"targets\": {\n" +
+                "    \"tool0\": "+temp+"\n" +
                 "  }\n" +
                 "}";
-        sendcmd(Activity.ip, Activity.key, "printer/heater", sendvalue);
+        sendcmd(Activity.ip, Activity.key, "printer/tool", sendvalue);
     }
     public static void Extrude(String value){
         String sendvalue = "{\n" +

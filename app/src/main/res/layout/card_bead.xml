@@ -3,37 +3,32 @@
     android:layout_margin="10dp"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButton" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="HeatBed"
         android:textSize="35dp"
-        android:layout_toRightOf="@id/toggleButton"
         android:id="@+id/textView_Text" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="100°C"
-        android:layout_below="@id/toggleButton"
+        android:layout_below="@id/textView_Text"
         android:layout_alignParentRight="true"
         android:id="@+id/textView_max" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0°C"
-        android:layout_below="@id/toggleButton"
+        android:text="OFF"
+        android:layout_below="@id/textView_Text"
         android:id="@+id/textView11"
         android:layout_gravity="center_vertical" />
     <SeekBar
-        android:layout_below="@id/toggleButton"
+        android:layout_below="@id/textView_Text"
         android:layout_toRightOf="@id/textView11"
         android:layout_toLeftOf="@id/textView_max"
         android:layout_width="match_parent"

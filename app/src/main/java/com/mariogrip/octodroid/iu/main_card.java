@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mariogrip.octodroid.R;
@@ -45,8 +48,8 @@ public class main_card extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"Status", "Status");
         cards.add(card);
-      //  cardtest2 card2 = new cardtest2(rootView.getContext(),"Controls", "Controls");
-      //  cards.add(card2);
+        //cardtest2 card2 = new cardtest2(rootView.getContext(),"Connections", "Connections");
+        //cards.add(card2);
 
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
@@ -122,7 +125,7 @@ public class main_card extends Fragment {
         protected String mTitleMain;
 
         public cardtest2(Context context,String titleHeader,String titleMain) {
-            super(context, R.layout.card_controls);
+            super(context, R.layout.card_connect);
             this.mTitleHeader=titleHeader;
             this.mTitleMain=titleMain;
             init();
@@ -145,7 +148,13 @@ public class main_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
+            ArrayList<String> spinnerArray = new ArrayList<String>();
+            spinnerArray.add("one");
+            spinnerArray.add("two");
+            LinearLayout layout = new LinearLayout(parent.getContext());
+            Spinner spinner = (Spinner) parent.findViewById(R.id.spinner);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+            spinner.setAdapter(spinnerArrayAdapter);
         }
     }
 

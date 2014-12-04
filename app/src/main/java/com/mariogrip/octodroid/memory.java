@@ -17,4 +17,7 @@ public class memory extends util {
     protected static String Printed = "";
     protected static String PrintTime = "";
     protected static String PrintTimeLeft = "";
+    protected static String FilePos = "";
+    protected static String Completion = "";
+    protected static String Size = "";
 }

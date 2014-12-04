@@ -65,14 +65,13 @@ public abstract class util extends Activity{
 
         return String.format("%02d", hours) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
     }
-    private static JSONObject jsonData_job_job;
-
-    private static JSONObject jsonData_job_job_progress;
-    private static JSONObject jsonData_job_job_file;
-    private static JSONObject jsonData_job_job_job;
-    private static JSONObject jsonData_printer_printer;
-    private static JSONObject jsonData_printer_printer_temps;
-    private static boolean jsonData_printer_status;
+    protected static JSONObject jsonData_job_job;
+    protected static JSONObject jsonData_job_job_progress;
+    protected static JSONObject jsonData_job_job_file;
+    protected static JSONObject jsonData_job_job_job;
+    protected static JSONObject jsonData_printer_printer;
+    protected static JSONObject jsonData_printer_printer_temps;
+    protected static boolean jsonData_printer_status;
 
     public static void decodeJson(){
         if (!Activity.server_status){
@@ -209,6 +208,9 @@ public abstract class util extends Activity{
                     }
                     }
                     if (job == "connetion") {
+                        if (cmd == "options"){
+
+                        }
                     }
                     if (job == "files") {
                     }
