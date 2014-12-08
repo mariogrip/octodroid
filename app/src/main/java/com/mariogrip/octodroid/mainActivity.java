@@ -235,8 +235,8 @@ public class mainActivity extends Activity {
                                         texthei.setText(" " + memory.Height);
                                         textfile.setText(" " + memory.File);
                                         textmaci.setText(" " + memory.MacineState);
-                                        texttarT.setText(" " + memory.ExtTempCurrent + "°C");
-                                        textcurT.setText(" " + memory.ExtTempTarget + "°C");
+                                        texttarT.setText(" " + memory.ExtTempTarget + "°C");
+                                        textcurT.setText(" " + memory.ExtTempCurrent + "°C");
                                         textBcur.setText(" " + memory.bedTempCurrent + "°C");
                                         textBtar.setText(" " + memory.bedTempTarget + "°C");
                                         textfila.setText(" " + memory.Filament);
