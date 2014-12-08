@@ -14,7 +14,7 @@ public class util_get extends util {
     }
 
     public static void genData() {
-        if (!Activity.server_status) {
+        if (!mainActivity.server_status) {
             memory.bedTempCurrent = "0";
             memory.bedTempTarget = "0";
             memory.ExtTempCurrent = "0";
@@ -31,9 +31,10 @@ public class util_get extends util {
             memory.FilePos = "-";
             memory.Completion = "-";
             memory.Size = "-";
+            memory.ProgressM = 0;
         }
         boolean noerr;
-        if (Activity.server_status) {
+        if (mainActivity.server_status) {
             try {
 
 
@@ -41,6 +42,7 @@ public class util_get extends util {
                 JSONObject tempExt = new JSONObject(jsonData_printer_printer_temps.getString("tool0"));
 
                 memory.bedTempCurrent = tempBed.getString("actual");
+                memory.ProgressM = util.getProgress();
                 memory.bedTempTarget = tempBed.getString("target");
                 memory.ExtTempCurrent = tempExt.getString("actual");
                 memory.ExtTempTarget = tempExt.getString("target");
@@ -109,6 +111,9 @@ public class util_get extends util {
         }
         if (memory.Size.equals("null") || memory.Size.equals("")) {
             memory.Size = "0";
+        }
+        if (memory.ProgressM.equals("null") || memory.ProgressM.equals("")){
+            memory.ProgressM = 0;
         }
 
         if (memory.MacineState.length() > 25) {

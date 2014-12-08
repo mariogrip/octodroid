@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_send;
 
@@ -86,7 +87,11 @@ public class temp_card extends Fragment {
         public void setupInnerViewElements(ViewGroup parent, View view) {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_bed);
             final Button setbutton = (Button) parent.findViewById(R.id.button_setBed);
-
+            Integer temp = Integer.parseInt(memory.bedTempTarget);
+            if (temp > 100){
+                temp = 100;
+            }
+            seekBar.setProgress(temp);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 int progress = 0;
 
@@ -148,7 +153,11 @@ public class temp_card extends Fragment {
         public void setupInnerViewElements(ViewGroup parent, View view) {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_ext);
             final Button setbutton = (Button) parent.findViewById(R.id.button_ext);
-
+            Integer temp = Integer.parseInt(memory.ExtTempTarget) / 3;
+            if (temp > 100){
+                temp = 100;
+            }
+            seekBar.setProgress(temp);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 int progress = 0;
 

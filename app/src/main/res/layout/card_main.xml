@@ -7,7 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout1"
-        android:background="#ffdddddd">
+        android:background="#ededed">
 
 
         <TextView
@@ -29,10 +29,11 @@
             android:id="@+id/textView11_time"
             android:layout_below="@id/textView10"/>
 
+
         <ProgressBar
             android:maxHeight="17dp"
             android:minHeight="17dp"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+            style="@style/CustomProgressBar"
             android:layout_width="fill_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -40,7 +41,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_gravity="left|top"
-            android:layout_below="@id/textView11_time" />
+            android:layout_below="@id/textView11_time"
+            android:indeterminate="false"
+            android:progress="0" />
 
         <!--<Button
             style="?android:attr/buttonStyleSmall"

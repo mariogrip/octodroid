@@ -12,7 +12,7 @@
             android:theme="@style/Theme.Base.AppCompat.Light" >
         </activity>
         <activity
-            android:name="com.mariogrip.octodroid.Activity"
+            android:name="com.mariogrip.octodroid.mainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

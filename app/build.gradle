@@ -8,12 +8,12 @@ android {
         applicationId "com.mariogrip.octoprint"
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 4
-        versionName "0.2.5"
+        versionCode 5
+        versionName "0.2.6"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

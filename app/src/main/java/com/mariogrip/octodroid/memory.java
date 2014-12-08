@@ -4,20 +4,21 @@ package com.mariogrip.octodroid;
  * Created by mariogrip on 01.12.14.
  */
 public class memory extends util {
-    protected static String bedTempCurrent = "";
-    protected static String bedTempTarget = "";
-    protected static String ExtTempCurrent = "";
-    protected static String ExtTempTarget = "";
+    protected static String bedTempCurrent = "0";
+    public static String bedTempTarget = "0";
+    protected static String ExtTempCurrent = "0";
+    public static String ExtTempTarget = "0";
     protected static String MacineState = "";
     protected static String File = "";
     protected static String Filament = "";
-    protected static String EstimatedPrintTime = "";
+    protected static String EstimatedPrintTime = "0";
     protected static String Timelapse = "";
     protected static String Height = "";
     protected static String Printed = "";
-    protected static String PrintTime = "";
-    protected static String PrintTimeLeft = "";
+    protected static String PrintTime = "0";
+    protected static String PrintTimeLeft = "0";
     protected static String FilePos = "";
     protected static String Completion = "";
-    protected static String Size = "";
+    protected static String Size = "0";
+    protected static Integer ProgressM = 0;
 }

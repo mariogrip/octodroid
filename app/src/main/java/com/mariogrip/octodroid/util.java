@@ -4,16 +4,13 @@ import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,20 +18,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by mariogrip on 27.10.14.
  *
  * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
-public abstract class util extends Activity{
+public abstract class util extends mainActivity {
 
     //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
         //Checks if the app has contact with the server.
-        if (!Activity.server_status){
+        if (!mainActivity.server_status){
             return "-/-";
         }
         String returnData;
@@ -54,7 +49,7 @@ public abstract class util extends Activity{
     }
     public static String toHumanRead(double biggy)
     {
-        if (!Activity.server_status){
+        if (!mainActivity.server_status){
             return "00:00:00";
         }
         int hours = (int) biggy / 3600;
@@ -74,7 +69,7 @@ public abstract class util extends Activity{
     protected static boolean jsonData_printer_status;
 
     public static void decodeJson(){
-        if (!Activity.server_status){
+        if (!mainActivity.server_status){
             return;
         }
         try {
@@ -94,7 +89,7 @@ public abstract class util extends Activity{
         }
     }
     public static void decodeJsonService(){
-        if (!Activity.server_status){
+        if (!mainActivity.server_status){
             return;
         }
         try {
@@ -105,12 +100,12 @@ public abstract class util extends Activity{
         }
     }
     public static String getData(String job,String cmd){
-        if (!Activity.server_status){
+        if (!mainActivity.server_status){
             return "-";
         }
         String returnData = new String();
         boolean noerr;
-        if (Activity.server_status) {
+        if (mainActivity.server_status) {
             try {
                 if (job == "job") {
                     //Progress
@@ -242,7 +237,7 @@ public abstract class util extends Activity{
     public static int getProgress(){
         int returnData = 0;
         double acom = 0;
-        if (Activity.server_status) {
+        if (mainActivity.server_status) {
             JSONObject json = null;
             try {
             json = new JSONObject(jsonData_job);
@@ -300,19 +295,19 @@ public abstract class util extends Activity{
                 Log.e("OctoDroid", "ClientProtocolException");
                 Log.d("OctoDroid", ip);
                 nono = true;
-                Activity.server_status = false;
+                mainActivity.server_status = false;
                 return;
             } catch (IOException e) {
                 Log.e("OctoDroid", "IOException");
                 Log.d("OctoDroid", ip);
                 nono = true;
-                Activity.server_status = false;
+                mainActivity.server_status = false;
                 return;
             } catch (IllegalStateException e){
                 Log.e("OctoDroid", "IllegalStateException");
                 Log.d("OctoDroid", ip);
                 nono = true;
-                Activity.server_status = false;
+                mainActivity.server_status = false;
                 return;
             }
             if (api.equals("job")){
@@ -322,7 +317,7 @@ public abstract class util extends Activity{
                 jsonData_printer = builder.toString();
             }
             if (!nono) {
-                Activity.server_status = true;
+                mainActivity.server_status = true;
             }
         }
     }

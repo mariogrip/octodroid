@@ -39,24 +39,24 @@ public class service extends IntentService {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                if (Activity.server_status) {
-                    util.refreshJson(Activity.ip, "job", Activity.key);
+                if (mainActivity.server_status) {
+                    util.refreshJson(mainActivity.ip, "job", mainActivity.key);
                     util.decodeJsonService();
-                    Log.d("OctoDroid Service", "runner" + Activity.printing);
-                    if (Activity.printing) {
-                        Activity.printing = true;
+                    Log.d("OctoDroid Service", "runner" + mainActivity.printing);
+                    if (mainActivity.printing) {
+                        mainActivity.printing = true;
                         timerTask.cancel();
                         startPrintService();
                         return;
                     }
-                    if (util.getData("job", "state").equals("Printing") && !Activity.printing) {
-                        Activity.printing = true;
+                    if (util.getData("job", "state").equals("Printing") && !mainActivity.printing) {
+                        mainActivity.printing = true;
                         timerTask.cancel();
                         startPrintService();
                         return;
                     }
-                    if (!util.getData("job", "state").equals("Printing") && Activity.printing) {
-                        Activity.printing = false;
+                    if (!util.getData("job", "state").equals("Printing") && mainActivity.printing) {
+                        mainActivity.printing = false;
                     }
                 }
             }
@@ -77,13 +77,13 @@ public class service extends IntentService {
             @Override
             public void run() {
                 Log.d("OctoDroid Service", "runner");
-                util.refreshJson(Activity.ip, "job", Activity.key);
+                util.refreshJson(mainActivity.ip, "job", mainActivity.key);
                 util.decodeJsonService();
                 complete = Double.parseDouble(util.getData("job", "completion"));
 
 
-                if (!util.getData("job", "state").equals("Printing") && Activity.printing) {
-                    Activity.printing = false;
+                if (!util.getData("job", "state").equals("Printing") && mainActivity.printing) {
+                    mainActivity.printing = false;
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")
                             .setSound(soundUri)
