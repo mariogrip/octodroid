@@ -121,6 +121,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:id="@+id/textView10_maci"
         android:layout_toEndOf="@id/textView"
         android:layout_toRightOf="@id/textView"/>
@@ -129,6 +130,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView"
         android:id="@+id/textView11_file"
         android:layout_toEndOf="@id/textView2"
@@ -138,6 +140,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView2"
         android:id="@+id/textView12_fila"
         android:layout_toEndOf="@id/textView3"
@@ -147,6 +150,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView3"
         android:id="@+id/textView13_est"
         android:layout_toEndOf="@id/textView4"
@@ -156,6 +160,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView4"
         android:id="@+id/textView14_timel"
         android:layout_toEndOf="@id/textView5"
@@ -165,6 +170,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView5"
         android:id="@+id/textView15_hei"
         android:layout_toEndOf="@id/textView6"
@@ -174,6 +180,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView6"
         android:id="@+id/textView16_printed"
         android:layout_toEndOf="@id/textView7"
@@ -183,6 +190,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView7"
         android:id="@+id/textView17_print_time"
         android:layout_toEndOf="@id/textView8"
@@ -192,6 +200,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
+        android:ellipsize="end"
         android:layout_below="@id/textView8"
         android:id="@+id/textView18_cur_T"
         android:layout_toEndOf="@id/textView9"
@@ -204,6 +213,7 @@
         android:text=""
         android:layout_below="@id/textView9"
         android:id="@+id/textView18_tar_t"
+        android:ellipsize="end"
         android:layout_toEndOf="@id/textView20"
         android:layout_toRightOf="@id/textView20"/>
 
@@ -214,6 +224,7 @@
         android:text=""
         android:layout_below="@id/textView20"
         android:id="@+id/textView18_Bcur_T"
+        android:ellipsize="end"
         android:layout_toEndOf="@id/textView21"
         android:layout_toRightOf="@id/textView21"/>
     <TextView
@@ -223,32 +234,8 @@
         android:text=""
         android:layout_below="@id/textView21"
         android:id="@+id/textView18_Btar_T"
+        android:ellipsize="end"
         android:layout_toEndOf="@id/textView22"
         android:layout_toRightOf="@id/textView22"/>
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Print"
-        android:layout_below="@id/textView22"
-        android:id="@+id/button_start"
-        android:layout_alignParentRight="true"
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause Print"
-        android:layout_below="@id/textView22"
-        android:id="@+id/button_pause"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop Print"
-        android:id="@+id/button_stop"
-        android:layout_below="@id/textView22"
-        />
 </RelativeLayout>

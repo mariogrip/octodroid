@@ -95,7 +95,7 @@ public class util_send extends util {
                 "  \"command\": \"extrude\",\n" +
                 "  \"amount\": "+value+"\n" +
                 "}";
-        sendcmd(mainActivity.ip, mainActivity.key, "printer/feeder", sendvalue);
+        sendcmd(mainActivity.ip, mainActivity.key, "printer/tool", sendvalue);
     }
     public static void Disconnect(){
         String sendvalue = "{\n" +

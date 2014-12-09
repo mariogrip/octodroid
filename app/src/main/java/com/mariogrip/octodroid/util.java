@@ -68,6 +68,20 @@ public abstract class util extends mainActivity {
     protected static JSONObject jsonData_printer_printer_temps;
     protected static boolean jsonData_printer_status;
 
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
     public static void decodeJson(){
         if (!mainActivity.server_status){
             return;
@@ -352,6 +366,63 @@ public abstract class util extends mainActivity {
         }
 
     }
+
+    public static String getResponse(String ip, String api, String key){
+        boolean nono = false;
+        String retu = "";
+        if (ip == null || ip.equals("")){
+
+        }else {
+            StringBuilder builder = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpGet httpGet;
+            if (ip.startsWith("http://")){
+                httpGet = new HttpGet(ip + "/api/"+api);
+            }else{
+                httpGet = new HttpGet("http://"+ ip + "/api/"+api);
+            }
+            try {
+                httpGet.addHeader("X-Api-Key", key);
+                httpGet.addHeader("content-type", "application/json");
+                HttpResponse response = client.execute(httpGet);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+            } catch (ClientProtocolException e) {
+                Log.e("OctoDroid", "ClientProtocolException");
+                Log.d("OctoDroid", ip);
+                nono = true;
+                mainActivity.server_status = false;
+                return "";
+            } catch (IOException e) {
+                Log.e("OctoDroid", "IOException");
+                Log.d("OctoDroid", ip);
+                nono = true;
+                mainActivity.server_status = false;
+                return "";
+            } catch (IllegalStateException e){
+                Log.e("OctoDroid", "IllegalStateException");
+                Log.d("OctoDroid", ip);
+                nono = true;
+                mainActivity.server_status = false;
+                return "";
+            }
+            retu= builder.toString();
+
+            if (!nono) {
+                mainActivity.server_status = true;
+            }
+        }
+        return retu;
+    }
+
+
     protected static void sendError(String er){
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();

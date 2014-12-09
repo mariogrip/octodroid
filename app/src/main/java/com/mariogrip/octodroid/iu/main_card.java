@@ -24,7 +24,9 @@ import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 
@@ -46,11 +48,24 @@ public class main_card extends Fragment {
 
 
         ArrayList<Card> cards = new ArrayList<Card>();
-        cardtest card = new cardtest(rootView.getContext(),"Status", "Status");
+        cardtest card = new cardtest(rootView.getContext(),"State", "State");
         cards.add(card);
-        //cardtest2 card2 = new cardtest2(rootView.getContext(),"Connections", "Connections");
-        //cards.add(card2);
+        cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
+        cards.add(cardcont);
 
+        cardtest2 card2 = new cardtest2(rootView.getContext(),"Connections", "Connections");
+
+        Card cardss = new Card(getActivity());
+        CardHeader header = new CardHeader(getActivity());
+        header.setTitle("Connections");
+        header.setButtonExpandVisible(true);
+        cardss.addCardHeader(header);
+        CardExpand expand = new CustomExpandCard(getActivity());
+        expand.setTitle("Connections");
+
+        cardss.addCardExpand(expand);
+
+        //cards.add(cardss);
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
@@ -59,6 +74,12 @@ public class main_card extends Fragment {
         if (listView!=null){
             listView.setAdapter(mCardArrayAdapter);
         }
+        ViewToClickToExpand viewToClickToExpand =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
+        cardss.setViewToClickToExpand(viewToClickToExpand);
+
         return rootView;
 
             }
@@ -71,6 +92,39 @@ public class main_card extends Fragment {
 
         public cardtest(Context context,String titleHeader,String titleMain) {
             super(context, R.layout.card_status);
+            this.mTitleHeader=titleHeader;
+            this.mTitleMain=titleMain;
+            init();
+        }
+
+        private void init(){
+
+            //Create a CardHeader
+            CardHeader header = new CardHeader(rootView.getContext());
+            header.setTitle(mTitleHeader);
+            addCardHeader(header);
+            setTitle(mTitleMain);
+        }
+
+
+        @Override
+        public int getType() {
+            //Very important with different inner layouts
+            return 0;
+        }
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        }
+    }
+
+    public class cardteststart extends Card{
+
+        protected String mTitleHeader;
+        protected String mTitleMain;
+
+        public cardteststart(Context context,String titleHeader,String titleMain) {
+            super(context, R.layout.card_startstop);
             this.mTitleHeader=titleHeader;
             this.mTitleMain=titleMain;
             init();
@@ -158,6 +212,24 @@ public class main_card extends Fragment {
         }
     }
 
+    public class CustomExpandCard extends CardExpand {
+
+        public CustomExpandCard(Context context) {
+            super(context, R.layout.card_connect);
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            parent.setBackgroundColor(mContext.getResources().
+                    getColor(R.color.card_background));
+            if (view == null) return;
+
+
+        }
+
+
+    }
+
 
     public class MyCardArrayAdapter extends CardArrayAdapter{
 
@@ -176,5 +248,6 @@ public class main_card extends Fragment {
             return 2;
         }
     }
+
 
 }

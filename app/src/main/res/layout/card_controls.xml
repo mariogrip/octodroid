@@ -62,8 +62,23 @@
         android:layout_height="wrap_content"
         android:text="Z"
         android:id="@+id/buttonZ"
-        android:layout_toRightOf="@id/button_down"
-        android:layout_below="@id/button_right"/>
+        android:layout_below="@id/buttonX"
+        android:layout_toRightOf="@id/button_right"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⇧"
+        android:id="@+id/button_zup"
+        android:layout_toRightOf="@id/button_right"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⇩"
+        android:id="@+id/button_zdown"
+        android:layout_below="@id/buttonZ"
+        android:layout_toRightOf="@id/button_right"/>
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"

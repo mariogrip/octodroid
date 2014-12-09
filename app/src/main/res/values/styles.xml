@@ -6,5 +6,7 @@
         <item name="android:minHeight">10dip</item>
         <item name="android:maxHeight">20dip</item>
     </style>
+    <color name="card_expand_title_color">#B3B2B2</color>
+    <color name="card_backgroundExpand">#515254</color>
 
 </resources>

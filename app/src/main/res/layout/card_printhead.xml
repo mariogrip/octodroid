@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:text="5"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/editText_mm" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="mm"
+        android:layout_toRightOf="@id/editText_mm"
+        android:layout_alignBottom="@id/editText_mm"
+        android:id="@+id/textView15" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Extrude"
+        android:id="@+id/button_extB"
+        android:layout_toRightOf="@+id/textView15"
+        android:layout_toEndOf="@+id/textView15" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retract"
+        android:id="@+id/button_reac"
+        android:layout_toRightOf="@+id/button_extB"
+        android:layout_toEndOf="@+id/button_extB" />
+</RelativeLayout>

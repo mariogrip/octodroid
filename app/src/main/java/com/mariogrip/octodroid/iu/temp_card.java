@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.memory;
@@ -84,7 +85,7 @@ public class temp_card extends Fragment {
             return 0;
         }
         @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
+        public void setupInnerViewElements(final ViewGroup parent, View view) {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_bed);
             final Button setbutton = (Button) parent.findViewById(R.id.button_setBed);
             Integer temp = Integer.parseInt(memory.bedTempTarget);
@@ -117,6 +118,7 @@ public class temp_card extends Fragment {
             button2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     util_send.setBedTemp(setBed.toString());
+                    Toast.makeText(parent.getContext(),"Temperature successfully set to " + setBed.toString() + "°C", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -150,7 +152,7 @@ public class temp_card extends Fragment {
             return 1;
         }
         @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
+        public void setupInnerViewElements(final ViewGroup parent, View view) {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_ext);
             final Button setbutton = (Button) parent.findViewById(R.id.button_ext);
             Integer temp = Integer.parseInt(memory.ExtTempTarget) / 3;
@@ -181,6 +183,7 @@ public class temp_card extends Fragment {
             setbutton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     util_send.setExtTemp(setExt.toString());
+                    Toast.makeText(parent.getContext(),"Temperature successfully set to " + setExt.toString() + "°C", Toast.LENGTH_SHORT).show();
                 }
             });
         }

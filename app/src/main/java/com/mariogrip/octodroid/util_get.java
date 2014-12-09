@@ -3,13 +3,26 @@ package com.mariogrip.octodroid;
 import android.util.Log;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by mariogrip on 02.12.14.
  */
 public class util_get extends util {
+
+    protected void decodeConnections(){
+        try {
+            JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "connection", mainActivity.key));
+            memory.options_dec = connection_get.getString("options");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     protected void getSerialPort() {
+
 
     }
 
@@ -36,16 +49,22 @@ public class util_get extends util {
         boolean noerr;
         if (mainActivity.server_status) {
             try {
+                if (jsonData_printer_status) {
+                    JSONObject tempBed = new JSONObject(jsonData_printer_printer_temps.getString("bed"));
+                    JSONObject tempExt = new JSONObject(jsonData_printer_printer_temps.getString("tool0"));
+                    memory.bedTempCurrent = tempBed.getString("actual");
+                    memory.bedTempTarget = tempBed.getString("target");
+                    memory.ExtTempCurrent = tempExt.getString("actual");
+                    memory.ExtTempTarget = tempExt.getString("target");
+                }else{
+                    memory.bedTempCurrent = "0";
+                    memory.bedTempTarget = "0";
+                    memory.ExtTempCurrent = "0";
+                    memory.ExtTempTarget = "0";
+                }
 
 
-                JSONObject tempBed = new JSONObject(jsonData_printer_printer_temps.getString("bed"));
-                JSONObject tempExt = new JSONObject(jsonData_printer_printer_temps.getString("tool0"));
-
-                memory.bedTempCurrent = tempBed.getString("actual");
                 memory.ProgressM = util.getProgress();
-                memory.bedTempTarget = tempBed.getString("target");
-                memory.ExtTempCurrent = tempExt.getString("actual");
-                memory.ExtTempTarget = tempExt.getString("target");
                 memory.MacineState = jsonData_job_job.getString("state");
                 memory.File = jsonData_job_job_file.getString("name");
                 memory.FilePos = jsonData_job_job_progress.getString("filepos");
@@ -77,19 +96,19 @@ public class util_get extends util {
             memory.ExtTempTarget = "0";
         }
         if (memory.MacineState.equals("null") || memory.MacineState.equals("")) {
-            memory.MacineState = "0";
+            memory.MacineState = "-";
         }
         if (memory.File.equals("null") || memory.File.equals("")) {
-            memory.File = "0";
+            memory.File = "-";
         }
         if (memory.Filament.equals("null") || memory.Filament.equals("")) {
-            memory.Filament = "0";
+            memory.Filament = "-";
         }
         if (memory.EstimatedPrintTime.equals("null") || memory.EstimatedPrintTime.equals("")) {
             memory.EstimatedPrintTime = "0";
         }
         if (memory.Timelapse.equals("null") || memory.Timelapse.equals("")) {
-            memory.Timelapse = "0";
+            memory.Timelapse = "-";
         }
         if (memory.Height.equals("null") || memory.Height.equals("")) {
             memory.Height = "0";
@@ -116,9 +135,9 @@ public class util_get extends util {
             memory.ProgressM = 0;
         }
 
-        if (memory.MacineState.length() > 25) {
-            memory.MacineState = memory.MacineState.substring(0, 25);
-            memory.MacineState = memory.MacineState + "...";
-        }
+    //    if (memory.MacineState.length() > 25) {
+     //       memory.MacineState = memory.MacineState.substring(0, 25);
+      //      memory.MacineState = memory.MacineState + "...";
+      //  }
     }
 }
