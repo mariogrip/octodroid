@@ -2,18 +2,15 @@ package com.mariogrip.octodroid;
 
 import android.util.Log;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Created by mariogrip on 02.12.14.
  */
 public class util_get extends util {
 
-    protected void decodeConnections(){
+    public static void decodeConnections(){
         try {
             JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "connection", mainActivity.key));
             memory.options_dec = connection_get.getString("options");
@@ -21,9 +18,21 @@ public class util_get extends util {
             e.printStackTrace();
         }
     }
-    protected void getSerialPort() {
-
-
+    public static String getSerialPort() {
+        try {
+            return new JSONObject(memory.options_dec).getString("ports").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    public static String getBaudrates() {
+        try {
+            return new JSONObject(memory.options_dec).getString("baudrates").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public static void genData() {

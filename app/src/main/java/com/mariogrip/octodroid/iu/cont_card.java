@@ -162,6 +162,9 @@ public class cont_card extends Fragment {
                         }
                     }else{
                         Toast.makeText(parent.getContext(), "Please enter a valid number", Toast.LENGTH_SHORT).show();
+                        String st = "[\"/dev/ttyACM0\", \"VIRTUAL\"]";
+                        st.replaceAll("\\s+","");
+
                     }
                 }
             });

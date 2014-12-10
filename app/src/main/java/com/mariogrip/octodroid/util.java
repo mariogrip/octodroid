@@ -26,6 +26,12 @@ import java.io.InputStreamReader;
  */
 public abstract class util extends mainActivity {
 
+    public static String[] jsonArraytoStringArray(String input){
+        String input2 = input.replaceAll("[\\[\\]\" ]","");
+        String[] array = input2.split(",", -1);
+        return array;
+    }
+
     //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
         //Checks if the app has contact with the server.
