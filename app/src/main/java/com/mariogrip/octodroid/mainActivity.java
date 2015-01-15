@@ -194,8 +194,12 @@ public class mainActivity extends Activity {
                     mainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
                             if (!server_status) {
-                                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                textmaci.setText("Cannot connect to\n" + ip);
+                                try {
+                                    TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                                    textmaci.setText("Cannot connect to\n" + ip);
+                                }catch (Exception e){
+
+                                }
                                 logD("Server Error");
                                 running = false;
                                 servererr();
@@ -247,7 +251,7 @@ public class mainActivity extends Activity {
                                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                                         textmaci.setText("Cannot connect to\n" + ip);
                                     }
-                                    }catch (NullPointerException v){}
+                                    }catch (Exception v){}
                                     break;
                                 case 2:
                                     if (server_status) {
@@ -257,7 +261,7 @@ public class mainActivity extends Activity {
                                             TextView texttime = (TextView) findViewById(R.id.textView11_time);
                                             texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
                                             progress.setProgress(util.getProgress());
-                                        }catch(NullPointerException v){
+                                        }catch(Exception v){
                                         }
                                     }
                                     break;
@@ -273,7 +277,7 @@ public class mainActivity extends Activity {
                                             textbed.setText(memory.bedTempCurrent + "°C");
                                             textext.setText(memory.ExtTempCurrent + "°C");
 
-                                        } catch (NullPointerException v) {
+                                        } catch (Exception v) {
                                         }
                                     }
                                     break;

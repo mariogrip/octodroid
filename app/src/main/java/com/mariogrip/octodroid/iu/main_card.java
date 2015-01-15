@@ -3,6 +3,7 @@ package com.mariogrip.octodroid.iu;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class main_card extends Fragment {
 
         cardss.addCardExpand(expand);
 
-        cards.add(cardss);
+       // cards.add(cardss);
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
@@ -201,6 +202,7 @@ public class main_card extends Fragment {
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
             ArrayList<String> spinnerArray = new ArrayList<String>();
+            Log.d("OctoDroid", "doing the thing");
             util_get.decodeConnections();
             String[] dev = util.jsonArraytoStringArray(util_get.getSerialPort());
             for (String i : dev){
@@ -233,7 +235,29 @@ public class main_card extends Fragment {
             parent.setBackgroundColor(mContext.getResources().
                     getColor(R.color.card_background));
             if (view == null) return;
+            ArrayList<String> spinnerArray = new ArrayList<String>();
+            Log.d("OctoDroid", "doing the thing");
+            util_get.decodeConnections();
+            String[] dev = util.jsonArraytoStringArray(util_get.getSerialPort());
+            for (String i : dev){
+                spinnerArray.add(i.replace("\\/", "/"));
+            }
+            for (String i : dev){
+                Log.d("OctoDroid", i);
+            }
+            ArrayList<String> spinnerArray2 = new ArrayList<String>();
+            String[] dev2 = util.jsonArraytoStringArray(util_get.getBaudrates());
+            for (String i2 : dev2){
+                spinnerArray2.add(i2);
+            }
+            LinearLayout layout = new LinearLayout(parent.getContext());
+            Spinner spinner = (Spinner) parent.findViewById(R.id.spinner);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+            spinner.setAdapter(spinnerArrayAdapter);
 
+            Spinner spinner2 = (Spinner) parent.findViewById(R.id.spinner2);
+            ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
+            spinner2.setAdapter(spinnerArrayAdapter2);
 
         }
 

@@ -14,14 +14,13 @@ public class util_get extends util {
         try {
             JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "connection", mainActivity.key));
             memory.options_dec = connection_get.getString("options");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
     }
     public static String getSerialPort() {
         try {
             return new JSONObject(memory.options_dec).getString("ports").toString();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
@@ -29,7 +28,7 @@ public class util_get extends util {
     public static String getBaudrates() {
         try {
             return new JSONObject(memory.options_dec).getString("baudrates").toString();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
