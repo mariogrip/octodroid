@@ -7,8 +7,11 @@ android:
     - extra-android-support
     - extra-android-m2repository
     - build-tools-20.0.0
+    - platform-tools
+    - sys-img-armeabi-v7a-android-20
+    - android-20
 before_script:
-    - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+    - echo no | android create avd --force -n test -t android-20 --abi armeabi-v7a
     - emulator -avd test -no-skin -no-audio -no-window &
     - curl http://is.gd/android_wait_for_emulator > android-wait-for-emulator
     - chmod u+x android-wait-for-emulator
