@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="Connect"
         android:layout_below="@id/checkBox"
-        android:id="@+id/button" />
+        android:id="@+id/buttonConDis" />
 
 
 </RelativeLayout>

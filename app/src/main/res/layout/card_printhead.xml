@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
+        android:textSize="30dp"
         android:text="5"
+        android:textColor="#ff000000"
         android:layout_marginLeft="40dp"
         android:id="@+id/editText_mm" />
 
@@ -17,7 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="20dp"
         android:text="mm"
+        android:textColor="#ff000000"
         android:layout_toRightOf="@id/editText_mm"
         android:layout_alignBottom="@id/editText_mm"
         android:id="@+id/textView15" />
@@ -25,15 +29,23 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Extrude"
+        android:text="EXT"
         android:id="@+id/button_extB"
+        android:textSize="40dp"
+        android:layout_marginLeft="25dp"
+        android:textColor="#99CC00"
+        android:background="@android:color/transparent"
         android:layout_toRightOf="@+id/textView15"
         android:layout_toEndOf="@+id/textView15" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retract"
+        android:text="RET"
+        android:layout_marginLeft="15dp"
+        android:textSize="40dp"
+        android:background="@android:color/transparent"
         android:id="@+id/button_reac"
+        android:textColor="#99CC00"
         android:layout_toRightOf="@+id/button_extB"
         android:layout_toEndOf="@+id/button_extB" />
 </RelativeLayout>

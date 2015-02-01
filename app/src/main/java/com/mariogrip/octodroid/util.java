@@ -32,6 +32,7 @@ public abstract class util extends mainActivity {
         return array;
     }
 
+
     //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
         //Checks if the app has contact with the server.

@@ -24,11 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mariogrip.octodroid.iu.cont_card;
+import com.mariogrip.octodroid.iu.file_card;
 import com.mariogrip.octodroid.iu.main_card;
 import com.mariogrip.octodroid.iu.temp_card;
 
@@ -214,6 +217,21 @@ public class mainActivity extends Activity {
                                     try{
                                     logD("Running runner");
                                     if (server_status) {
+                                        if (util_get.isConnected()) {
+                                            final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                            spinner.setEnabled(false);
+                                            final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                            spinner2.setEnabled(false);
+                                            final Button right = (Button) findViewById(R.id.buttonConDis);
+                                            right.setText("Disconnect");
+                                        }else{
+                                            final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                            spinner.setEnabled(true);
+                                            final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                            spinner2.setEnabled(true);
+                                            final Button right = (Button) findViewById(R.id.buttonConDis);
+                                            right.setText("Connect");
+                                        }
                                         ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                                         TextView texttime = (TextView) findViewById(R.id.textView11_time);
                                         TextView textpri = (TextView) findViewById(R.id.textView16_printed);
@@ -424,7 +442,7 @@ public class mainActivity extends Activity {
             case 0:
                 fragment = new main_card();
                 break;
-            case 3:
+            case 4:
                 fragment = new main_card();
                 pos = 0;
                 position = 0;
@@ -436,6 +454,9 @@ public class mainActivity extends Activity {
                 break;
             case 2:
                 fragment = new cont_card();
+                break;
+            case 3:
+                fragment = new file_card();
                 break;
             default:
                 break;

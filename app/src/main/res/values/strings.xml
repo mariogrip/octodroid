@@ -36,5 +36,6 @@
     <string name="title_activity_sendbug">sendbug</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_card_list">CardList</string>
+    <string name="title_activity_gcode">gcode</string>
 
 </resources>

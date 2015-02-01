@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
+
+
+    <ImageButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_trash"
+        android:layout_alignParentRight="true"
+        android:id="@+id/button_delete" />
+    <ImageButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_load"
+        android:layout_toLeftOf="@id/button_delete"
+        android:id="@+id/button_load" />
+
+    <ImageButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_print"
+        android:layout_toLeftOf="@id/button_load"
+        android:id="@+id/button_print" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -8,35 +35,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="File"
         android:layout_margin="10dp"
-        android:ellipsize="end"
-        android:id="@+id/textView14" />
-
-
-
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        android:layout_alignParentRight="true"
-        android:id="@+id/button_delete" />
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load"
-        android:layout_toLeftOf="@id/button_delete"
-        android:id="@+id/button_load" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Print"
-        android:layout_toLeftOf="@id/button_load"
-        android:id="@+id/button_print" />
-
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/button_print"
+        android:id="@+id/file_text_list" />
 
 
 </RelativeLayout>

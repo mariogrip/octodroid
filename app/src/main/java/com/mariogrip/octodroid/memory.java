@@ -27,5 +27,8 @@ public class memory extends util {
 
     //
 
+    public static boolean connected = false;
     protected static String options_dec;
+    protected static String current_dec;
+    protected static String files_dec;
 }

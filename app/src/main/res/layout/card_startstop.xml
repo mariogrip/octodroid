@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Print"
+        android:src="@drawable/ic_start"
+        android:background="@android:color/transparent"
         android:id="@+id/button_start"
         android:layout_alignParentRight="true"
         />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pause Print"
+        android:src="@drawable/ic_pause"
+        android:background="@android:color/transparent"
         android:id="@+id/button_pause"
         android:layout_centerHorizontal="true"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Print"
+        android:src="@drawable/ic_stop"
+        android:background="@android:color/transparent"
         android:id="@+id/button_stop"
         />
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -93,7 +94,7 @@ public class cont_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-            Button up = (Button) parent.findViewById(R.id.button_stop);
+            ImageButton up = (ImageButton) parent.findViewById(R.id.button_stop);
             up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,7 +102,7 @@ public class cont_card extends Fragment {
                 }
             });
 
-            Button button = (Button) parent.findViewById(R.id.button_start);
+            ImageButton button = (ImageButton) parent.findViewById(R.id.button_start);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     util_send.startprint();
@@ -109,7 +110,7 @@ public class cont_card extends Fragment {
             });
 
 
-            Button right = (Button) parent.findViewById(R.id.button_pause);
+            ImageButton right = (ImageButton) parent.findViewById(R.id.button_pause);
             right.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     util_send.pauseprint();
@@ -218,7 +219,7 @@ public class cont_card extends Fragment {
         public void setupInnerViewElements(final ViewGroup parent, View view) {
 
             final RadioGroup Group = (RadioGroup) parent.findViewById(R.id.radiogrrr);
-            Button up = (Button) parent.findViewById(R.id.buttonUp);
+            ImageButton up = (ImageButton) parent.findViewById(R.id.buttonUp);
             up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -229,7 +230,7 @@ public class cont_card extends Fragment {
                 }
             });
 
-            final Button button = (Button) parent.findViewById(R.id.button_down);
+            final ImageButton button = (ImageButton) parent.findViewById(R.id.button_down);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button Down Pressed");
@@ -240,7 +241,7 @@ public class cont_card extends Fragment {
             });
 
 
-            Button zup = (Button) parent.findViewById(R.id.button_zup);
+            ImageButton zup = (ImageButton) parent.findViewById(R.id.button_zup);
             zup.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button zup Pressed");
@@ -250,7 +251,7 @@ public class cont_card extends Fragment {
                 }
             });
 
-            Button right = (Button) parent.findViewById(R.id.button_right);
+            ImageButton right = (ImageButton) parent.findViewById(R.id.button_right);
             right.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button right Pressed");
@@ -260,7 +261,7 @@ public class cont_card extends Fragment {
                 }
             });
 
-            Button zdown = (Button) parent.findViewById(R.id.button_zdown);
+            ImageButton zdown = (ImageButton) parent.findViewById(R.id.button_zdown);
             zdown.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button zdowbn Pressed");
@@ -270,7 +271,7 @@ public class cont_card extends Fragment {
                 }
             });
 
-            Button left = (Button) parent.findViewById(R.id.button_left);
+            ImageButton left = (ImageButton) parent.findViewById(R.id.button_left);
             left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -281,12 +282,20 @@ public class cont_card extends Fragment {
                 }
             });
 
-            Button home = (Button) parent.findViewById(R.id.button_home);
+            ImageButton home = (ImageButton) parent.findViewById(R.id.button_home);
             home.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("OctoDroid", "button home Pressed");
                     util_send.goHome();
+                }
+            });
+            ImageButton zb = (ImageButton) parent.findViewById(R.id.buttonZ);
+            zb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("OctoDroid", "button home Pressed");
+                    util_send.goHomeZ();
                 }
             });
 

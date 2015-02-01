@@ -4,6 +4,27 @@ package com.mariogrip.octodroid;
  * Created by mariogrip on 02.12.14.
  */
 public class util_send extends util {
+    public static void printFile(String value, String origin){
+        String sendvalue = "{\n" +
+                "  \"command\": \"select\",\n" +
+                "  \"print\": true\n" +
+                "}";
+        sendcmd(mainActivity.ip, mainActivity.key, "files/" + origin + "/" + value, sendvalue);
+    }
+    public static void deleteFileInList(String value, String origin){
+        String sendvalue = "{\n" +
+                "  \"command\": \"delete\"\n" +
+                "}";
+        sendcmd(mainActivity.ip, mainActivity.key, "files/" + origin + "/" + value, sendvalue);
+    }
+    public static void loadFile(String value, String origin){
+        String sendvalue = "{\n" +
+                "  \"command\": \"select\",\n" +
+                "  \"print\": false\n" +
+                "}";
+        sendcmd(mainActivity.ip, mainActivity.key, "files/" + origin + "/" + value, sendvalue);
+    }
+
     public static void goX(String value){
         String sendvalue = "{\n" +
                 "  \"command\": \"jog\",\n" +
@@ -28,7 +49,7 @@ public class util_send extends util {
     public static void goHome(){
         String sendvalue = "{\n" +
                 "  \"command\": \"home\",\n" +
-                "  \"axes\": [\"x\", \"y\", \"z\"]\n" +
+                "  \"axes\": [\"x\", \"y\"]\n" +
                 "}";
         sendcmd(mainActivity.ip, mainActivity.key, "printer/printhead", sendvalue);
     }
@@ -106,8 +127,8 @@ public class util_send extends util {
     public static void Connect(String save, String AutoCon, String baudrate, String port){
         String sendvalue = "{\n" +
                 "  \"command\": \"connect\",\n" +
-                "  \"port\": \""+port+"\",\n" +
-                "  \"baudrate\": "+baudrate+",\n" +
+                "  \"port\": \""+baudrate+"\",\n" +
+                "  \"baudrate\": "+port+",\n" +
                 "  \"save\": "+save+",\n" +
                 "  \"autoconnect\": "+AutoCon+"\n" +
                 "}";

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  GCode Viewer
+  https://github.com/joewalnes/gcode-viewer
+  -Joe Walnes
+-->
+<head>
+    <meta charset="utf-8">
+    <title>GCode Viewer</title>
+    <access uri="*" subdomains="true" />
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <style>
+        #renderArea {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 40px;
+        background-color: #000000;
+        }
+    </style>
+    <!-- 3rd party libs -->
+    <script src="lib/modernizr.custom.93389.js"></script>
+    <script src="lib/jquery-1.7.1.min.js"></script>
+    <script src="lib/bootstrap-modal.js"></script>
+    <script src="lib/sugar-1.2.4.min.js"></script>
+    <script src="lib/Three.js"></script>
+    <script src="lib/three.TrackballControls.js"></script>
+    <!-- Custom code -->
+    <script src="gcode-parser.js"></script>
+    <script src="gcode-model.js"></script>
+    <script src="renderer.js"></script>
+    <script src="ui.js"></script>
+</head>
+<body>
+
+<!-- WebGL rendering area -->
+<div id="renderArea"></div>
+
+</body>
+</html>
+
+

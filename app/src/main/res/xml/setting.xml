@@ -25,6 +25,14 @@
             android:entryValues="@array/syncFrequencyValues"
             android:title="@string/refresh" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Beta" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="beta"
+            android:summary="Enable beta testing mode"
+            android:title="Enable Beta" >
+        </CheckBoxPreference>
+     </PreferenceCategory>
     <PreferenceCategory android:title="@string/error_report" >
     <CheckBoxPreference
         android:defaultValue="true"

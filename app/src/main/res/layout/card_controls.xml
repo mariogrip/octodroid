@@ -3,26 +3,29 @@
     android:layout_height="wrap_content">
 
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇧"
+        android:src="@drawable/ic_up"
+        android:background="@android:color/transparent"
         android:layout_centerHorizontal="true"
         android:id="@+id/buttonUp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/button_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
+        android:src="@drawable/ic_home"
+        android:background="@android:color/transparent"
         android:layout_below="@id/buttonUp"
         android:layout_centerHorizontal="true"/>
 
-    <Button
+    <ImageButton
         android:layout_below="@id/button_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇩"
+        android:src="@drawable/ic_down"
+        android:background="@android:color/transparent"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_down" />
 
@@ -30,52 +33,63 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="X"
+        android:enabled="false"
+        android:visibility="invisible"
         android:id="@+id/buttonX"
         android:layout_above="@+id/button_home"
         android:layout_toRightOf="@id/buttonUp" />
 
-    <Button
+    <ImageButton
         android:layout_toRightOf="@id/button_home"
         android:layout_below="@id/buttonX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇨"
+        android:src="@drawable/ic_right"
+        android:background="@android:color/transparent"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_right"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Y"
+        android:enabled="false"
+        android:visibility="invisible"
         android:id="@+id/buttonY"
         android:layout_above="@+id/button_home"
         android:layout_toLeftOf="@id/buttonUp" />
-    <Button
+    <ImageButton
+        android:layout_centerHorizontal="true"
         android:layout_toLeftOf="@id/button_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇦"
+        android:src="@drawable/ic_left"
+        android:background="@android:color/transparent"
         android:layout_below="@id/buttonY"
         android:id="@+id/button_left" />
 
-    <Button
+    <ImageButton
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Z"
+        android:src="@drawable/ic_home"
+        android:background="@android:color/transparent"
         android:id="@+id/buttonZ"
         android:layout_below="@id/buttonX"
         android:layout_toRightOf="@id/button_right"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇧"
+        android:src="@drawable/ic_up"
+        android:background="@android:color/transparent"
         android:id="@+id/button_zup"
         android:layout_toRightOf="@id/button_right"/>
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⇩"
+        android:src="@drawable/ic_down"
+        android:background="@android:color/transparent"
         android:id="@+id/button_zdown"
         android:layout_below="@id/buttonZ"
         android:layout_toRightOf="@id/button_right"/>

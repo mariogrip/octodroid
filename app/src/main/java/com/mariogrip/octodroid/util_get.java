@@ -2,8 +2,13 @@ package com.mariogrip.octodroid;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by mariogrip on 02.12.14.
@@ -14,6 +19,14 @@ public class util_get extends util {
         try {
             JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "connection", mainActivity.key));
             memory.options_dec = connection_get.getString("options");
+            memory.current_dec = connection_get.getString("current");
+        } catch (Exception e) {
+        }
+    }
+    public static void decodeFiles(){
+        try {
+            JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "files", mainActivity.key));
+            memory.files_dec = connection_get.getString("files");
         } catch (Exception e) {
         }
     }
@@ -32,6 +45,49 @@ public class util_get extends util {
             e.printStackTrace();
             return "";
         }
+    }
+    public static String getCurrentSerialPort() {
+        try {
+            return new JSONObject(memory.current_dec).getString("port").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    public static String getCurrentBaudrates() {
+        try {
+            return new JSONObject(memory.current_dec).getString("baudrate").toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    public static boolean isConnected() {
+        Boolean ReturnValue = false;
+        try {
+            if (memory.MacineState.contains("Operational") || memory.MacineState.contains("Printing") || memory.MacineState.contains("Paused")){
+                ReturnValue = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    return ReturnValue;
+    }
+    public static List<String[]> getFiles() {
+        List<String[]> reString = new ArrayList<String[]>(){};
+        try {
+            ArrayList<String> listdata = new ArrayList<String>();
+            JSONArray jArray = new JSONArray(memory.files_dec);
+            for (int i=0;i<jArray.length();i++){
+                Log.d("octo", jArray.get(i).toString());
+                String[] stringtoadd = {new JSONObject(jArray.get(i).toString()).getString("name"), new JSONObject(jArray.get(i).toString()).getString("origin")};
+                reString.add(stringtoadd);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return reString;
     }
 
     public static void genData() {

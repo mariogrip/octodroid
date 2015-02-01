@@ -8,28 +8,36 @@
         android:allowBackup="true"
         android:icon="@drawable/octodroid"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Octodroid" >
+        android:theme="@style/OctoTheme" >
         <activity
-            android:name="com.mariogrip.octodroid.settings"
-            android:theme="@style/Theme.Base.AppCompat.Light" >
+            android:name=".settings"
+            android:theme="@style/OctoTheme" >
         </activity>
         <activity
             android:name=".mainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/OctoTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mariogrip.octodroid.sendbug"
+            android:name=".sendbug"
+            android:theme="@style/OctoTheme"
             android:label="@string/Send_bug" >
         </activity>
 
         <service
-            android:name="com.mariogrip.octodroid.service"
+            android:name=".service"
             android:exported="false" />
 
+        <!--<activity
+            android:name=".iu.gcode"
+            android:label="@string/title_activity_gcode" >
+        </activity>
+        -->
 
     </application>
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="OctoTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/OctoTheme_ActionBar</item>
+    </style>
+
+    <style name="OctoTheme_ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#AA66CC</item>
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
+</resources>

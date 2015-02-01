@@ -7,6 +7,7 @@
         <item name="android:maxHeight">20dip</item>
     </style>
     <color name="card_expand_title_color">#B3B2B2</color>
+    <color name="card_text_color_header">#ff000000</color>
+    <dimen name="card_header_simple_title_text_size">24dp</dimen>
     <color name="card_backgroundExpand">#515254</color>
-
 </resources>
