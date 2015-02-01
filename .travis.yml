@@ -4,3 +4,17 @@ android:
     - build-tools-18.1.1
     - android-18
     - extra
+    - extra-android-support
+    - extra-android-m2repository
+    - build-tools-20.0.0
+    - platform-tools
+    - sys-img-armeabi-v7a-android-21
+    - android-21
+before_script:
+    - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+    - emulator -avd test -no-skin -no-audio -no-window &
+    - wget https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/ci_environment/android-sdk/files/default/android-wait-for-emulator
+    - chmod a+x android-wait-for-emulator
+    - cat android-wait-for-emulator
+    - ./android-wait-for-emulator
+    - adb shell input keyevent 82 &
