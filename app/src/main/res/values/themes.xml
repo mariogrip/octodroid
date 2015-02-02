@@ -5,7 +5,7 @@
     </style>
 
     <style name="OctoTheme_ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#AA66CC</item>
+        <item name="android:background">#99CC00</item>
         <item name="android:icon">@android:color/transparent</item>
     </style>
 </resources>

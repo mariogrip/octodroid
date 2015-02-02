@@ -25,6 +25,8 @@ public class service extends IntentService {
     private TimerTask timerTask2;
     private double complete;
     private int intcom;
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
 
     public service() {
         super("OctoDroidService");
@@ -67,22 +69,30 @@ public class service extends IntentService {
 
     protected void startPrintService() {
         final int id = 1;
-        final NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        Log.d("OctoDroid Service", "printService");
+        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(this);
+        Log.d("OctoDroid Service", "StartprintService");
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         mBuilder.setContentTitle("OctoDroid")
-                .setContentText("Print in progress")
+                .setContentText("Printing")
+                .setOngoing(true)
                 .setSmallIcon(R.drawable.octodroid_smal);
+        mNotifyManager.notify(id, mBuilder.build());
+
         timerTask2 = new TimerTask() {
             @Override
             public void run() {
-                Log.d("OctoDroid Service", "runner");
-                util.refreshJson(mainActivity.ip, "job", mainActivity.key);
-                util.decodeJsonService();
-                complete = Double.parseDouble(util.getData("job", "completion"));
-
-
-                if (!util.getData("job", "state").equals("Printing") && mainActivity.printing) {
+                Log.d("OctoDroid Service", "startPrintService timertask");
+                try {
+                    util.refreshJson(mainActivity.ip, "job", mainActivity.key);
+                    util.decodeJsonService();
+                    complete = Double.parseDouble(util.getData("job", "completion"));
+                }catch (Exception e){
+                    complete = 0;
+                }
+                if (!util.getData("job", "state").equals("Printing")) {
+                    Log.d("OctoDroid Service", "startPrintService stopping");
                     mainActivity.printing = false;
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")
@@ -93,11 +103,11 @@ public class service extends IntentService {
                     runner();
                     return;
                 }
-
-                mBuilder.setProgress(100, (int) complete, false);
-                mNotifyManager.notify(id, mBuilder.build());
+                Log.d("OctoDroid Service", "startPrintService Notify" + complete );
+               mBuilder.setProgress(100, (int) complete, false).setContentText("Printing (" + (int) complete + "%)");
+               mNotifyManager.notify(id, mBuilder.build());
             }
         };
-        timer2.schedule(timerTask2, 0, 3000);
+        timer2.schedule(timerTask2, 0, 4000);
     }
 }

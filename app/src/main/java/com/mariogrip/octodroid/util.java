@@ -289,57 +289,61 @@ public abstract class util extends mainActivity {
     }
 
     public static void refreshJson(String ip, String api, String key){
-        boolean nono = false;
-        if (ip == null || ip.equals("")){
+        try {
+            boolean nono = false;
+            if (ip == null || ip.equals("")) {
 
-        }else {
-            StringBuilder builder = new StringBuilder();
-            HttpClient client = new DefaultHttpClient();
-            HttpGet httpGet;
-            if (ip.startsWith("http://")){
-                httpGet = new HttpGet(ip + "/api/"+api + "?apikey=" + key);
-            }else{
-                httpGet = new HttpGet("http://"+ ip + "/api/"+api + "?apikey=" + key);
-            }
-            try {
-                HttpResponse response = client.execute(httpGet);
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
+            } else {
+                StringBuilder builder = new StringBuilder();
+                HttpClient client = new DefaultHttpClient();
+                HttpGet httpGet;
+                if (ip.startsWith("http://")) {
+                    httpGet = new HttpGet(ip + "/api/" + api + "?apikey=" + key);
+                } else {
+                    httpGet = new HttpGet("http://" + ip + "/api/" + api + "?apikey=" + key);
                 }
-            } catch (ClientProtocolException e) {
-                Log.e("OctoDroid", "ClientProtocolException");
-                Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return;
-            } catch (IOException e) {
-                Log.e("OctoDroid", "IOException");
-                Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return;
-            } catch (IllegalStateException e){
-                Log.e("OctoDroid", "IllegalStateException");
-                Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return;
+                try {
+                    HttpResponse response = client.execute(httpGet);
+                    StatusLine statusLine = response.getStatusLine();
+                    int statusCode = statusLine.getStatusCode();
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                } catch (ClientProtocolException e) {
+                    Log.e("OctoDroid", "ClientProtocolException");
+                    Log.d("OctoDroid", ip);
+                    nono = true;
+                    mainActivity.server_status = false;
+                    return;
+                } catch (IOException e) {
+                    Log.e("OctoDroid", "IOException");
+                    Log.d("OctoDroid", ip);
+                    nono = true;
+                    mainActivity.server_status = false;
+                    return;
+                } catch (IllegalStateException e) {
+                    Log.e("OctoDroid", "IllegalStateException");
+                    Log.d("OctoDroid", ip);
+                    nono = true;
+                    mainActivity.server_status = false;
+                    return;
+                }
+                if (api.equals("job")) {
+                    jsonData_job = builder.toString();
+                }
+                if (api.equals("printer")) {
+                    jsonData_printer = builder.toString();
+                }
+                if (!nono) {
+                    mainActivity.server_status = true;
+                }
             }
-            if (api.equals("job")){
-                 jsonData_job = builder.toString();
-            }
-            if (api.equals("printer")){
-                jsonData_printer = builder.toString();
-            }
-            if (!nono) {
-                mainActivity.server_status = true;
-            }
+        }catch (Exception e){
+
         }
     }
     public static void sendcmd(String ip ,String api, String cmd, String value){
