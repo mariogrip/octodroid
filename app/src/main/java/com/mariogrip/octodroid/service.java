@@ -94,9 +94,12 @@ public class service extends IntentService {
                 if (!util.getData("job", "state").equals("Printing")) {
                     Log.d("OctoDroid Service", "startPrintService stopping");
                     mainActivity.printing = false;
+                    mNotifyManager.cancel(id);
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")
+                            .setContentTitle("OctoDroid")
                             .setSound(soundUri)
+                            .setSmallIcon(R.drawable.octodroid_smal)
                             .setOngoing(false)
                             .setProgress(0, 0, false);
                     mNotifyManager.notify(id, mBuilder.build());
