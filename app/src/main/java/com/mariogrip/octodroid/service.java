@@ -97,6 +97,7 @@ public class service extends IntentService {
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")
                             .setSound(soundUri)
+                            .setOngoing(false)
                             .setProgress(0, 0, false);
                     mNotifyManager.notify(id, mBuilder.build());
                     timerTask2.cancel();
