@@ -4,8 +4,10 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -68,6 +70,11 @@ public class service extends IntentService {
     }
 
     protected void startPrintService() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int savemode = 4000;
+        if (prefs.getBoolean("battery", false)){
+            savemode = 20000;
+        }
         final int id = 1;
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
@@ -112,6 +119,6 @@ public class service extends IntentService {
                mNotifyManager.notify(id, mBuilder.build());
             }
         };
-        timer2.schedule(timerTask2, 0, 4000);
+        timer2.schedule(timerTask2, 0, savemode);
     }
 }

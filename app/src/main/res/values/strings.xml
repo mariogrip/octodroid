@@ -19,8 +19,8 @@
     <string name="api_text">Set your Octoprint API key</string>
     <string name="refresh">Refresh frequency</string>
     <string name="refresh_text">set the Refresh frequency</string>
-    <string name="push">Push notification</string>
-    <string name="push_text">Push notification when print is done</string>
+    <string name="push_title">Push notification</string>
+    <string name="push_summary">Push notification when print is done</string>
     <string name="server_settings">Server Settings</string>
     <string name="update_setting">Update Settings</string>
     <string name="current_temp">Current Temp:</string>
@@ -37,5 +37,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_card_list">CardList</string>
     <string name="title_activity_gcode">gcode</string>
-
+    <string name="savemode_title">Battery save mode</string>
+    <string name="savemode_summary">Do not check for update that frequency</string>
 </resources>

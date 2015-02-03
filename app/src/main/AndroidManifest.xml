@@ -14,7 +14,7 @@
             android:theme="@style/OctoTheme" >
         </activity>
         <activity
-            android:name=".mainActivity"
+            android:name=".mainActivity_BETA"
             android:label="@string/app_name"
             android:theme="@style/OctoTheme" >
             <intent-filter>

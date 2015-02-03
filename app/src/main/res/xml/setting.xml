@@ -14,16 +14,36 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="push"
-            android:summary="@string/push_text"
-            android:title="@string/push" >
+            android:summary="@string/push_summary"
+            android:title="@string/push_title" >
         </CheckBoxPreference>
-        <ListPreference
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="battery"
+            android:summary="@string/savemode_summary"
+            android:title="@string/savemode_title" >
+        </CheckBoxPreference>
+     <!--   <ListPreference
             android:key="sync"
-            android:enabled="false"
+            android:enabled="true"
             android:entries="@array/syncFrequency"
             android:summary="@string/refresh_text"
             android:entryValues="@array/syncFrequencyValues"
-            android:title="@string/refresh" />
+            android:title="@string/refresh" />-->
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Customizing" >
+    <EditTextPreference
+            android:title="Max Extruder heat"
+            android:summary="Maximum heat for Extruder"
+            android:numeric="integer"
+            android:defaultValue="300"
+            android:key="max_ext_heat"></EditTextPreference>
+        <EditTextPreference
+            android:title="Max bed heat"
+            android:summary="Maximum heat for Heatbed"
+            android:defaultValue="100"
+            android:numeric="integer"
+            android:key="max_bed_heat"></EditTextPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="Beta" >
         <CheckBoxPreference

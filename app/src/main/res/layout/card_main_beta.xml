@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
         <VideoView
             android:scrollbars="none"
             android:clickable="false"
@@ -15,10 +17,12 @@
             android:id="@+id/videoView"
             />
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@drawable/testshadow2"
     android:layout_height="match_parent">
+    <!--
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -62,12 +66,14 @@
             android:indeterminate="false"
             android:progress="0" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout1"
+        android:paddingTop="300dp"
+        android:clipToPadding="false"
         android:id="@+id/card_main_card_list"/>
 
 

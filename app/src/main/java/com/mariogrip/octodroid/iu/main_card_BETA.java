@@ -3,7 +3,6 @@ package com.mariogrip.octodroid.iu;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mariogrip.octodroid.R;
-import com.mariogrip.octodroid.mainActivity_BETA;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_get;
 import com.mariogrip.octodroid.util_send;
@@ -52,8 +50,6 @@ public class main_card_BETA extends Fragment {
         rootView = inflater.inflate(R.layout.card_main_beta, container, false);
 
         ArrayList<Card> cards = new ArrayList<Card>();
-        fakecard cardfake = new fakecard(rootView.getContext(),"Fake", "Fake");
-        cards.add(cardfake);
         cardtest card = new cardtest(rootView.getContext(),"State", "State");
         cards.add(card);
         cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
@@ -118,6 +114,8 @@ public class main_card_BETA extends Fragment {
             header.setTitle(mTitleHeader);
             addCardHeader(header);
             setTitle(mTitleMain);
+            setCardElevation(10);
+
         }
 
 
@@ -131,40 +129,6 @@ public class main_card_BETA extends Fragment {
 
         }
     }
-
-    public class fakecard extends Card {
-
-        protected String mTitleHeader;
-        protected String mTitleMain;
-
-        public fakecard(Context context, String titleHeader, String titleMain) {
-            super(context, R.layout.card_fake);
-            this.mTitleHeader = titleHeader;
-            this.mTitleMain = titleMain;
-            init();
-        }
-
-        private void init() {
-
-        }
-
-        @Override
-        public int getType() {
-            //Very important with different inner layouts
-            return 0;
-        }
-
-        @Override
-        public void setupInnerViewElements(final ViewGroup parent, View view) {
-            parent.setAlpha(0);
-            view.setAlpha(0);
-            parent.setBackgroundColor(mContext.getResources().
-                    getColor(android.R.color.transparent));
-            view.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
-
-        }
-    }
-
 
     public class cardteststart extends Card{
 
