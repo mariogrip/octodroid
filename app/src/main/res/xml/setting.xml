@@ -37,13 +37,13 @@
             android:summary="Maximum heat for Extruder"
             android:numeric="integer"
             android:defaultValue="300"
-            android:key="max_ext_heat"></EditTextPreference>
+            android:key="max_ext_heat"/>
         <EditTextPreference
             android:title="Max bed heat"
             android:summary="Maximum heat for Heatbed"
             android:defaultValue="100"
             android:numeric="integer"
-            android:key="max_bed_heat"></EditTextPreference>
+            android:key="max_bed_heat"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Beta" >
         <CheckBoxPreference

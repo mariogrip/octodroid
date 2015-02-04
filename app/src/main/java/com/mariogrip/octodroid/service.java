@@ -46,7 +46,7 @@ public class service extends IntentService {
                 if (mainActivity.server_status) {
                     util.refreshJson(mainActivity.ip, "job", mainActivity.key);
                     util.decodeJsonService();
-                    Log.d("OctoDroid Service", "runner" + mainActivity.printing);
+                    Log.d("OctoDroid Service", "runner " + mainActivity.printing);
                     if (mainActivity.printing) {
                         mainActivity.printing = true;
                         timerTask.cancel();

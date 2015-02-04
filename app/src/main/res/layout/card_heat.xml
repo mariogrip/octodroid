@@ -17,11 +17,11 @@
         android:text="300°C"
         android:layout_below="@id/textView_Text"
         android:layout_alignParentRight="true"
-        android:id="@+id/textView_max" />
+        android:id="@+id/textView_max_ext" />
     <SeekBar
         android:layout_below="@id/textView_Text"
         android:layout_toRightOf="@id/textView11"
-        android:layout_toLeftOf="@id/textView_max"
+        android:layout_toLeftOf="@id/textView_max_ext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar_ext" />

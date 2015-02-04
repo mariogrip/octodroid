@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-        <VideoView
+     <!--   <VideoView
             android:scrollbars="none"
             android:clickable="false"
             android:layout_width="fill_parent"
@@ -15,7 +15,19 @@
             android:layout_alignParentRight="true"
             android:fitsSystemWindows="true"
             android:id="@+id/videoView"
-            />
+            />-->
+       <ImageView
+       android:scrollbars="none"
+       android:clickable="false"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:layout_alignParentTop="true"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentBottom="true"
+       android:layout_alignParentRight="true"
+       android:fitsSystemWindows="true"
+       android:id="@+id/ImageView"
+       />
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,15 +79,19 @@
             android:progress="0" />
 
     </RelativeLayout>-->
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:background="@android:color/darker_gray"
+    android:alpha="1"
+    android:id="@+id/beta_alpha_backgroud"
+    android:layout_height="match_parent"></RelativeLayout>
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout1"
-        android:paddingTop="300dp"
+        android:paddingTop="400dp"
         android:clipToPadding="false"
         android:id="@+id/card_main_card_list"/>
-
 
 
 </RelativeLayout>

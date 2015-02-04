@@ -52,25 +52,26 @@ public class mainActivity_BETA extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    public static String jsonData_job;
-    public static String jsonData_connetion;
-    public static String jsonData_printer;
     protected SharedPreferences prefs;
     private util get_class;
     private boolean senderr = false;
-    protected static boolean running = false;
-    protected static boolean printing;
-    protected static boolean push = true;
-    protected static boolean servicerunning = false;
-    public static String ip;
-    public static String key;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Timer timer2 = new Timer();
     private TimerTask timerTask2;
+
+    public static String ip;
+    public static String key;
     public static boolean server_status = false;
     private static final int RESULT_SETTINGS = 1;
     public static String PACKAGE_NAME;
+    protected static boolean running = false;
+    protected static boolean printing;
+    protected static boolean push = true;
+    protected static boolean servicerunning = false;
+    public static String jsonData_job;
+    public static String jsonData_connetion;
+    public static String jsonData_printer;
 
 
 
@@ -200,6 +201,16 @@ public class mainActivity_BETA extends Activity {
                 public void run() {
                     mainActivity_BETA.this.runOnUiThread(new Runnable() {
                         public void run() {
+                            mainActivity.ip = ip;
+                            mainActivity.key = key;
+                              server_status = mainActivity.server_status;
+                              mainActivity.running = running;
+                              printing = mainActivity.printing;
+                              mainActivity.push = push;
+                              mainActivity.servicerunning = servicerunning;
+                               jsonData_job = mainActivity.jsonData_job;
+                               jsonData_connetion = mainActivity.jsonData_connetion;
+                               jsonData_printer = mainActivity.jsonData_printer;
                             if (!server_status) {
                                 try {
                                     TextView textmaci = (TextView) findViewById(R.id.textView10_maci);

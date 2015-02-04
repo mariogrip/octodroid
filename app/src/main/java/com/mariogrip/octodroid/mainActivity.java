@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.mariogrip.octodroid.iu.cont_card;
 import com.mariogrip.octodroid.iu.file_card;
 import com.mariogrip.octodroid.iu.main_card;
+import com.mariogrip.octodroid.iu.main_card_BETA;
 import com.mariogrip.octodroid.iu.temp_card;
 
 import java.util.Timer;
@@ -67,6 +68,7 @@ public class mainActivity extends Activity {
     private TimerTask timerTask;
     private Timer timer2 = new Timer();
     private TimerTask timerTask2;
+    private boolean betamode = false;
     public static boolean server_status = false;
     private static final int RESULT_SETTINGS = 1;
 
@@ -79,6 +81,8 @@ public class mainActivity extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.
         ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
+        betamode = prefs.getBoolean("beta", false);
 
         setContentView(R.layout.nawdraw);
         mTitle = mDrawerTitle = getTitle();
@@ -111,7 +115,7 @@ public class mainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
+
         ip = prefs.getString("ip", "localhost");
         key = prefs.getString("api", "0");
         senderr = prefs.getBoolean("err", true);
@@ -389,6 +393,7 @@ public class mainActivity extends Activity {
     }
     public void onResume(){
         super.onResume();
+        betamode = prefs.getBoolean("beta", false);
         servicerunning = false;
         startservice();
         startrunner();
@@ -438,28 +443,56 @@ public class mainActivity extends Activity {
     private void selectItem(int position) {
         pos = position;
         Fragment fragment = new main_card();
-        switch (position) {
-            case 0:
-                fragment = new main_card();
-                break;
-            case 4:
-                fragment = new main_card();
-                pos = 0;
-                position = 0;
-                Intent i = new Intent(this, settings.class);
-                startActivityForResult(i, RESULT_SETTINGS);
-                break;
-            case 1:
-                fragment = new temp_card();
-                break;
-            case 2:
-                fragment = new cont_card();
-                break;
-            case 3:
-                fragment = new file_card();
-                break;
-            default:
-                break;
+        if (betamode) {
+            fragment = new main_card_BETA();
+            switch (position) {
+                case 0:
+                    fragment = new main_card_BETA();
+                    break;
+                case 4:
+                    fragment = new main_card_BETA();
+                    pos = 0;
+                    position = 0;
+                    Intent i = new Intent(this, settings.class);
+                    startActivityForResult(i, RESULT_SETTINGS);
+                    break;
+                case 1:
+                    fragment = new temp_card();
+                    break;
+                case 2:
+                    fragment = new cont_card();
+                    break;
+                case 3:
+                    fragment = new file_card();
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            fragment = new main_card();
+            switch (position) {
+                case 0:
+                    fragment = new main_card();
+                    break;
+                case 4:
+                    fragment = new main_card();
+                    pos = 0;
+                    position = 0;
+                    Intent i = new Intent(this, settings.class);
+                    startActivityForResult(i, RESULT_SETTINGS);
+                    break;
+                case 1:
+                    fragment = new temp_card();
+                    break;
+                case 2:
+                    fragment = new cont_card();
+                    break;
+                case 3:
+                    fragment = new file_card();
+                    break;
+                default:
+                    break;
+            }
         }
         Bundle args = new Bundle();
         args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);

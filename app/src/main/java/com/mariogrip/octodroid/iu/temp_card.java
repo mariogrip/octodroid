@@ -2,13 +2,16 @@ package com.mariogrip.octodroid.iu;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mariogrip.octodroid.R;
@@ -86,11 +89,23 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(final ViewGroup parent, View view) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
+            String maxtempstring = prefs.getString("max_bed_heat", "100");
+            Integer maxtemp = 100;
+            try {
+                maxtemp = Integer.parseInt(maxtempstring);
+            }catch (Exception e){
+
+            }
+
+            TextView max = (TextView) parent.findViewById(R.id.textView_max_bed);
+            max.setText(maxtemp+"°C");
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_bed);
             final Button setbutton = (Button) parent.findViewById(R.id.button_setBed);
+            seekBar.setMax(maxtemp);
             Integer temp = Integer.parseInt(memory.bedTempTarget);
-            if (temp > 100){
-                temp = 100;
+            if (temp > maxtemp){
+                temp = maxtemp;
             }
             seekBar.setProgress(temp);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -153,11 +168,23 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(final ViewGroup parent, View view) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
+            String maxtempstring = prefs.getString("max_ext_heat", "300");
+            Integer maxtemp = 300;
+            try {
+                 maxtemp = Integer.parseInt(maxtempstring);
+            }catch (Exception e){
+
+            }
+
+            TextView max = (TextView) parent.findViewById(R.id.textView_max_ext);
+            max.setText(maxtemp+"°C");
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_ext);
+            seekBar.setMax(maxtemp);
             final Button setbutton = (Button) parent.findViewById(R.id.button_ext);
-            Integer temp = Integer.parseInt(memory.ExtTempTarget) / 3;
-            if (temp > 100){
-                temp = 100;
+            Integer temp = Integer.parseInt(memory.ExtTempTarget);
+            if (temp > maxtemp){
+                temp = maxtemp;
             }
             seekBar.setProgress(temp);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -166,7 +193,7 @@ public class temp_card extends Fragment {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                     progress = progresValue;
-                    setExt = progress * 3;
+                    setExt = progress;
                     setbutton.setText("Set to " + setExt + "°C");
                 }
 
@@ -176,7 +203,7 @@ public class temp_card extends Fragment {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    setExt = progress * 3;
+                    setExt = progress;
                     setbutton.setText("Set to " + setExt + "°C");
                 }
             });

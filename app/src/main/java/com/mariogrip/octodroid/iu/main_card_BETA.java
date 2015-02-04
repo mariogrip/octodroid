@@ -3,26 +3,39 @@ package com.mariogrip.octodroid.iu;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.mainActivity;
+import com.mariogrip.octodroid.mainActivity_BETA;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_get;
 import com.mariogrip.octodroid.util_send;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -43,6 +56,7 @@ public class main_card_BETA extends Fragment {
     private ListView listView;
     private View rootView;
     public static ViewGroup test123;
+    private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +64,8 @@ public class main_card_BETA extends Fragment {
         rootView = inflater.inflate(R.layout.card_main_beta, container, false);
 
         ArrayList<Card> cards = new ArrayList<Card>();
+        card_progressbar cardprpg = new card_progressbar(rootView.getContext());
+        cards.add(cardprpg);
         cardtest card = new cardtest(rootView.getContext(),"State", "State");
         cards.add(card);
         cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
@@ -72,7 +88,39 @@ public class main_card_BETA extends Fragment {
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
 
-        CardListView listView = (CardListView) rootView.findViewById(R.id.card_main_card_list);
+        final CardListView listView = (CardListView) rootView.findViewById(R.id.card_main_card_list);
+        final RelativeLayout alphabackgroudn = (RelativeLayout) rootView.findViewById(R.id.beta_alpha_backgroud);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i2, int i3) {
+                Log.d("OctoTest", "Doing this");
+                try {
+                    if (listView != null) {
+                        View c = listView.getChildAt(0); //this is the first visible row
+
+                            int scrollY = -c.getTop();
+                            listViewItemHeights.put(listView.getFirstVisiblePosition(), c.getHeight());
+                            for (int i11 = 0; i < listView.getFirstVisiblePosition(); ++i) {
+                                if (listViewItemHeights.get(i11) != null) // (this is a sanity check)
+                                    scrollY += listViewItemHeights.get(i11); //add all heights of the views that are gone
+                            }
+
+                            listView.setAlpha(1);
+                           alphabackgroudn.setAlpha((float) (scrollY + 1200) / 1000);
+
+                           Log.d("OctoTest", "Math=" + (float) (scrollY + 1200) / 1000 + " POS=" + scrollY);
+
+                    }
+                }catch (Exception e){
+                    Log.d("OctoTest", "Fuckungubf");
+                }
+            }
+        });
         if (listView!=null){
             listView.setAdapter(mCardArrayAdapter);
         }
@@ -81,18 +129,47 @@ public class main_card_BETA extends Fragment {
                         .highlightView(false)
                         .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
         cardss.setViewToClickToExpand(viewToClickToExpand);
-        VideoView vv = (VideoView) rootView.findViewById(R.id.videoView);
+      //  VideoView vv = (VideoView) rootView.findViewById(R.id.videoView);
+        ImageView vv = (ImageView) rootView.findViewById(R.id.ImageView);
+
         if (vv != null) {
-          //  Log.d("BETA", "android.resource://" + mainActivity_BETA.PACKAGE_NAME + "/" + R.raw.testvid);
-           // vv.setVideoURI(Uri.parse("android.resource://" + mainActivity_BETA.PACKAGE_NAME + "/" + R.raw.testvid));
-           // vv.requestFocus();
-           // vv.start();
+             new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip +"/webcam/?action=snapshot");
+
+            //vv.setVideoURI(Uri.parse("http://" + mainActivity.ip +"/webcam/?action=snapshot"));
+            //vv.requestFocus();
+            //vv.start();
         }else{
-            Log.d("BETA", "FAEN!");
+            Log.d("BETA", "Cannot find the stream video");
+            Toast.makeText(rootView.getContext(), "Cannot find the stream video. if you know that the camera works at the web and octodroid is displaying information about you printer, please report this", Toast.LENGTH_LONG);
         }
         return rootView;
 
             }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 
 
     public class cardtest extends Card{
@@ -126,6 +203,29 @@ public class main_card_BETA extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        }
+    }
+
+    public class card_progressbar extends Card{
+
+        public card_progressbar(Context context) {
+            super(context, R.layout.card_progressbar);
+            init();
+        }
+
+        private void init(){
+
+        }
+
+
+        @Override
+        public int getType() {
+            //Very important with different inner layouts
+            return 0;
+        }
+        @Override
+        public void setupInnerViewElements(final ViewGroup parent, View view) {
 
         }
     }
@@ -402,6 +502,8 @@ public class main_card_BETA extends Fragment {
             return 2;
         }
     }
+
+
 
 
 }
