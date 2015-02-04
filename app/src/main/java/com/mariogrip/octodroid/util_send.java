@@ -2,8 +2,12 @@ package com.mariogrip.octodroid;
 
 /**
  * Created by mariogrip on 02.12.14.
+ *
+ * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ *
  */
 public class util_send extends util {
+
     public static void printFile(String value, String origin){
         String sendvalue = "{\n" +
                 "  \"command\": \"select\",\n" +

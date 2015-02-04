@@ -7,11 +7,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by mariogrip on 02.12.14.
+ *
+ *  GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
  */
 public class util_get extends util {
 
@@ -73,6 +74,7 @@ public class util_get extends util {
         }
     return ReturnValue;
     }
+
     public static List<String[]> getFiles() {
         List<String[]> reString = new ArrayList<String[]>(){};
         try {

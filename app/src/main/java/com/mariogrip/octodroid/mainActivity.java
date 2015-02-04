@@ -15,7 +15,6 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -513,6 +512,7 @@ public class mainActivity extends Activity {
                         case 0:
                             try {
                                 if (server_status) {
+                                    logD("start");
                                     ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                                     TextView texttime = (TextView) findViewById(R.id.textView11_time);
                                     TextView textpri = (TextView) findViewById(R.id.textView16_printed);
@@ -527,13 +527,16 @@ public class mainActivity extends Activity {
                                     TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
                                     TextView textfila = (TextView) findViewById(R.id.textView12_fila);
                                     TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
+                                    logD("DoneLoadTextView");
                                     if (memory.FilePos == "null" || memory.Size == "null" || memory.Size == "") {
                                         textpri.setText(" " + "-/-");
                                     } else {
                                         textpri.setText(" " + util.toMBGB(Double.parseDouble(memory.FilePos)).toString() + "/" + util.toMBGB(Double.parseDouble(memory.Size)).toString());
                                     }
+                                    logD("The if down");
                                     texttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
                                     textest.setText(" " + util.toHumanRead(Double.parseDouble(memory.EstimatedPrintTime)));
+                                    logD("To humanRead done");
                                     texthei.setText(" " + memory.Height);
                                     textfile.setText(" " + memory.File);
                                     textmaci.setText(" " + memory.MacineState);
@@ -543,8 +546,10 @@ public class mainActivity extends Activity {
                                     textBtar.setText(" " + memory.bedTempTarget + "°C");
                                     textfila.setText(" " + memory.Filament);
                                     texttimel.setText(" " + memory.Timelapse);
+                                    logD("All thows settime");
                                     textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTime)));
                                     progress.setProgress(memory.ProgressM);
+                                    logD("Done btw");
                                 } else {
                                     TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                                     textmaci.setText("Cannot connect to\n" + ip);

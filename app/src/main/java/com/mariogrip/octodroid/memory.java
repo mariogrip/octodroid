@@ -1,7 +1,5 @@
 package com.mariogrip.octodroid;
 
-import org.json.JSONObject;
-
 /**
  * Created by mariogrip on 01.12.14.
  */
@@ -23,10 +21,7 @@ public class memory extends util {
     protected static String Completion = "";
     protected static String Size = "0";
     protected static Integer ProgressM = 0;
-
-
-    //
-
+    //-------------------------------------
     public static boolean connected = false;
     protected static String options_dec;
     protected static String current_dec;
