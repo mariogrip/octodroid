@@ -16,6 +16,13 @@ import java.util.List;
  */
 public class util_get extends util {
 
+    /**
+     * This file is used to get information out of json blocks that was processed at Util_decode
+     *
+     * Functions:
+     *  ""WIP""
+     */
+
     public static void decodeConnections(){
         try {
             JSONObject connection_get = new JSONObject(getResponse(mainActivity.ip, "connection", mainActivity.key));
@@ -206,4 +213,5 @@ public class util_get extends util {
       //      memory.MacineState = memory.MacineState + "...";
       //  }
     }
+
 }

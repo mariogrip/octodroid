@@ -8,6 +8,14 @@ package com.mariogrip.octodroid;
  */
 public class util_send extends util {
 
+    /**
+     * This file sends (json) commands to the server
+     *
+     * Functions;
+     *  ""WIP""
+     *
+     */
+
     public static void printFile(String value, String origin){
         String sendvalue = "{\n" +
                 "  \"command\": \"select\",\n" +

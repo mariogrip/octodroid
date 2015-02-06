@@ -11,6 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Send bug report to mariogrip's mysql server (using php as barrier)
+ *
+ * Uses:
+ * util.sendError(bug report) || void
+ */
+
 public class sendbug extends Activity {
 
     @Override

@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -55,6 +57,8 @@ public class main_card_BETA extends Fragment {
     private static final String TAG = "CardListActivity";
     private ListView listView;
     private View rootView;
+    private Timer timer1 = new Timer();
+    private TimerTask timerTask1;
     public static ViewGroup test123;
     private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
 
@@ -117,7 +121,7 @@ public class main_card_BETA extends Fragment {
 
                     }
                 }catch (Exception e){
-                    Log.d("OctoTest", "Fuckungubf");
+                    Log.d("OctoTest", "No This should not happened!");
                 }
             }
         });
@@ -133,7 +137,14 @@ public class main_card_BETA extends Fragment {
         ImageView vv = (ImageView) rootView.findViewById(R.id.ImageView);
 
         if (vv != null) {
-             new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip +"/webcam/?action=snapshot");
+            timerTask1 = new TimerTask() {
+                @Override
+                public void run() {
+                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                }
+            };
+            timer1.schedule(timerTask1, 0, 10000);
+
 
             //vv.setVideoURI(Uri.parse("http://" + mainActivity.ip +"/webcam/?action=snapshot"));
             //vv.requestFocus();

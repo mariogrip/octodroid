@@ -35,6 +35,8 @@ import com.mariogrip.octodroid.iu.main_card;
 import com.mariogrip.octodroid.iu.main_card_BETA;
 import com.mariogrip.octodroid.iu.temp_card;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,6 +44,8 @@ import java.util.TimerTask;
  * Created by mariogrip on 27.10.14.
  *
  * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ *
+ * MainActiviti The main class (init class) This is the class that is called when the app start
  */
 public class mainActivity extends Activity {
     protected int pos;
@@ -70,6 +74,7 @@ public class mainActivity extends Activity {
     private boolean betamode = false;
     public static boolean server_status = false;
     private static final int RESULT_SETTINGS = 1;
+
 
 
 

@@ -26,6 +26,14 @@ import java.io.InputStreamReader;
  */
 public abstract class util extends mainActivity {
 
+    /**
+     * This is the file where utils and tools are placed
+     *
+     * Functions:
+     *  ""WIP""
+     *
+     */
+
     public static String[] jsonArraytoStringArray(String input){
         String input2 = input.replaceAll("[\\[\\]\" ]","");
         String[] array = input2.split(",", -1);

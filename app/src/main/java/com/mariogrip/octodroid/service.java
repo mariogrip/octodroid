@@ -18,6 +18,8 @@ import java.util.TimerTask;
  * Created by mariogrip on 30.10.14.
  *
  * GNU Affero General Public License http://www.gnu.org/licenses/agpl.html
+ *
+ * Service file, takes care of notifications
  */
 
 public class service extends IntentService {
