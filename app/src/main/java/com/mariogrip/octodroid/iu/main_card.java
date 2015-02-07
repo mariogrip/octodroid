@@ -18,13 +18,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.mainActivity;
 import com.mariogrip.octodroid.mainActivity_BETA;
+import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.settings;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_get;
@@ -56,6 +59,11 @@ public class main_card extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main, container, false);
+
+        ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+        progresss.setProgress(util.getProgress());
 
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"State", "State");
@@ -123,6 +131,38 @@ public class main_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+
+                    try {
+                        TextView textpri = (TextView) parent.findViewById(R.id.textView16_printed);
+                        TextView textest = (TextView) parent.findViewById(R.id.textView13_est);
+                        TextView textfile = (TextView) parent.findViewById(R.id.textView11_file);
+                        TextView textmaci = (TextView) parent.findViewById(R.id.textView10_maci);
+                        TextView texttarT = (TextView) parent.findViewById(R.id.textView18_tar_t);
+                        TextView textcurT = (TextView) parent.findViewById(R.id.textView18_cur_T);
+                        TextView textBcur = (TextView) parent.findViewById(R.id.textView18_Bcur_T);
+                        TextView textBtar = (TextView) parent.findViewById(R.id.textView18_Btar_T);
+                        TextView textprinttime = (TextView) parent.findViewById(R.id.textView17_print_time);
+                        // TextView texthei = (TextView) findViewById(R.id.textView15_hei);
+                        //TextView textfila = (TextView) findViewById(R.id.textView12_fila);
+                        //TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
+
+                        textfile.setText(" " + memory.job.file.getName());
+                        textpri.setText(" " + util.toMBGB(memory.job.progress.getFilepos()).toString() + "/" + util.toMBGB(memory.job.file.getSize()).toString());
+                        textest.setText(" " + util.toHumanRead(memory.job.getEstimatedPrintTime()));
+                        textmaci.setText(" " + memory.connection.current.getState());
+                        texttarT.setText(" " + memory.temp.target.getExt()[0] + "°C");
+                        textcurT.setText(" " + memory.temp.current.getExt()[0] + "°C");
+                        textBcur.setText(" " + memory.temp.current.getBed()[0] + "°C");
+                        textBtar.setText(" " + memory.temp.target.getBed()[0] + "°C");
+                        textprinttime.setText(" " + util.toHumanRead(memory.job.progress.getPrintTime()));
+                        // progress.setProgress(util.getProgress());
+                        // textfila.setText(" " + memory.Filament);
+                        // texttimel.setText(" " + memory.Timelapse);
+                        // texthei.setText(" " + memory.Height);
+                    }catch (Exception e){
+
+                    }
+
 
         }
     }

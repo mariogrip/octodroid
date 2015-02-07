@@ -11,11 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_send;
 
@@ -42,7 +45,10 @@ public class cont_card extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main, container, false);
-
+        ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+        progresss.setProgress(util.getProgress());
 
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest2 card2 = new cardtest2(rootView.getContext(),"Controls", "Controls");

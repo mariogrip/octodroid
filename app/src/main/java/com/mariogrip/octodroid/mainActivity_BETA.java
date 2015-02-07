@@ -224,9 +224,7 @@ public class mainActivity_BETA extends Activity {
                                 timerTask.cancel();
                                 return;
                             }
-                            util.refreshJson(ip, "printer", key);
-                            util.decodeJson();
-                            util_get.genData();
+
                             switch (pos) {
                                 case 0:
                                     try{
@@ -305,8 +303,8 @@ public class mainActivity_BETA extends Activity {
                                             TextView texttimes = (TextView) findViewById(R.id.textView11_time);
                                             texttimes.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
                                             progresss.setProgress(util.getProgress());
-                                            TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed);
-                                            TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext);
+                                            TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed_Tempcard);
+                                            TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
                                             textbed.setText(memory.bedTempCurrent + "°C");
                                             textext.setText(memory.ExtTempCurrent + "°C");
 
@@ -553,8 +551,8 @@ public class mainActivity_BETA extends Activity {
                                     TextView texttimes = (TextView) findViewById(R.id.textView11_time);
                                     texttimes.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
                                     progresss.setProgress(memory.ProgressM);
-                                    TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed);
-                                    TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext);
+                                    TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed_Tempcard);
+                                    TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
                                     textbed.setText(memory.bedTempCurrent + "°C");
                                     textext.setText(memory.ExtTempCurrent + "°C");
                                 } catch (NullPointerException v) {

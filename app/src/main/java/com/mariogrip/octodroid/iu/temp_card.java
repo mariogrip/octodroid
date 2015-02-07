@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,10 @@ public class temp_card extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main, container, false);
 
-
+        ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+        progresss.setProgress(util.getProgress());
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"Heatbed", "HeatBed");
         cards.add(card);
@@ -89,6 +93,11 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(final ViewGroup parent, View view) {
+            try{
+            TextView textbed = (TextView) parent.findViewById(R.id.textView_CurentTemp_bed_Tempcard);
+            textbed.setText(memory.temp.current.getBed()[0] + "°C");
+        } catch (NullPointerException v) {
+        }
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
             String maxtempstring = prefs.getString("max_bed_heat", "100");
             Integer maxtemp = 100;
@@ -168,6 +177,13 @@ public class temp_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(final ViewGroup parent, View view) {
+            try {
+                TextView textext = (TextView) parent.findViewById(R.id.textView_CurentTemp_ext_TempCard);
+                textext.setText(memory.temp.current.getExt()[0] + "°C");
+            } catch (NullPointerException v) {
+                util.logD("NOOOOO! " + v.toString());
+            }
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
             String maxtempstring = prefs.getString("max_ext_heat", "300");
             Integer maxtemp = 300;

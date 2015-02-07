@@ -23,13 +23,14 @@
             android:summary="@string/savemode_summary"
             android:title="@string/savemode_title" >
         </CheckBoxPreference>
-     <!--   <ListPreference
+        <ListPreference
             android:key="sync"
             android:enabled="true"
+            android:defaultValue="Normal"
             android:entries="@array/syncFrequency"
             android:summary="@string/refresh_text"
             android:entryValues="@array/syncFrequencyValues"
-            android:title="@string/refresh" />-->
+            android:title="@string/refresh" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Customizing" >
     <EditTextPreference

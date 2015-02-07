@@ -43,37 +43,45 @@ public abstract class util extends mainActivity {
 
     //Converts Bytes to Mega/Giga Bytes
     public static String toMBGB(double bytes){
-        //Checks if the app has contact with the server.
-        if (!mainActivity.server_status){
-            return "-/-";
+        try {
+            //Checks if the app has contact with the server.
+            if (!mainActivity.server_status) {
+                return "-/-";
+            }
+            String returnData;
+            Double fileSizeInKB = bytes / 1024;
+            Double fileSizeInMB = fileSizeInKB / 1024;
+            Double fileSizeInKBformat = roundDown5(fileSizeInKB);
+            Double fileSizeInMBformat = roundDown5(fileSizeInMB);
+            if (fileSizeInMB >= 1) {
+                returnData = fileSizeInMBformat.toString() + "MB";
+            } else {
+                returnData = fileSizeInKBformat.toString() + "KB";
+            }
+            return returnData;
+        }catch (Exception e){
+            return "0MB";
         }
-        String returnData;
-        Double fileSizeInKB = bytes / 1024;
-        Double fileSizeInMB = fileSizeInKB / 1024;
-        Double fileSizeInKBformat = roundDown5(fileSizeInKB);
-        Double fileSizeInMBformat = roundDown5(fileSizeInMB);
-        if (fileSizeInMB >= 1){
-            returnData = fileSizeInMBformat.toString() + "MB";
-        }else{
-            returnData = fileSizeInKBformat.toString() + "KB";
-        }
-        return returnData;
     }
     public static double roundDown5(double d) {
         return (long) (d * 1e2) / 1e2;
     }
     public static String toHumanRead(double biggy)
     {
-        if (!mainActivity.server_status){
+        try {
+            if (!mainActivity.server_status) {
+                return "00:00:00";
+            }
+            int hours = (int) biggy / 3600;
+            int remainder = (int) biggy - hours * 3600;
+            int mins = remainder / 60;
+            remainder = remainder - mins * 60;
+            int secs = remainder;
+
+            return String.format("%02d", hours) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
+        }catch (Exception e){
             return "00:00:00";
         }
-        int hours = (int) biggy / 3600;
-        int remainder = (int) biggy - hours * 3600;
-        int mins = remainder / 60;
-        remainder = remainder - mins * 60;
-        int secs = remainder;
-
-        return String.format("%02d", hours) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
     }
     protected static JSONObject jsonData_job_job;
     protected static JSONObject jsonData_job_job_progress;
@@ -97,26 +105,7 @@ public abstract class util extends mainActivity {
     }
 
 
-    public static void decodeJson(){
-        if (!mainActivity.server_status){
-            return;
-        }
-        try {
-            jsonData_job_job = new JSONObject(jsonData_job);
-            jsonData_job_job_progress = new JSONObject(jsonData_job_job.getString("progress"));
-            jsonData_job_job_job = new JSONObject(jsonData_job_job.getString("job"));
-            jsonData_job_job_file = new JSONObject(jsonData_job_job_job.getString("file"));
-            if (jsonData_printer.equals("Printer is not operational")){
-                jsonData_printer_status = false;
-            }else{
-                jsonData_printer_status = true;
-                jsonData_printer_printer = new JSONObject(jsonData_printer);
-                jsonData_printer_printer_temps = new JSONObject(jsonData_printer_printer.getString("temps"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+
     public static void decodeJsonService(){
         if (!mainActivity.server_status){
             return;
@@ -265,34 +254,20 @@ public abstract class util extends mainActivity {
 }
     public static int getProgress(){
         int returnData = 0;
-        double acom = 0;
-        if (mainActivity.server_status) {
             JSONObject json = null;
             try {
-            json = new JSONObject(jsonData_job);
-            JSONObject printTime_json = new JSONObject(json.getString("progress"));
-                String comp = printTime_json.getString("completion");
-                if (comp.equals("") || comp.equals("null")) {
-                    acom = 0;
-                }else{
-                    try {
-                        acom = Double.parseDouble(comp);
-                    }catch (NumberFormatException e){
-                        acom = 0;
-                    }
-                }
+                float acom = memory.job.progress.completion;
                if (acom < 1){
                     returnData = 0;
                 }else{
                    returnData = (int) acom;
                }
 
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                returnData = 0;
                 Log.e("OctoDroid","printStackTrace");
             }
-
-        }
         return returnData;
     }
 
@@ -465,6 +440,9 @@ public abstract class util extends mainActivity {
             Log.e("OctoDroid", "IllegalStateException");
         }
 
+    }
+    public static void logD(String e){
+        Log.d("OctoDroid",e);
     }
 
 }

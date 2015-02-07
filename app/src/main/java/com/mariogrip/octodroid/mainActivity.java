@@ -126,7 +126,7 @@ public class mainActivity extends Activity {
         push = prefs.getBoolean("push", true);
         running = false;
 
-        logD("Done!");
+        util.logD("Done!");
     }
     public void startrunner(){
         Runnable runnable = new Runnable() {
@@ -139,7 +139,7 @@ public class mainActivity extends Activity {
                     }
                  });
                runner();
-                logD("Done startrunner()");
+                util.logD("Done startrunner()");
             }
         };
         new Thread(runnable).start();
@@ -148,7 +148,7 @@ public class mainActivity extends Activity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                logD("Starting Service");
+                util.logD("Starting Service");
                 if (push) {
                     if (!servicerunning) {
                         servicerunning = true;
@@ -157,13 +157,13 @@ public class mainActivity extends Activity {
                     }
                 }else{
                     if (servicerunning){
-                        logD("starting runner");
+                        util.logD("starting runner");
                         servicerunning = false;
                         Intent mServiceIntent = new Intent(mainActivity.this, service.class);
                         mainActivity.this.stopService(mServiceIntent);
                     }
                 }
-                logD("Done startservice()");
+                util.logD("Done startservice()");
             }
         };
         new Thread(runnable).start();
@@ -185,18 +185,30 @@ public class mainActivity extends Activity {
         timer2.schedule(timerTask2, 0, 10000);
     }
 
-    public void logD(String e){
-        Log.d("OctoDroid",e);
-    }
+
     public void runner(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int sync = 3000;
+        try{
+            sync = Integer.parseInt(prefs.getString("sync", "2"));
+            if (sync < 999){
+                sync = 1000;
+            }
+            if (sync > 7001){
+                sync = 7000;
+            }
+        }catch (Exception e){
+            sync = 3000;
+        }
         try {
-            util.refreshJson(ip, "job", key);
+
+            util_decode.decodeJob();
             if (running) {
-                logD("Stopping runner, Might started twice");
+                util.logD("Stopping runner, Might started twice");
                 return;
             }
             if (!running) {
-                logD("OneRunStarted");
+                util.logD("OneRunStarted");
                 running = true;
             }
             timerTask = new TimerTask() {
@@ -204,6 +216,11 @@ public class mainActivity extends Activity {
                 public void run() {
                     mainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
+                            util_decode.decodeJob();
+                            util_decode.decodeConnections();
+                            util_decode.decodePrinter();
+                            server_status = true;
+                            util.logD(memory.job.file.name);
                             if (!server_status) {
                                 try {
                                     TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
@@ -211,40 +228,41 @@ public class mainActivity extends Activity {
                                 }catch (Exception e){
 
                                 }
-                                logD("Server Error");
+                                util.logD("Server Error");
                                 running = false;
                                 servererr();
                                 timerTask.cancel();
                                 return;
                             }
-                            util.refreshJson(ip, "printer", key);
-                            util.decodeJson();
-                            util_get.genData();
+
                             switch (pos) {
                                 case 0:
                                     try{
-                                    logD("Running runner");
+                                    util.logD("Running runner");
                                     if (server_status) {
-                                        if (util_get.isConnected()) {
-                                            final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-                                            spinner.setEnabled(false);
-                                            final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-                                            spinner2.setEnabled(false);
-                                            final Button right = (Button) findViewById(R.id.buttonConDis);
-                                            right.setText("Disconnect");
-                                        }else{
-                                            final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-                                            spinner.setEnabled(true);
-                                            final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-                                            spinner2.setEnabled(true);
-                                            final Button right = (Button) findViewById(R.id.buttonConDis);
-                                            right.setText("Connect");
+                                        try {
+                                            if (util_get.isConnected()) {
+                                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                                spinner.setEnabled(false);
+                                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                                spinner2.setEnabled(false);
+                                                final Button right = (Button) findViewById(R.id.buttonConDis);
+                                                right.setText("Disconnect");
+                                            } else {
+                                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                                spinner.setEnabled(true);
+                                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                                spinner2.setEnabled(true);
+                                                final Button right = (Button) findViewById(R.id.buttonConDis);
+                                                right.setText("Connect");
+                                            }
+                                        }catch (Exception e){
+
                                         }
                                         ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                                         TextView texttime = (TextView) findViewById(R.id.textView11_time);
                                         TextView textpri = (TextView) findViewById(R.id.textView16_printed);
                                         TextView textest = (TextView) findViewById(R.id.textView13_est);
-                                        TextView texthei = (TextView) findViewById(R.id.textView15_hei);
                                         TextView textfile = (TextView) findViewById(R.id.textView11_file);
                                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                                         TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
@@ -252,40 +270,36 @@ public class mainActivity extends Activity {
                                         TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
                                         TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
                                         TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
-                                        TextView textfila = (TextView) findViewById(R.id.textView12_fila);
-                                        TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
+                                        // TextView texthei = (TextView) findViewById(R.id.textView15_hei);
+                                        //TextView textfila = (TextView) findViewById(R.id.textView12_fila);
+                                        //TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
 
-                                        if (memory.FilePos == "null" || memory.Size == "null" || memory.Size == "") {
-                                            textpri.setText(" " + "-/-");
-                                        } else {
-                                            textpri.setText(" " + util.toMBGB(Double.parseDouble(memory.FilePos)).toString() + "/" + util.toMBGB(Double.parseDouble(memory.Size)).toString());
-                                        }
-                                        texttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
-                                        textest.setText(" " + util.toHumanRead(Double.parseDouble(memory.EstimatedPrintTime)));
-                                        texthei.setText(" " + memory.Height);
-                                        textfile.setText(" " + memory.File);
-                                        textmaci.setText(" " + memory.MacineState);
-                                        texttarT.setText(" " + memory.ExtTempTarget + "°C");
-                                        textcurT.setText(" " + memory.ExtTempCurrent + "°C");
-                                        textBcur.setText(" " + memory.bedTempCurrent + "°C");
-                                        textBtar.setText(" " + memory.bedTempTarget + "°C");
-                                        textfila.setText(" " + memory.Filament);
-                                        texttimel.setText(" " + memory.Timelapse);
-                                        textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTime)));
+                                        textfile.setText(" " + memory.job.file.name);
+                                        textpri.setText(" " + util.toMBGB(memory.job.progress.filepos).toString() + "/" + util.toMBGB(memory.job.file.size).toString());
+                                        texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
+                                        textest.setText(" " + util.toHumanRead(memory.job.estimatedPrintTime));
+                                        textmaci.setText(" " + memory.connection.current.state);
+                                        texttarT.setText(" " + memory.temp.target.Ext[0] + "°C");
+                                        textcurT.setText(" " + memory.temp.current.Ext[0] + "°C");
+                                        textBcur.setText(" " + memory.temp.current.Bed[0] + "°C");
+                                        textBtar.setText(" " + memory.temp.target.Bed[0] + "°C");
+                                        textprinttime.setText(" " + util.toHumanRead(memory.job.progress.printTime));
                                         progress.setProgress(util.getProgress());
+                                        // textfila.setText(" " + memory.Filament);
+                                        // texttimel.setText(" " + memory.Timelapse);
+                                        // texthei.setText(" " + memory.Height);
                                     } else {
                                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                                         textmaci.setText("Cannot connect to\n" + ip);
                                     }
-                                    }catch (Exception v){}
+                                    }catch (Exception v){v.printStackTrace();}
                                     break;
                                 case 2:
                                     if (server_status) {
                                     try {
-
                                             ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                                             TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                                            texttime.setText(" " + util.toHumanRead(Double.parseDouble(util.getData("job", "printTimeLeft"))));
+                                            texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
                                             progress.setProgress(util.getProgress());
                                         }catch(Exception v){
                                         }
@@ -298,10 +312,10 @@ public class mainActivity extends Activity {
                                             TextView texttimes = (TextView) findViewById(R.id.textView11_time);
                                             texttimes.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
                                             progresss.setProgress(util.getProgress());
-                                            TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed);
-                                            TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext);
-                                            textbed.setText(memory.bedTempCurrent + "°C");
-                                            textext.setText(memory.ExtTempCurrent + "°C");
+                                            TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed_Tempcard);
+                                            TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
+                                            textbed.setText(memory.temp.current.getBed()[0] + "°C");
+                                            textext.setText(memory.temp.current.getExt()[0] + "°C");
 
                                         } catch (Exception v) {
                                         }
@@ -316,8 +330,10 @@ public class mainActivity extends Activity {
                 }
 
             };
-            timer.schedule(timerTask, 0, 3000);
+
+            timer.schedule(timerTask, 0, sync);
         }catch (NullPointerException v){
+            v.printStackTrace();
         }
     }
 
@@ -510,91 +526,7 @@ public class mainActivity extends Activity {
         setTitle(nawTitle[position]);
         nawlay.closeDrawer(nawList);
 
-        mainActivity.this.runOnUiThread(new Runnable() {
-            public void run() {
-                logD("DoingSwitch");
-                    switch (pos) {
-                        case 0:
-                            try {
-                                if (server_status) {
-                                    logD("start");
-                                    ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                                    TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                                    TextView textpri = (TextView) findViewById(R.id.textView16_printed);
-                                    TextView textest = (TextView) findViewById(R.id.textView13_est);
-                                    TextView texthei = (TextView) findViewById(R.id.textView15_hei);
-                                    TextView textfile = (TextView) findViewById(R.id.textView11_file);
-                                    TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                    TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
-                                    TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
-                                    TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
-                                    TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
-                                    TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
-                                    TextView textfila = (TextView) findViewById(R.id.textView12_fila);
-                                    TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
-                                    logD("DoneLoadTextView");
-                                    if (memory.FilePos == "null" || memory.Size == "null" || memory.Size == "") {
-                                        textpri.setText(" " + "-/-");
-                                    } else {
-                                        textpri.setText(" " + util.toMBGB(Double.parseDouble(memory.FilePos)).toString() + "/" + util.toMBGB(Double.parseDouble(memory.Size)).toString());
-                                    }
-                                    logD("The if down");
-                                    texttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
-                                    textest.setText(" " + util.toHumanRead(Double.parseDouble(memory.EstimatedPrintTime)));
-                                    logD("To humanRead done");
-                                    texthei.setText(" " + memory.Height);
-                                    textfile.setText(" " + memory.File);
-                                    textmaci.setText(" " + memory.MacineState);
-                                    texttarT.setText(" " + memory.ExtTempCurrent + "°C");
-                                    textcurT.setText(" " + memory.ExtTempTarget + "°C");
-                                    textBcur.setText(" " + memory.bedTempCurrent + "°C");
-                                    textBtar.setText(" " + memory.bedTempTarget + "°C");
-                                    textfila.setText(" " + memory.Filament);
-                                    texttimel.setText(" " + memory.Timelapse);
-                                    logD("All thows settime");
-                                    textprinttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTime)));
-                                    progress.setProgress(memory.ProgressM);
-                                    logD("Done btw");
-                                } else {
-                                    TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                    textmaci.setText("Cannot connect to\n" + ip);
-                                }
-                            } catch (NullPointerException v) {
-                            }
-                            break;
-                        case 2:
-                            if (server_status) {
-                                try {
-                                    ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                                    TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                                    texttime.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
-                                    progress.setProgress(memory.ProgressM);
-                                } catch (NullPointerException v) {
-                                }
-                            }
-                            break;
-                        case 1:
-                            if (server_status) {
-                                try {
-                                    ProgressBar progresss = (ProgressBar) findViewById(R.id.progressBar);
-                                    TextView texttimes = (TextView) findViewById(R.id.textView11_time);
-                                    texttimes.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
-                                    progresss.setProgress(memory.ProgressM);
-                                    TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed);
-                                    TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext);
-                                    textbed.setText(memory.bedTempCurrent + "°C");
-                                    textext.setText(memory.ExtTempCurrent + "°C");
-                                } catch (NullPointerException v) {
-                                }
-                            }
-                            break;
-                        default:
-                            break;
 
-
-                }
-            }
-        });
     }
 
     @Override
