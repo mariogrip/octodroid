@@ -69,10 +69,15 @@ public class main_card_BETA extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main_beta, container, false);
-        ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
-        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
-        progresss.setProgress(util.getProgress());
+        try {
+            ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+            TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+            texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+            progresss.setProgress(util.getProgress());
+
+        }catch (Exception e){
+
+        }
         ArrayList<Card> cards = new ArrayList<Card>();
         card_progressbar cardprpg = new card_progressbar(rootView.getContext());
         cards.add(cardprpg);
