@@ -23,6 +23,12 @@
             android:summary="@string/savemode_summary"
             android:title="@string/savemode_title" >
         </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="stick"
+            android:summary="@string/stick_summary"
+            android:title="@string/stick_title" >
+        </CheckBoxPreference>
         <ListPreference
             android:key="sync"
             android:enabled="true"
@@ -45,6 +51,22 @@
             android:defaultValue="100"
             android:numeric="integer"
             android:key="max_bed_heat"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Camera" >
+       <!-- <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="flip"
+            android:summary="@string/flip_summary"
+            android:title="@string/flip_title" >
+        </CheckBoxPreference>-->
+        <ListPreference
+            android:key="rotate"
+            android:enabled="true"
+            android:defaultValue="0"
+            android:entries="@array/rotate"
+            android:summary="@string/rotate_summary"
+            android:entryValues="@array/rotateValues"
+            android:title="@string/rotate_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Beta" >
         <CheckBoxPreference

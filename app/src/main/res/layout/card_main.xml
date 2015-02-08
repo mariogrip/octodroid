@@ -51,4 +51,15 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout1"
         android:id="@+id/card_main_card_list"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW"
+        android:id="@+id/button_add_new_c"
+        android:layout_alignBottom="@+id/card_main_card_list"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

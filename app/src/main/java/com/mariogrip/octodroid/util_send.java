@@ -136,6 +136,7 @@ public class util_send extends util {
                 "}";
         sendcmd(mainActivity.ip, mainActivity.key, "connection", sendvalue);
     }
+
     public static void Connect(String save, String AutoCon, String baudrate, String port){
         String sendvalue = "{\n" +
                 "  \"command\": \"connect\",\n" +
@@ -145,5 +146,11 @@ public class util_send extends util {
                 "  \"autoconnect\": "+AutoCon+"\n" +
                 "}";
         sendcmd(mainActivity.ip, mainActivity.key, "connection", sendvalue);
+    }
+    public static void SendGcodeCMD(String cmd){
+        String sendvalue = "{\n" +
+                "  \"commands\": "+cmd+"\n" +
+                "}";
+        sendcmd(mainActivity.ip, mainActivity.key, "printer/command", sendvalue);
     }
 }

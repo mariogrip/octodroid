@@ -3,7 +3,6 @@ package com.mariogrip.octodroid;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mariogrip.octodroid.qr.IntentIntegrator;
@@ -159,7 +157,7 @@ public class welcome extends Activity {
         @Override
         protected String[] doInBackground(String... ip) {
             String[] returnThis = new String[]{""};
-            String check = util.checkIPWithServer(ip[0]);
+            String check = util.checkIPWithServer(ip[0], ip[1]);
             if (check.contains("null")){
                 returnThis = new String[]{ip[0], "false", ip[1]};
             }else{
@@ -177,7 +175,7 @@ public class welcome extends Activity {
             if (ipp[1].contains("false")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(welcome.this);
                 builder.setTitle("Failed");
-                builder.setMessage("OctoDroid could not send json request to " + ip1 + "\n\nPlease check https://github.com/mariogrip/octodroid/wiki for more info");
+                builder.setMessage("OctoDroid could not send json request (with API) to " + ip1 + "\n\nPlease check https://github.com/mariogrip/octodroid/wiki for more info");
                 builder.setPositiveButton("Save anyway", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(welcome.this);

@@ -3,12 +3,12 @@ package com.mariogrip.octodroid.iu;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.mariogrip.octodroid.R;
-import com.mariogrip.octodroid.mainActivity;
 import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_decode;
@@ -47,7 +45,6 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 
@@ -133,10 +130,11 @@ public class main_card_BETA extends Fragment {
             timerTask1 = new TimerTask() {
                 @Override
                 public void run() {
-                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                   // new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
                 }
             };
-            timer1.schedule(timerTask1, 0, 10000);
+            timer1.schedule(timerTask1, 0, 7000);
 
 
             //vv.setVideoURI(Uri.parse("http://" + mainActivity.ip +"/webcam/?action=snapshot"));
@@ -171,7 +169,13 @@ public class main_card_BETA extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(rootView.getContext());
             bmImage.setImageBitmap(result);
+            try {
+                bmImage.setRotation(Float.parseFloat(prefs.getString("rotate", "0")));
+            }catch (Exception e){
+
+            }
         }
     }
 

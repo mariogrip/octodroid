@@ -5,6 +5,7 @@
         <item>Controls</item>
         <item>Files</item>
         <item>Connection</item>
+        <item>Commands</item>
         <item>Settings</item>
          <!--<item>Controls</item>-->
     </string-array>

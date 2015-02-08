@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+     <!--   <VideoView
+            android:scrollbars="none"
+            android:clickable="false"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:fitsSystemWindows="true"
+            android:id="@+id/videoView"
+            />-->
+       <ImageView
+       android:scrollbars="none"
+           android:src="@drawable/test"
+       android:clickable="false"
+       android:layout_width="match_parent"
+       android:layout_height="287dp"
+       android:layout_alignParentTop="true"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentRight="true"
+       android:id="@+id/ImageView"
+       />
+
+    </RelativeLayout>

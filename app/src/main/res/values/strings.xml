@@ -40,4 +40,10 @@
     <string name="savemode_title">Battery save mode</string>
     <string name="savemode_summary">Do not check for update that frequency</string>
     <string name="setup">Run Setup</string>
+    <string name="stick_title">Enable Sticky notification</string>
+    <string name="stick_summary">Makes a sticky notification while printing</string>
+    <string name="flip_title">Flip camera</string>
+    <string name="flip_summary">Flip the webcam</string>
+    <string name="rotate_title">Rotate camera</string>
+    <string name="rotate_summary">Rotate the webcam</string>
 </resources>

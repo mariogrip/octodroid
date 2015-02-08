@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:layout_margin="5dp"
+        android:textSize="18dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView17" />
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView17"
+        android:id="@+id/editText_new_name" />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:text="Command (one per line):"
+        android:layout_below="@id/editText_new_name"
+        android:id="@+id/textView18" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="130dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:layout_below="@id/textView18"
+        android:id="@+id/editText_new_cmd"/>
+</RelativeLayout>
+

@@ -29,6 +29,7 @@ public class service extends IntentService {
     private TimerTask timerTask2;
     private double complete;
     private int intcom;
+    private boolean notefaRunning = false;
     private NotificationManager mNotifyManager;
     private NotificationCompat.Builder mBuilder;
 
@@ -77,17 +78,20 @@ public class service extends IntentService {
         if (prefs.getBoolean("battery", false)){
             savemode = 20000;
         }
+        final boolean notef = prefs.getBoolean("battery", true);
         final int id = 1;
-        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
         Log.d("OctoDroid Service", "StartprintService");
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        mBuilder.setContentTitle("OctoDroid")
-                .setContentText("Printing")
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.octodroid_smal);
-        mNotifyManager.notify(id, mBuilder.build());
+        if (notef && !notefaRunning) {
+            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mBuilder = new NotificationCompat.Builder(this);
+            mBuilder.setContentTitle("OctoDroid")
+                    .setContentText("Printing")
+                    .setOngoing(true)
+                    .setSmallIcon(R.drawable.octodroid_smal);
+            mNotifyManager.notify(id, mBuilder.build());
+            notefaRunning = true;
+        }
 
         timerTask2 = new TimerTask() {
             @Override
@@ -103,6 +107,7 @@ public class service extends IntentService {
                 if (!util.getData("job", "state").equals("Printing")) {
                     Log.d("OctoDroid Service", "startPrintService stopping");
                     mainActivity.printing = false;
+                    notefaRunning = false;
                     mNotifyManager.cancel(id);
                     Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     mBuilder.setContentText("Print complete")
@@ -117,8 +122,10 @@ public class service extends IntentService {
                     return;
                 }
                 Log.d("OctoDroid Service", "startPrintService Notify" + complete );
-               mBuilder.setProgress(100, (int) complete, false).setContentText("Printing (" + (int) complete + "%)");
-               mNotifyManager.notify(id, mBuilder.build());
+                if (notef) {
+                    mBuilder.setProgress(100, (int) complete, false).setContentText("Printing (" + (int) complete + "%)");
+                    mNotifyManager.notify(id, mBuilder.build());
+                }
             }
         };
         timer2.schedule(timerTask2, 0, savemode);

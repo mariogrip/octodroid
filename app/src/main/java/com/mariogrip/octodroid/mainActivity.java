@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +15,6 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +30,12 @@ import android.widget.TextView;
 
 import com.mariogrip.octodroid.iu.con_card;
 import com.mariogrip.octodroid.iu.cont_card;
+import com.mariogrip.octodroid.iu.custom_card;
 import com.mariogrip.octodroid.iu.file_card;
 import com.mariogrip.octodroid.iu.main_card;
 import com.mariogrip.octodroid.iu.main_card_BETA;
 import com.mariogrip.octodroid.iu.temp_card;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +47,7 @@ import java.util.TimerTask;
  * MainActiviti The main class (init class) This is the class that is called when the app start
  */
 public class mainActivity extends Activity {
+    private boolean AsyncTaskRunning = false;
     protected int pos;
     private String[] nawTitle;
     private DrawerLayout nawlay;
@@ -84,8 +82,8 @@ public class mainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //TODO Remove StrictMode and add AsyncTask!
         super.onCreate(savedInstanceState);
-        StrictMode.ThreadPolicy policy = new StrictMode.
-        ThreadPolicy.Builder().permitAll().build();
+       StrictMode.ThreadPolicy policy = new StrictMode.
+       ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
         ip = prefs.getString("ip", "none");
@@ -187,21 +185,6 @@ public class mainActivity extends Activity {
         new Thread(runnable).start();
     }
 
-    public void servererr(){
-        timerTask2 = new TimerTask() {
-            @Override
-            public void run() {
-                util.refreshJson(ip, "job", key);
-                if (server_status){
-                    runner();
-                    timerTask2.cancel();
-                    return;
-                }
-            }
-
-        };
-        timer2.schedule(timerTask2, 0, 10000);
-    }
 
 
     public void runner(){
@@ -234,8 +217,7 @@ public class mainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            decodejobs();
-                            Fill();
+new updateTextview().execute();
                         }
                     });
                 }
@@ -247,13 +229,36 @@ public class mainActivity extends Activity {
             v.printStackTrace();
         }
     }
+
+    private class updateTextview extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if(!AsyncTaskRunning) {
+                AsyncTaskRunning = true;
+                decodejobs();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(!AsyncTaskRunning) {
+                Fill();
+                AsyncTaskRunning = false;
+            }
+        }
+    }
+
     private void decodejobs(){
         if(util.isPingServerTrue()){
             util_decode.decodeJob();
             util_decode.decodeConnections();
             util_decode.decodePrinter();
+            util.logD("DecodeJobs Ping true");
             memory.isServerUp = true;
         }else{
+            util.logD("DecodeJobs Ping true");
             memory.isServerUp = false;
         }
 
@@ -265,12 +270,8 @@ public class mainActivity extends Activity {
                 TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                 textmaci.setText("Cannot connect to\n" + ip);
             }catch (Exception e){
-
             }
             util.logD("Server Error");
-            running = false;
-            servererr();
-            timerTask.cancel();
             return;
         }
         switch (pos) {
@@ -531,7 +532,7 @@ public class mainActivity extends Activity {
                 case 0:
                     fragment = new main_card_BETA();
                     break;
-                case 5:
+                case 6:
                     fragment = new main_card_BETA();
                     pos = 0;
                     position = 0;
@@ -550,6 +551,9 @@ public class mainActivity extends Activity {
                 case 4:
                     fragment = new con_card();
                     break;
+                case 5:
+                    fragment = new custom_card();
+                    break;
                 default:
                     break;
             }
@@ -559,7 +563,7 @@ public class mainActivity extends Activity {
                 case 0:
                     fragment = new main_card();
                     break;
-                case 5:
+                case 6:
                     fragment = new main_card();
                     pos = 0;
                     position = 0;
@@ -577,6 +581,9 @@ public class mainActivity extends Activity {
                     break;
                 case 4:
                     fragment = new con_card();
+                    break;
+                case 5:
+                    fragment = new custom_card();
                     break;
                 default:
                     break;

@@ -1,7 +1,6 @@
 package com.mariogrip.octodroid;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -22,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 /**
  * Created by mariogrip on 27.10.14.
@@ -37,6 +37,137 @@ public abstract class util extends mainActivity {
      *  ""WIP""
      *
      */
+    public static String arrayToJsonArray(String[] i){
+        StringBuilder ReturnThis = new StringBuilder();
+        ReturnThis.append("[");
+        for (String g : i){
+            ReturnThis.append("\"" + g + "\",");
+        }
+        if (ReturnThis.toString().endsWith(",")){
+            ReturnThis =  new StringBuilder(ReturnThis.substring(0,ReturnThis.length()-1));
+        }
+        ReturnThis.append("]");
+        return ReturnThis.toString();
+    }
+    public static String[] oneLinetoArray(String i){
+        String[] ReturnThis;
+        if (i.contains("\n")){
+            ReturnThis = i.split("\n");
+        }else{
+            ReturnThis = new String[]{i};
+        }
+        return ReturnThis;
+    }
+
+    public static String[] getSavedCommandsIDs(SharedPreferences prefs){
+        String FromPrefs = prefs.getString("cmdID", "none");
+        String[] ReturnThis;
+        if (FromPrefs.contains("|")){
+            ReturnThis = FromPrefs.split("\\|");
+        }else{
+            ReturnThis = new String[]{FromPrefs};
+        }
+        for (String i : ReturnThis) {
+            logD("On GetSave "+i);
+        }
+        return ReturnThis;
+    }
+
+    public static boolean SaveCommands(String name, String command, SharedPreferences sharedPref){
+        try {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String FromPrefs = sharedPref.getString("cmdID", "none");
+            String randomString = getRandom();
+            while (FromPrefs.contains(randomString)) {
+                randomString = getRandom();
+                util.logD("getting new string");
+            }
+            if (FromPrefs.contains("none")) {
+                editor.putString("cmdID", randomString);
+                editor.commit();
+                editor.putString(randomString, name + "|" + command + "|" + randomString);
+                editor.commit();
+                return true;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append(FromPrefs).append("|").append(randomString);
+            editor.putString("cmdID", sb.toString());
+            editor.commit();
+            editor.putString(randomString, name + "|" + command + "|" + randomString);
+            editor.commit();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public static boolean RemoveCommands(String id, SharedPreferences sharedPref){
+        try {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String FromPrefs = sharedPref.getString("cmdID", "none");
+
+            String theString = FromPrefs.replace(id,"");
+            while (theString.contains("||")){
+                theString = theString.replace("||", "|");
+            }
+            while (theString.startsWith("|")){
+                theString = theString.substring(1);
+            }
+            while (theString.endsWith("|")){
+                theString = theString.substring(0,theString.length()-1);
+            }
+            if (theString.equals("")){
+                theString = "none";
+            }
+
+            util.logD("Remove "+theString);
+
+            if (FromPrefs.contains("none")) {
+                editor.putString("cmdID", theString);
+                editor.commit();
+                editor.putString(id, "");
+                editor.commit();
+                return true;
+            }
+            editor.putString("cmdID", theString);
+            editor.commit();
+            editor.putString(id, "");
+            editor.commit();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public static String[] getCommandInfo(String id, SharedPreferences prefs){
+        String FromPrefs = prefs.getString(id, "none");
+        String[] ReturnThis;
+        if (!FromPrefs.contains("none")){
+            ReturnThis = FromPrefs.split("\\|");
+        }else{
+            ReturnThis = new String[]{FromPrefs};
+        }
+
+        for (String i : ReturnThis){
+            util.logD("On GetINFo "+i);
+        }
+        return ReturnThis;
+    }
+
+    public static String getRandom(){
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 5;
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (new Random().nextFloat() * (rightLimit - leftLimit));
+            buffer.append((char) randomLimitedInt);
+        }
+        String generatedString = buffer.toString();
+
+        return generatedString;
+    }
 
     public static String[] jsonArraytoStringArray(String input){
         String input2 = input.replaceAll("[\\[\\]\" ]","");
@@ -476,7 +607,7 @@ public abstract class util extends mainActivity {
     }
     public static int isPingServer(){
         try {
-            InetAddress address = InetAddress.getByName(memory.user.getIp());
+            InetAddress address = InetAddress.getByName(memory.user.getIp()+"/api/version");
             address.isReachable(3000);
             return 0;
         }
@@ -491,7 +622,7 @@ public abstract class util extends mainActivity {
     }
     public static int isPingServer(String ip){
         try {
-            InetAddress address = InetAddress.getByName(ip);
+            InetAddress address = InetAddress.getByName(ip+"/api/version");
             address.isReachable(3000);
             return 0;
         }
@@ -507,7 +638,7 @@ public abstract class util extends mainActivity {
 
     public static boolean isPingServerTrue(){
         try {
-            InetAddress address = InetAddress.getByName(ip);
+            InetAddress address = InetAddress.getByName(ip+"/api/version");
             address.isReachable(3000);
             return true;
         }
@@ -520,9 +651,9 @@ public abstract class util extends mainActivity {
             return false;
         }
     }
-    public static String checkIPWithServer(String ip){
+    public static String checkIPWithServer(String ip, String api){
         try {
-            JSONObject connection_get = new JSONObject(getResponse(ip, "connection", mainActivity.key));
+            JSONObject connection_get = new JSONObject(getResponse(ip, "connection", api));
             memory.connection.current.state = connection_get.getJSONObject("current").getString("state");
             logD(memory.connection.current.state);
             return memory.connection.current.state;
