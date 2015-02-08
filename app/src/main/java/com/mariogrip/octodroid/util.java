@@ -582,25 +582,25 @@ public abstract class util extends mainActivity {
 
     public static boolean doGeneralCheckIp(){
 
-        if (memory.user.getIp().length() < 7){
+        if (memory.user.getIp().length() < 1){
             return false;
         }
         return true;
     }
     public static boolean doGeneralCheckApi(){
-        if (memory.user.getApi().length() < 30){
+        if (memory.user.getApi().length() < 1){
             return false;
         }
         return true;
     }
     public static boolean doGeneralCheckIp(String ip){
-        if (ip.length() < 7){
+        if (ip.length() < 1){
             return false;
         }
         return true;
     }
     public static boolean doGeneralCheckApi(String key){
-        if (key.length() < 30){
+        if (key.length() < 1){
             return false;
         }
         return true;
