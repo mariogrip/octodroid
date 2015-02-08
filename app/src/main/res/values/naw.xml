@@ -4,6 +4,7 @@
         <item>Temperature</item>
         <item>Controls</item>
         <item>Files</item>
+        <item>Connection</item>
         <item>Settings</item>
          <!--<item>Controls</item>-->
     </string-array>

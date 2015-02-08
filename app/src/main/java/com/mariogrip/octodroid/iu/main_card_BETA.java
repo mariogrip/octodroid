@@ -29,9 +29,9 @@ import android.widget.VideoView;
 
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.mainActivity;
-import com.mariogrip.octodroid.mainActivity_BETA;
 import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
+import com.mariogrip.octodroid.util_decode;
 import com.mariogrip.octodroid.util_get;
 import com.mariogrip.octodroid.util_send;
 
@@ -86,19 +86,6 @@ public class main_card_BETA extends Fragment {
         cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
         cards.add(cardcont);
 
-        cardtest2 card2 = new cardtest2(rootView.getContext(),"Connections", "Connections");
-
-        Card cardss = new Card(getActivity());
-        CardHeader header = new CardHeader(getActivity());
-        header.setTitle("Connections");
-        header.setButtonExpandVisible(true);
-        cardss.addCardHeader(header);
-        CardExpand expand = new CustomExpandCard(getActivity());
-        expand.setTitle("Connections");
-
-        cardss.addCardExpand(expand);
-
-        cards.add(cardss);
 
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
@@ -139,11 +126,6 @@ public class main_card_BETA extends Fragment {
         if (listView!=null){
             listView.setAdapter(mCardArrayAdapter);
         }
-        ViewToClickToExpand viewToClickToExpand =
-                ViewToClickToExpand.builder()
-                        .highlightView(false)
-                        .setupCardElement(ViewToClickToExpand.CardElementUI.CARD);
-        cardss.setViewToClickToExpand(viewToClickToExpand);
       //  VideoView vv = (VideoView) rootView.findViewById(R.id.videoView);
         ImageView vv = (ImageView) rootView.findViewById(R.id.ImageView);
 
@@ -213,8 +195,6 @@ public class main_card_BETA extends Fragment {
             header.setTitle(mTitleHeader);
             addCardHeader(header);
             setTitle(mTitleMain);
-            setCardElevation(10);
-
         }
 
 
@@ -225,6 +205,7 @@ public class main_card_BETA extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+
             try {
                 TextView textpri = (TextView) parent.findViewById(R.id.textView16_printed);
                 TextView textest = (TextView) parent.findViewById(R.id.textView13_est);
@@ -255,6 +236,8 @@ public class main_card_BETA extends Fragment {
             }catch (Exception e){
 
             }
+
+
         }
     }
 
@@ -280,6 +263,8 @@ public class main_card_BETA extends Fragment {
 
         }
     }
+
+
 
     public class cardteststart extends Card{
 
@@ -338,10 +323,10 @@ public class main_card_BETA extends Fragment {
                         @Override
                         public void run() {
                             try{
-                            util_send.startprint();
-                        } catch (Exception e){
+                                util_send.startprint();
+                            } catch (Exception e){
 
-                        }
+                            }
                         }
                     }).start();
 
@@ -377,6 +362,7 @@ public class main_card_BETA extends Fragment {
 
         protected String mTitleHeader;
         protected String mTitleMain;
+        protected ViewGroup parrent1;
 
         public cardtest2(Context context,String titleHeader,String titleMain) {
             super(context, R.layout.card_connect);
@@ -402,26 +388,177 @@ public class main_card_BETA extends Fragment {
         }
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-            ArrayList<String> spinnerArray = new ArrayList<String>();
-            Log.d("OctoDroid", "doing the thing");
-            util_get.decodeConnections();
-            String[] dev = util.jsonArraytoStringArray(util_get.getSerialPort());
-            for (String i : dev){
-                spinnerArray.add(i);
-            }
-            ArrayList<String> spinnerArray2 = new ArrayList<String>();
-            String[] dev2 = util.jsonArraytoStringArray(util_get.getBaudrates());
-            for (String i2 : dev2){
-                spinnerArray2.add(i2);
-            }
-            LinearLayout layout = new LinearLayout(parent.getContext());
-            Spinner spinner = (Spinner) parent.findViewById(R.id.spinner);
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-            spinner.setAdapter(spinnerArrayAdapter);
+            parrent1 = parent;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> spinnerArray = new ArrayList<String>();
+                    Log.d("OctoDroid", "doing the thing");
+                    util_decode.decodeConnections();
+                    String[] dev = util.jsonArraytoStringArray(util_get.getSerialPort());
+                    for (String i : dev){
+                        spinnerArray.add(i);
+                    }
+                    ArrayList<String> spinnerArray2 = new ArrayList<String>();
+                    String[] dev2 = util.jsonArraytoStringArray(util_get.getBaudrates());
+                    for (String i2 : dev2){
+                        spinnerArray2.add(i2);
+                    }
+                    LinearLayout layout = new LinearLayout(parrent1.getContext());
+                    Spinner spinner = (Spinner) parrent1.findViewById(R.id.spinner);
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parrent1.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+                    spinner.setAdapter(spinnerArrayAdapter);
 
-            Spinner spinner2 = (Spinner) parent.findViewById(R.id.spinner2);
-            ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
+                    Spinner spinner2 = (Spinner) parrent1.findViewById(R.id.spinner2);
+                    ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(parrent1.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
+                    spinner2.setAdapter(spinnerArrayAdapter2);
+                }
+            }).start();
+
+        }
+    }
+
+    public class createDisconnect extends AsyncTask<Void, Void, String[]>{
+
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            String[] returnThis = {""};
+            try{
+                util_decode.decodeConnections();
+                returnThis[0] = util_get.getCurrentSerialPort().replace("\\/", "/");
+                returnThis[1] = util_get.getCurrentBaudrates();
+            }catch (Exception e){
+                returnThis[0] = "null";
+            }
+            return  returnThis;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            if (strings[0].contains("null")){
+                final Button right = (Button) rootView.findViewById(R.id.buttonConDis);
+                right.setText("Connect");
+                right.setEnabled(false);
+                return;
+            }
+            ArrayList<String> spinnerArray = new ArrayList<String>();
+            spinnerArray.add(strings[0]);
+
+            ArrayList<String> spinnerArray2 = new ArrayList<String>();
+            spinnerArray2.add(strings[1]);
+
+            LinearLayout layout = new LinearLayout(rootView.getContext());
+            final Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+            spinner.setAdapter(spinnerArrayAdapter);
+            spinner.setEnabled(false);
+
+            final Spinner spinner2 = (Spinner) rootView.findViewById(R.id.spinner2);
+            ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
             spinner2.setAdapter(spinnerArrayAdapter2);
+            spinner2.setEnabled(false);
+
+            final Button right = (Button) rootView.findViewById(R.id.buttonConDis);
+            right.setText("Disconnect");
+            right.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    final ProgressDialog ringProgressDialog = ProgressDialog.show(rootView.getContext(), "Please wait ...", "Disconnecting for printer ...", true);
+                    ringProgressDialog.setCancelable(true);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                util_send.Disconnect();
+                                Thread.sleep(5000);
+                            } catch (Exception e){
+
+                            }
+                            ringProgressDialog.dismiss();
+
+                        }
+
+                    }).start();
+
+                }
+            });
+        }
+    }
+    public class createConnect extends AsyncTask<Void, Void, String[][]>{
+
+        @Override
+        protected String[][] doInBackground(Void... voids) {
+            if (util.isPingServerTrue()){
+                String[][] returnThis = new String[][]{{""}, {""}};
+                returnThis[0] = new String[]{"null"};
+                returnThis[1] = new String[]{"null"};
+                return returnThis;
+            }
+            String[][] returnThis = {{""}};
+            try {
+                util_decode.decodeConnections();
+                returnThis[0] = util.jsonArraytoStringArray(util_get.getSerialPort());
+                returnThis[1] = util.jsonArraytoStringArray(util_get.getBaudrates());
+            }catch (Exception e){
+                returnThis[0] = new String[]{"null"};
+                returnThis[1] = new String[]{"null"};
+            }
+            return  returnThis;
+        }
+
+        @Override
+        protected void onPostExecute(String[][] strings) {
+            try {
+                if (strings[0][0].contains("null")) {
+                    final Button right = (Button) rootView.findViewById(R.id.buttonConDis);
+                    right.setText("Connect");
+                    right.setEnabled(false);
+                    return;
+                }
+            }catch (Exception e){
+
+            }
+                ArrayList<String> spinnerArray = new ArrayList<String>();
+                for (String i : strings[0]) {
+                    spinnerArray.add(i.replace("\\/", "/"));
+                }
+                ArrayList<String> spinnerArray2 = new ArrayList<String>();
+                for (String i2 : strings[1]) {
+                    spinnerArray2.add(i2);
+                }
+                LinearLayout layout = new LinearLayout(rootView.getContext());
+                final Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+                spinner.setAdapter(spinnerArrayAdapter);
+                spinner.setEnabled(true);
+
+                final Spinner spinner2 = (Spinner) rootView.findViewById(R.id.spinner2);
+                ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
+                spinner2.setAdapter(spinnerArrayAdapter2);
+                spinner2.setEnabled(true);
+
+                final Button right = (Button) rootView.findViewById(R.id.buttonConDis);
+                right.setText("Connect");
+                right.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        final ProgressDialog ringProgressDialog = ProgressDialog.show(rootView.getContext(), "Please wait ...", "Connecting for printer ...", true);
+                        ringProgressDialog.setCancelable(true);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    util_send.Connect("true", "true", spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString());
+                                    Thread.sleep(5000);
+                                } catch (Exception e) {
+
+                                }
+                                ringProgressDialog.dismiss();
+                            }
+
+                        }).start();
+
+                    }
+                });
+
         }
     }
 
@@ -437,102 +574,16 @@ public class main_card_BETA extends Fragment {
                     getColor(R.color.card_background));
 
             if (view == null) return;
-            ArrayList<String> spinnerArray = new ArrayList<String>();
+
             Log.d("OctoDroid", "doing the thing");
             if (util_get.isConnected()) {
-                util_get.decodeConnections();
-                spinnerArray.add(util_get.getCurrentSerialPort().replace("\\/", "/"));
-
-                ArrayList<String> spinnerArray2 = new ArrayList<String>();
-                spinnerArray2.add(util_get.getCurrentBaudrates());
-
-                LinearLayout layout = new LinearLayout(parent.getContext());
-                final Spinner spinner = (Spinner) parent.findViewById(R.id.spinner);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-                spinner.setAdapter(spinnerArrayAdapter);
-                spinner.setEnabled(false);
-
-                final Spinner spinner2 = (Spinner) parent.findViewById(R.id.spinner2);
-                ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
-                spinner2.setAdapter(spinnerArrayAdapter2);
-                spinner2.setEnabled(false);
-
-                final Button right = (Button) parent.findViewById(R.id.buttonConDis);
-                right.setText("Disconnect");
-                right.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        final ProgressDialog ringProgressDialog = ProgressDialog.show(parent.getContext(), "Please wait ...", "Disconnecting for printer ...", true);
-                        ringProgressDialog.setCancelable(true);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    util_send.Disconnect();
-                                    Thread.sleep(5000);
-                                } catch (Exception e){
-
-                                }
-                                ringProgressDialog.dismiss();
-
-                            }
-
-                        }).start();
-
-                    }
-                });
-
-            }else{
-                util_get.decodeConnections();
-                String[] dev = util.jsonArraytoStringArray(util_get.getSerialPort());
-                for (String i : dev){
-                    spinnerArray.add(i.replace("\\/", "/"));
-                }
-                for (String i : dev){
-                    Log.d("OctoDroid", i);
-                }
-                ArrayList<String> spinnerArray2 = new ArrayList<String>();
-                String[] dev2 = util.jsonArraytoStringArray(util_get.getBaudrates());
-                for (String i2 : dev2){
-                    spinnerArray2.add(i2);
-                }
-                LinearLayout layout = new LinearLayout(parent.getContext());
-                final Spinner spinner = (Spinner) parent.findViewById(R.id.spinner);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
-                spinner.setAdapter(spinnerArrayAdapter);
-                spinner.setEnabled(true);
-
-                final Spinner spinner2 = (Spinner) parent.findViewById(R.id.spinner2);
-                ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray2);
-                spinner2.setAdapter(spinnerArrayAdapter2);
-                spinner2.setEnabled(true);
-
-                final Button right = (Button) parent.findViewById(R.id.buttonConDis);
-                right.setText("Connect");
-                right.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        final ProgressDialog ringProgressDialog = ProgressDialog.show(parent.getContext(), "Please wait ...", "Connecting for printer ...", true);
-                        ringProgressDialog.setCancelable(true);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    util_send.Connect("true", "true", spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString());
-                                    Thread.sleep(5000);
-                                } catch (Exception e){
-
-                                }
-                                ringProgressDialog.dismiss();
-                            }
-
-                        }).start();
-
-                    }
-                });
+                new createDisconnect().execute();
+            } else {
+                new createConnect().execute();
             }
 
+
         }
-
-
     }
 
 
@@ -553,8 +604,6 @@ public class main_card_BETA extends Fragment {
             return 2;
         }
     }
-
-
 
 
 }

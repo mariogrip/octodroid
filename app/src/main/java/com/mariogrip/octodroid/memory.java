@@ -148,31 +148,36 @@ public class memory extends mainActivity {
         }
     }
 
+    public static boolean isConnected() {
+        return isConnected;
+    }
+
     //Booleans
-    public static boolean connected = false;
+    public static boolean isConnected = false;
+    public static boolean isServerUp = false;
+    public static boolean skipWelcom = false;
 
+    //User Settings
+    public static class user{
+        private static String ip = "none";
+        private static String api = "none";
 
+        public static String getIp() {
+            return ip;
+        }
 
+        public static void setIp(String ip) {
+            user.ip = ip;
+        }
 
-    //TODO remove all single string variables
-    //This is temporary OLD NAMES!
-    protected static String bedTempCurrent = "0";
-    public static String bedTempTarget = "0";
-    protected static String ExtTempCurrent = "0";
-    public static String ExtTempTarget = "0";
-    protected static String MacineState = "";
-    protected static String File = "";
-    protected static String Filament = "";
-    protected static String EstimatedPrintTime = "0";
-    protected static String Timelapse = "";
-    protected static String Height = "";
-    protected static String Printed = "";
-    protected static String PrintTime = "0";
-    protected static String PrintTimeLeft = "0";
-    protected static String FilePos = "";
-    protected static String Completion = "";
-    protected static String Size = "0";
-    protected static Integer ProgressM = 0;
+        public static String getApi() {
+            return api;
+        }
+
+        public static void setApi(String api) {
+            user.api = api;
+        }
+    }
 
     //Single Json strings
     protected static String options_dec;

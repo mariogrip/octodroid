@@ -112,7 +112,7 @@ public class temp_card extends Fragment {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_bed);
             final Button setbutton = (Button) parent.findViewById(R.id.button_setBed);
             seekBar.setMax(maxtemp);
-            Integer temp = Integer.parseInt(memory.bedTempTarget);
+            int temp = (int) memory.temp.target.getBed()[0];
             if (temp > maxtemp){
                 temp = maxtemp;
             }
@@ -198,7 +198,7 @@ public class temp_card extends Fragment {
             SeekBar seekBar = (SeekBar) parent.findViewById(R.id.seekBar_ext);
             seekBar.setMax(maxtemp);
             final Button setbutton = (Button) parent.findViewById(R.id.button_ext);
-            Integer temp = Integer.parseInt(memory.ExtTempTarget);
+            Integer temp = (int) memory.temp.target.getExt()[0];
             if (temp > maxtemp){
                 temp = maxtemp;
             }

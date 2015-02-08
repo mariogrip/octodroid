@@ -1,5 +1,7 @@
 package com.mariogrip.octodroid;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -18,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Created by mariogrip on 27.10.14.
@@ -443,6 +447,102 @@ public abstract class util extends mainActivity {
     }
     public static void logD(String e){
         Log.d("OctoDroid",e);
+    }
+
+    public static boolean doGeneralCheckIp(){
+
+        if (memory.user.getIp().length() < 7){
+            return false;
+        }
+        return true;
+    }
+    public static boolean doGeneralCheckApi(){
+        if (memory.user.getApi().length() < 30){
+            return false;
+        }
+        return true;
+    }
+    public static boolean doGeneralCheckIp(String ip){
+        if (ip.length() < 7){
+            return false;
+        }
+        return true;
+    }
+    public static boolean doGeneralCheckApi(String key){
+        if (key.length() < 30){
+            return false;
+        }
+        return true;
+    }
+    public static int isPingServer(){
+        try {
+            InetAddress address = InetAddress.getByName(memory.user.getIp());
+            address.isReachable(3000);
+            return 0;
+        }
+        catch (UnknownHostException e) {
+            System.err.println("Cannot find the server");
+            return 1;
+        }
+        catch (IOException e) {
+            logD("Cannot reach server");
+            return 2;
+        }
+    }
+    public static int isPingServer(String ip){
+        try {
+            InetAddress address = InetAddress.getByName(ip);
+            address.isReachable(3000);
+            return 0;
+        }
+        catch (UnknownHostException e) {
+            System.err.println("Cannot find the server");
+            return 1;
+        }
+        catch (IOException e) {
+            logD("Cannot reach server");
+            return 2;
+        }
+    }
+
+    public static boolean isPingServerTrue(){
+        try {
+            InetAddress address = InetAddress.getByName(ip);
+            address.isReachable(3000);
+            return true;
+        }
+        catch (UnknownHostException e) {
+            System.err.println("Cannot find the server");
+            return false;
+        }
+        catch (IOException e) {
+            logD("Cannot reach server");
+            return false;
+        }
+    }
+    public static String checkIPWithServer(String ip){
+        try {
+            JSONObject connection_get = new JSONObject(getResponse(ip, "connection", mainActivity.key));
+            memory.connection.current.state = connection_get.getJSONObject("current").getString("state");
+            logD(memory.connection.current.state);
+            return memory.connection.current.state;
+        } catch (Exception e) {
+            util.logD(e.toString());
+            return "null";
+        }
+    }
+    public static boolean checkAPIWithServer(String ip, String api){
+            try {
+                String sendvalue = "{\n" +
+                        "  \"command\": \"home\",\n" +
+                        "  \"axes\": [\"x\", \"y\"]\n" +
+                        "}";
+                sendcmd(ip, api, "printer/printhead", sendvalue);
+                return true;
+            }catch (Exception e){
+                logD("Failed checkAPI");
+                return false;
+            }
     }
 
 }

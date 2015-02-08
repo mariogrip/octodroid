@@ -215,7 +215,6 @@ public class cont_card extends Fragment {
             setTitle(mTitleMain);
         }
 
-
         @Override
         public int getType() {
             //Very important with different inner layouts
@@ -223,7 +222,6 @@ public class cont_card extends Fragment {
         }
         @Override
         public void setupInnerViewElements(final ViewGroup parent, View view) {
-
             final RadioGroup Group = (RadioGroup) parent.findViewById(R.id.radiogrrr);
             ImageButton up = (ImageButton) parent.findViewById(R.id.buttonUp);
             up.setOnClickListener(new View.OnClickListener() {
@@ -307,10 +305,7 @@ public class cont_card extends Fragment {
 
         }
     }
-
-
     public class MyCardArrayAdapter extends CardArrayAdapter{
-
         /**
          * Constructor
          *

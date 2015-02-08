@@ -20,10 +20,9 @@
        android:scrollbars="none"
        android:clickable="false"
        android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
+       android:layout_height="match_parent"
        android:layout_alignParentTop="true"
        android:layout_alignParentLeft="true"
-       android:layout_alignParentBottom="true"
        android:layout_alignParentRight="true"
        android:fitsSystemWindows="true"
        android:id="@+id/ImageView"
@@ -89,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout1"
-        android:paddingTop="400dp"
+        android:paddingTop="300dp"
         android:clipToPadding="false"
         android:id="@+id/card_main_card_list"/>
 

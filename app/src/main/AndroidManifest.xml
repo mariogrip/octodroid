@@ -28,6 +28,12 @@
             android:theme="@style/OctoTheme"
             android:label="@string/Send_bug" >
         </activity>
+        <activity
+            android:name=".welcome"
+            android:theme="@style/OctoTheme"
+            android:screenOrientation="portrait"
+            android:label="Welcome" >
+        </activity>
 
         <service
             android:name=".service"

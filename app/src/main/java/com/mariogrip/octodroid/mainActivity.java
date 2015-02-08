@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -29,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mariogrip.octodroid.iu.con_card;
 import com.mariogrip.octodroid.iu.cont_card;
 import com.mariogrip.octodroid.iu.file_card;
 import com.mariogrip.octodroid.iu.main_card;
@@ -86,6 +88,24 @@ public class mainActivity extends Activity {
         ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
+        ip = prefs.getString("ip", "none");
+        key = prefs.getString("api", "none");
+        senderr = prefs.getBoolean("err", true);
+        memory.user.setApi(key);
+        memory.user.setIp(ip);
+        boolean first = false;
+        if (!memory.skipWelcom){
+        Intent i = new Intent(mainActivity.this, welcome.class);
+        if(!util.doGeneralCheckApi()){
+                first = true;
+                startActivity(i);
+        }
+        if (!first) {
+            if(!util.doGeneralCheckIp()) {
+                    startActivity(i);
+            }
+        }
+        }
         betamode = prefs.getBoolean("beta", false);
 
         setContentView(R.layout.nawdraw);
@@ -120,9 +140,7 @@ public class mainActivity extends Activity {
             selectItem(0);
         }
 
-        ip = prefs.getString("ip", "localhost");
-        key = prefs.getString("api", "0");
-        senderr = prefs.getBoolean("err", true);
+
         push = prefs.getBoolean("push", true);
         running = false;
 
@@ -202,7 +220,6 @@ public class mainActivity extends Activity {
         }
         try {
 
-            util_decode.decodeJob();
             if (running) {
                 util.logD("Stopping runner, Might started twice");
                 return;
@@ -214,117 +231,11 @@ public class mainActivity extends Activity {
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    mainActivity.this.runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
-                            util_decode.decodeJob();
-                            util_decode.decodeConnections();
-                            util_decode.decodePrinter();
-                            server_status = true;
-                            util.logD(memory.job.file.name);
-                            if (!server_status) {
-                                try {
-                                    TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                    textmaci.setText("Cannot connect to\n" + ip);
-                                }catch (Exception e){
-
-                                }
-                                util.logD("Server Error");
-                                running = false;
-                                servererr();
-                                timerTask.cancel();
-                                return;
-                            }
-
-                            switch (pos) {
-                                case 0:
-                                    try{
-                                    util.logD("Running runner");
-                                    if (server_status) {
-                                        try {
-                                            if (util_get.isConnected()) {
-                                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-                                                spinner.setEnabled(false);
-                                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-                                                spinner2.setEnabled(false);
-                                                final Button right = (Button) findViewById(R.id.buttonConDis);
-                                                right.setText("Disconnect");
-                                            } else {
-                                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-                                                spinner.setEnabled(true);
-                                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-                                                spinner2.setEnabled(true);
-                                                final Button right = (Button) findViewById(R.id.buttonConDis);
-                                                right.setText("Connect");
-                                            }
-                                        }catch (Exception e){
-
-                                        }
-                                        ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                                        TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                                        TextView textpri = (TextView) findViewById(R.id.textView16_printed);
-                                        TextView textest = (TextView) findViewById(R.id.textView13_est);
-                                        TextView textfile = (TextView) findViewById(R.id.textView11_file);
-                                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                        TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
-                                        TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
-                                        TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
-                                        TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
-                                        TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
-                                        // TextView texthei = (TextView) findViewById(R.id.textView15_hei);
-                                        //TextView textfila = (TextView) findViewById(R.id.textView12_fila);
-                                        //TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
-
-                                        textfile.setText(" " + memory.job.file.name);
-                                        textpri.setText(" " + util.toMBGB(memory.job.progress.filepos).toString() + "/" + util.toMBGB(memory.job.file.size).toString());
-                                        texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
-                                        textest.setText(" " + util.toHumanRead(memory.job.estimatedPrintTime));
-                                        textmaci.setText(" " + memory.connection.current.state);
-                                        texttarT.setText(" " + memory.temp.target.Ext[0] + "°C");
-                                        textcurT.setText(" " + memory.temp.current.Ext[0] + "°C");
-                                        textBcur.setText(" " + memory.temp.current.Bed[0] + "°C");
-                                        textBtar.setText(" " + memory.temp.target.Bed[0] + "°C");
-                                        textprinttime.setText(" " + util.toHumanRead(memory.job.progress.printTime));
-                                        progress.setProgress(util.getProgress());
-                                        // textfila.setText(" " + memory.Filament);
-                                        // texttimel.setText(" " + memory.Timelapse);
-                                        // texthei.setText(" " + memory.Height);
-                                    } else {
-                                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                                        textmaci.setText("Cannot connect to\n" + ip);
-                                    }
-                                    }catch (Exception v){v.printStackTrace();}
-                                    break;
-                                case 2:
-                                    if (server_status) {
-                                    try {
-                                            ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
-                                            TextView texttime = (TextView) findViewById(R.id.textView11_time);
-                                            texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
-                                            progress.setProgress(util.getProgress());
-                                        }catch(Exception v){
-                                        }
-                                    }
-                                    break;
-                                case 1:
-                                    if (server_status) {
-                                        try {
-                                            ProgressBar progresss = (ProgressBar) findViewById(R.id.progressBar);
-                                            TextView texttimes = (TextView) findViewById(R.id.textView11_time);
-                                            texttimes.setText(" " + util.toHumanRead(Double.parseDouble(memory.PrintTimeLeft)));
-                                            progresss.setProgress(util.getProgress());
-                                            TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed_Tempcard);
-                                            TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
-                                            textbed.setText(memory.temp.current.getBed()[0] + "°C");
-                                            textext.setText(memory.temp.current.getExt()[0] + "°C");
-
-                                        } catch (Exception v) {
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-
-                            }
+                            decodejobs();
+                            Fill();
                         }
                     });
                 }
@@ -336,6 +247,126 @@ public class mainActivity extends Activity {
             v.printStackTrace();
         }
     }
+    private void decodejobs(){
+        if(util.isPingServerTrue()){
+            util_decode.decodeJob();
+            util_decode.decodeConnections();
+            util_decode.decodePrinter();
+            memory.isServerUp = true;
+        }else{
+            memory.isServerUp = false;
+        }
+
+    }
+
+    private void Fill(){
+        if (!memory.isServerUp) {
+            try {
+                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                textmaci.setText("Cannot connect to\n" + ip);
+            }catch (Exception e){
+
+            }
+            util.logD("Server Error");
+            running = false;
+            servererr();
+            timerTask.cancel();
+            return;
+        }
+        switch (pos) {
+            case 0:
+                try{
+                    util.logD("Running runner");
+                    if (memory.isServerUp) {
+                        try {
+                            if (util_get.isConnected()) {
+                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                spinner.setEnabled(false);
+                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                spinner2.setEnabled(false);
+                                final Button right = (Button) findViewById(R.id.buttonConDis);
+                                right.setText("Disconnect");
+                                right.setEnabled(true);
+                            } else {
+                                final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                                spinner.setEnabled(true);
+                                final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+                                spinner2.setEnabled(true);
+                                final Button right = (Button) findViewById(R.id.buttonConDis);
+                                right.setText("Connect");
+                                right.setEnabled(true);
+                            }
+                        }catch (Exception e){
+
+                        }
+                        ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+                        TextView texttime = (TextView) findViewById(R.id.textView11_time);
+                        TextView textpri = (TextView) findViewById(R.id.textView16_printed);
+                        TextView textest = (TextView) findViewById(R.id.textView13_est);
+                        TextView textfile = (TextView) findViewById(R.id.textView11_file);
+                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                        TextView texttarT = (TextView) findViewById(R.id.textView18_tar_t);
+                        TextView textcurT = (TextView) findViewById(R.id.textView18_cur_T);
+                        TextView textBcur = (TextView) findViewById(R.id.textView18_Bcur_T);
+                        TextView textBtar = (TextView) findViewById(R.id.textView18_Btar_T);
+                        TextView textprinttime = (TextView) findViewById(R.id.textView17_print_time);
+                        // TextView texthei = (TextView) findViewById(R.id.textView15_hei);
+                        //TextView textfila = (TextView) findViewById(R.id.textView12_fila);
+                        //TextView texttimel = (TextView) findViewById(R.id.textView14_timel);
+
+                        textfile.setText(" " + memory.job.file.name);
+                        textpri.setText(" " + util.toMBGB(memory.job.progress.filepos).toString() + "/" + util.toMBGB(memory.job.file.size).toString());
+                        texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
+                        textest.setText(" " + util.toHumanRead(memory.job.estimatedPrintTime));
+                        textmaci.setText(" " + memory.connection.current.state);
+                        texttarT.setText(" " + memory.temp.target.Ext[0] + "°C");
+                        textcurT.setText(" " + memory.temp.current.Ext[0] + "°C");
+                        textBcur.setText(" " + memory.temp.current.Bed[0] + "°C");
+                        textBtar.setText(" " + memory.temp.target.Bed[0] + "°C");
+                        textprinttime.setText(" " + util.toHumanRead(memory.job.progress.printTime));
+                        progress.setProgress(util.getProgress());
+                        // textfila.setText(" " + memory.Filament);
+                        // texttimel.setText(" " + memory.Timelapse);
+                        // texthei.setText(" " + memory.Height);
+                    } else {
+                        TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
+                        textmaci.setText("Cannot connect to\n" + ip);
+                    }
+                }catch (Exception v){v.printStackTrace();}
+                break;
+            case 2:
+                if (memory.isServerUp) {
+                    try {
+                        ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+                        TextView texttime = (TextView) findViewById(R.id.textView11_time);
+                        texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
+                        progress.setProgress(util.getProgress());
+                    }catch(Exception v){
+                    }
+                }
+                break;
+            case 1:
+                if (memory.isServerUp) {
+                    try {
+                        ProgressBar progresss = (ProgressBar) findViewById(R.id.progressBar);
+                        TextView texttimes = (TextView) findViewById(R.id.textView11_time);
+                        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+                        progresss.setProgress(util.getProgress());
+                        TextView textbed = (TextView) findViewById(R.id.textView_CurentTemp_bed_Tempcard);
+                        TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
+                        textbed.setText(memory.temp.current.getBed()[0] + "°C");
+                        textext.setText(memory.temp.current.getExt()[0] + "°C");
+
+                    } catch (Exception v) {
+                    }
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -360,6 +391,11 @@ public class mainActivity extends Activity {
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, settings.class);
             startActivityForResult(i, RESULT_SETTINGS);
+            return true;
+        }
+        if (id == R.id.setup) {
+            Intent i = new Intent(this, welcome.class);
+            startActivity(i);
             return true;
         }
         if (id == R.id.action_bug) {
@@ -413,21 +449,23 @@ public class mainActivity extends Activity {
     }
     public void onResume(){
         super.onResume();
+        ip = prefs.getString("ip", "none");
+        key = prefs.getString("api", "none");
+        memory.user.setApi(key);
+        memory.user.setIp(ip);
+        senderr = prefs.getBoolean("err", true);
+        push = prefs.getBoolean("push", true);
         betamode = prefs.getBoolean("beta", false);
         servicerunning = false;
         startservice();
         startrunner();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Configure");
-        builder.setMessage("Do you want to configure OctoDroid?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle("Error");
+        builder.setMessage("I cannot seem to find any valid IP address");
+        builder.setPositiveButton("Setup", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                SharedPreferences sharedPref = mainActivity.this.getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("setup", false);
-                editor.commit();
-                Intent i = new Intent(mainActivity.this, settings.class);
-                startActivityForResult(i, RESULT_SETTINGS);
+                Intent i = new Intent(mainActivity.this, welcome.class);
+                startActivity(i);
                 dialog.dismiss();
             }
         });
@@ -436,10 +474,34 @@ public class mainActivity extends Activity {
                 dialog.dismiss();
             }
         });
+
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setTitle("Error");
+        builder2.setMessage("I cannot seem to find any valid API Key");
+        builder2.setPositiveButton("Setup", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent i = new Intent(mainActivity.this, welcome.class);
+                startActivity(i);
+                dialog.dismiss();
+            }
+        });
+        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
         AlertDialog dialog = builder.create();
-        SharedPreferences sharedPref = mainActivity.this.getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("setup", true)){
-            dialog.show();
+        AlertDialog dialog2 = builder2.create();
+        boolean first = false;
+        if(!util.doGeneralCheckApi()){
+                first = true;
+                dialog2.show();
+        }
+        if (!first) {
+            if(!util.doGeneralCheckIp()) {
+                    dialog.show();
+            }
         }
     }
     public void onStop(){
@@ -469,7 +531,7 @@ public class mainActivity extends Activity {
                 case 0:
                     fragment = new main_card_BETA();
                     break;
-                case 4:
+                case 5:
                     fragment = new main_card_BETA();
                     pos = 0;
                     position = 0;
@@ -485,6 +547,9 @@ public class mainActivity extends Activity {
                 case 3:
                     fragment = new file_card();
                     break;
+                case 4:
+                    fragment = new con_card();
+                    break;
                 default:
                     break;
             }
@@ -494,7 +559,7 @@ public class mainActivity extends Activity {
                 case 0:
                     fragment = new main_card();
                     break;
-                case 4:
+                case 5:
                     fragment = new main_card();
                     pos = 0;
                     position = 0;
@@ -509,6 +574,9 @@ public class mainActivity extends Activity {
                     break;
                 case 3:
                     fragment = new file_card();
+                    break;
+                case 4:
+                    fragment = new con_card();
                     break;
                 default:
                     break;

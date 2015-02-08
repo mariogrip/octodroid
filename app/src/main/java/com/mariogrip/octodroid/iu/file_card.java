@@ -1,7 +1,9 @@
 package com.mariogrip.octodroid.iu;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.mariogrip.octodroid.R;
 import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
+import com.mariogrip.octodroid.util_decode;
 import com.mariogrip.octodroid.util_get;
 import com.mariogrip.octodroid.util_send;
 
@@ -42,29 +45,58 @@ public class file_card extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main, container, false);
-        ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
-        texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
-        progresss.setProgress(util.getProgress());
+        try {
+            ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+            TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+            texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+            progresss.setProgress(util.getProgress());
+            new initFiles().execute();
+        }catch (Exception e) {
 
-        ArrayList<Card> cards = new ArrayList<Card>();
-        util_get.decodeFiles();
-        for(String[] keey: util_get.getFiles()) {
-            cardtest card = new cardtest(rootView.getContext(), keey);
-            cards.add(card);
         }
 
-
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(), cards);
-        mCardArrayAdapter.setInnerViewTypeCount(3);
-
-        CardListView listView = (CardListView) rootView.findViewById(R.id.card_main_card_list);
-        if (listView != null) {
-            listView.setAdapter(mCardArrayAdapter);
-        }
         return rootView;
     }
 
+    private class initFiles extends AsyncTask<Void, Void, ArrayList> {
+
+        private ProgressDialog plwait;
+        protected void onPreExecute(){
+              plwait = ProgressDialog.show(rootView.getContext(), "Please wait....", "Getting files.....", true);
+              plwait.setCancelable(true);
+        }
+
+        protected ArrayList doInBackground(Void... Voids) {
+            util_decode.decodeFiles();
+            ArrayList<Card> cards = new ArrayList<Card>();
+            try {
+                for (String[] keey : util_get.getFiles()) {
+                    cardtest card = new cardtest(rootView.getContext(), keey);
+                    cards.add(card);
+                }
+            } catch (Exception e) {
+                String[] keey = {"Cannot find any files", "Error"};
+                cardtest card = new cardtest(rootView.getContext(), keey);
+                cards.add(card);
+            }
+
+            return cards;
+        }
+
+
+        protected void onPostExecute(ArrayList cards){
+            util.logD("YES DOING onPost");
+            CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(), cards);
+            mCardArrayAdapter.setInnerViewTypeCount(3);
+
+            CardListView listView = (CardListView) rootView.findViewById(R.id.card_main_card_list);
+            if (listView != null) {
+                listView.setAdapter(mCardArrayAdapter);
+
+            }
+            plwait.dismiss();
+        }
+    }
 
     public class cardtest extends Card {
 

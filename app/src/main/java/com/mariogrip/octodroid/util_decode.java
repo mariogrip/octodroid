@@ -23,9 +23,10 @@ public class util_decode extends util {
      */
 
     //Common API call:
+    //TODO ADD DIFFERENT VERSION OF API
     public static void decodeVersions(){
         try {
-
+            decodeVersions_V1();
         } catch (Exception e) {
         }
     }
@@ -37,13 +38,12 @@ public class util_decode extends util {
     }
     public static void decodeFiles(){
         try {
-
+            decodeFiles_V1();
         } catch (Exception e) {
         }
     }
     public static void decodeJob(){
         try {
-            //TODO ADD DIFFERENT VERSION OF API
             decodeJob_V1();
         } catch (Exception e) {
         }
@@ -54,9 +54,6 @@ public class util_decode extends util {
         } catch (Exception e) {
         }
     }
-
-
-
 
     //Api version V0.1:
     public static void decodeConnections_V1(){

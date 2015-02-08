@@ -39,4 +39,5 @@
     <string name="title_activity_gcode">gcode</string>
     <string name="savemode_title">Battery save mode</string>
     <string name="savemode_summary">Do not check for update that frequency</string>
+    <string name="setup">Run Setup</string>
 </resources>
