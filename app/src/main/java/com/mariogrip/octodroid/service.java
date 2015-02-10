@@ -85,17 +85,18 @@ public class service extends IntentService {
         if (prefs.getBoolean("battery", false)){
             savemode = 20000;
         }
-        final boolean notef = prefs.getBoolean("battery", true);
+        final boolean notef = prefs.getBoolean("stick", true);
         final int id = 1;
         Log.d("OctoDroid Service", "StartprintService");
 
-        if (notef && !notefaRunning) {
+
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mBuilder = new NotificationCompat.Builder(this);
             mBuilder.setContentTitle("OctoDroid")
                     .setContentText("Printing")
                     .setOngoing(true)
                     .setSmallIcon(R.drawable.octodroid_smal);
+        if (notef && !notefaRunning) {
             mNotifyManager.notify(id, mBuilder.build());
             notefaRunning = true;
         }
