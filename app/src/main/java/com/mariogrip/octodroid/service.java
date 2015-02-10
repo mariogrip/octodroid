@@ -28,6 +28,7 @@ public class service extends IntentService {
     private Timer timer2 = new Timer();
     private TimerTask timerTask2;
     private double complete;
+    public static boolean isIRunning = false;
     private int intcom;
     private boolean notefaRunning = false;
     private NotificationManager mNotifyManager;
@@ -43,10 +44,16 @@ public class service extends IntentService {
     }
 
     public void runner() {
+        isIRunning = true;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int savemode2 = 10000;
+        if (prefs.getBoolean("battery", false)){
+            savemode2 = 40000;
+        }
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                if (mainActivity.server_status) {
+                if (memory.isServerUp()) {
                     util.refreshJson(mainActivity.ip, "job", mainActivity.key);
                     util.decodeJsonService();
                     Log.d("OctoDroid Service", "runner " + mainActivity.printing);
@@ -68,7 +75,7 @@ public class service extends IntentService {
                 }
             }
         };
-        timer.schedule(timerTask, 0, 7000);
+        timer.schedule(timerTask, 0, savemode2);
 
     }
 

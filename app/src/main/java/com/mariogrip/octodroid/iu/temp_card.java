@@ -44,11 +44,16 @@ public class temp_card extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main, container, false);
-
+        TextView oflline = (TextView) rootView.findViewById(R.id.textView_offline);
+        if(memory.isServerUp()){
+            oflline.setText("");
         ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
         TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
         texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
         progresss.setProgress(util.getProgress());
+    } else {
+        oflline.setText("Offline");
+    }
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"Heatbed", "HeatBed");
         cards.add(card);

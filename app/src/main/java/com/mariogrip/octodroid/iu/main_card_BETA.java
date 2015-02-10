@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mariogrip.octodroid.R;
+import com.mariogrip.octodroid.mainActivity;
 import com.mariogrip.octodroid.memory;
 import com.mariogrip.octodroid.util;
 import com.mariogrip.octodroid.util_decode;
@@ -67,11 +68,16 @@ public class main_card_BETA extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_main_beta, container, false);
         try {
-            ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
-            TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
-            texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
-            progresss.setProgress(util.getProgress());
-
+            TextView oflline = (TextView) rootView.findViewById(R.id.textView_offline);
+            if(memory.isServerUp()){
+                oflline.setText("");
+                ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
+                TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
+                texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
+                progresss.setProgress(util.getProgress());
+            } else {
+                oflline.setText("Offline");
+            }
         }catch (Exception e){
 
         }
@@ -130,8 +136,8 @@ public class main_card_BETA extends Fragment {
             timerTask1 = new TimerTask() {
                 @Override
                 public void run() {
-                   // new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
-                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
+                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                    //new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
                 }
             };
             timer1.schedule(timerTask1, 0, 7000);

@@ -95,31 +95,31 @@ public class util_decode extends util {
 
                     memory.job.progress.completion = Float.parseFloat(memory.progress_dec.getString("completion"));
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("1="+e.toString());
                     
                 }
                 try {
                     memory.job.progress.filepos = Integer.parseInt(memory.progress_dec.getString("filepos"));
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("2="+e.toString());
                     
                 }
                 try {
                     memory.job.progress.printTime = Integer.parseInt(memory.progress_dec.getString("printTime"));
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("3="+e.toString());
                     
                 }
                 try {
                     memory.job.progress.PrintTimeLeft = Integer.parseInt(memory.progress_dec.getString("printTimeLeft"));
 
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("4="+e.toString());
                     
                 }
 
             } catch (Exception e) {
-                util.logD(e.toString());
+                util.logD("5="+e.toString());
                 
             }
             try {
@@ -128,7 +128,7 @@ public class util_decode extends util {
 
                     memory.job.estimatedPrintTime = Integer.parseInt(memory.job_dec.getString("estimatedPrintTime"));
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("6="+e.toString());
                     
                 }
 
@@ -138,32 +138,33 @@ public class util_decode extends util {
                     try {
                         memory.job.file.name = memory.file_dec.getString("name");
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("7="+e.toString());
                         
                     }
                     try {
                         memory.job.file.origin = memory.file_dec.getString("origin");
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("8="+e.toString());
                         
                     }
                     try {
                         memory.job.file.size = Integer.parseInt(memory.file_dec.getString("size"));
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("9="+e.toString());
                         
                     }
                     try {
                         memory.job.file.date = Float.parseFloat(memory.file_dec.getString("date"));
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("10="+e.toString());
                         
                     }
 
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("11="+e.toString());
                     
                 }
+
                 try {
                    memory.fillament_dec = new JSONObject(memory.job_dec.getString("filament"));
 
@@ -171,23 +172,23 @@ public class util_decode extends util {
 
                       memory.job.filament.lenght = Integer.parseInt(memory.fillament_dec.getString("length"));
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("12="+e.toString());
 
                     }
                     try {
                         memory.job.filament.volume = Float.parseFloat(memory.fillament_dec.getString("volume"));
                     } catch (Exception e) {
-                        util.logD(e.toString());
+                        util.logD("13="+e.toString());
                         
                     }
 
                 } catch (Exception e) {
-                    util.logD(e.toString());
+                    util.logD("14="+e.toString());
                     
                 }
 
             } catch (Exception e) {
-                util.logD(e.toString());
+                util.logD("15="+e.toString());
                 
             }
 
@@ -195,7 +196,7 @@ public class util_decode extends util {
 
 
         } catch (Exception e) {
-            util.logD(e.toString());
+            util.logD("16="+e.toString());
             
         }
 

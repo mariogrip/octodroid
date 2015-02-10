@@ -12,14 +12,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
 
@@ -180,7 +187,7 @@ public abstract class util extends mainActivity {
     public static String toMBGB(double bytes){
         try {
             //Checks if the app has contact with the server.
-            if (!mainActivity.server_status) {
+            if (!memory.isServerUp()) {
                 return "-/-";
             }
             String returnData;
@@ -204,7 +211,7 @@ public abstract class util extends mainActivity {
     public static String toHumanRead(double biggy)
     {
         try {
-            if (!mainActivity.server_status) {
+            if (!memory.isServerUp()) {
                 return "00:00:00";
             }
             int hours = (int) biggy / 3600;
@@ -242,7 +249,7 @@ public abstract class util extends mainActivity {
 
 
     public static void decodeJsonService(){
-        if (!mainActivity.server_status){
+        if (!memory.isServerUp()){
             return;
         }
         try {
@@ -253,12 +260,12 @@ public abstract class util extends mainActivity {
         }
     }
     public static String getData(String job,String cmd){
-        if (!mainActivity.server_status){
+        if (!memory.isServerUp()){
             return "-";
         }
         String returnData = new String();
         boolean noerr;
-        if (mainActivity.server_status) {
+        if (memory.isServerUp()) {
             try {
                 if (job == "job") {
                     //Progress
@@ -408,9 +415,8 @@ public abstract class util extends mainActivity {
 
     public static void refreshJson(String ip, String api, String key){
         try {
-            boolean nono = false;
             if (ip == null || ip.equals("")) {
-
+                memory.setServerUp(false);
             } else {
                 StringBuilder builder = new StringBuilder();
                 HttpClient client = new DefaultHttpClient();
@@ -434,20 +440,17 @@ public abstract class util extends mainActivity {
                 } catch (ClientProtocolException e) {
                     Log.e("OctoDroid", "ClientProtocolException");
                     Log.d("OctoDroid", ip);
-                    nono = true;
-                    mainActivity.server_status = false;
+                    memory.setServerUp(false);
                     return;
                 } catch (IOException e) {
                     Log.e("OctoDroid", "IOException");
                     Log.d("OctoDroid", ip);
-                    nono = true;
-                    mainActivity.server_status = false;
+                    memory.setServerUp(false);
                     return;
                 } catch (IllegalStateException e) {
                     Log.e("OctoDroid", "IllegalStateException");
                     Log.d("OctoDroid", ip);
-                    nono = true;
-                    mainActivity.server_status = false;
+                    memory.setServerUp(false);
                     return;
                 }
                 if (api.equals("job")) {
@@ -456,9 +459,7 @@ public abstract class util extends mainActivity {
                 if (api.equals("printer")) {
                     jsonData_printer = builder.toString();
                 }
-                if (!nono) {
-                    mainActivity.server_status = true;
-                }
+                memory.setServerUp(true);
             }
         }catch (Exception e){
 
@@ -497,14 +498,16 @@ public abstract class util extends mainActivity {
     }
 
     public static String getResponse(String ip, String api, String key){
-        boolean nono = false;
         String retu = "";
         if (ip == null || ip.equals("")){
-
+            memory.setServerUp(false);
         }else {
             StringBuilder builder = new StringBuilder();
-            HttpClient client = new DefaultHttpClient();
+            HttpParams apram = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(apram, 10000);
+            HttpClient client = new DefaultHttpClient(apram);
             HttpGet httpGet;
+
             if (ip.startsWith("http://")){
                 httpGet = new HttpGet(ip + "/api/"+api);
             }else{
@@ -513,6 +516,7 @@ public abstract class util extends mainActivity {
             try {
                 httpGet.addHeader("X-Api-Key", key);
                 httpGet.addHeader("content-type", "application/json");
+
                 HttpResponse response = client.execute(httpGet);
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
@@ -526,27 +530,22 @@ public abstract class util extends mainActivity {
             } catch (ClientProtocolException e) {
                 Log.e("OctoDroid", "ClientProtocolException");
                 Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return "";
+                memory.setServerUp(false);
+                return "none";
             } catch (IOException e) {
                 Log.e("OctoDroid", "IOException");
                 Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return "";
+                memory.setServerUp(false);
+                return "none";
             } catch (IllegalStateException e){
                 Log.e("OctoDroid", "IllegalStateException");
                 Log.d("OctoDroid", ip);
-                nono = true;
-                mainActivity.server_status = false;
-                return "";
-            }
+                memory.setServerUp(false);
+                return "none";
+        }
             retu= builder.toString();
+            memory.setServerUp(true);
 
-            if (!nono) {
-                mainActivity.server_status = true;
-            }
         }
         return retu;
     }
@@ -607,7 +606,7 @@ public abstract class util extends mainActivity {
     }
     public static int isPingServer(){
         try {
-            InetAddress address = InetAddress.getByName(memory.user.getIp()+"/api/version");
+            InetAddress address = InetAddress.getByName(memory.user.getIp());
             address.isReachable(3000);
             return 0;
         }
@@ -622,7 +621,7 @@ public abstract class util extends mainActivity {
     }
     public static int isPingServer(String ip){
         try {
-            InetAddress address = InetAddress.getByName(ip+"/api/version");
+            InetAddress address = InetAddress.getByName(ip);
             address.isReachable(3000);
             return 0;
         }
@@ -638,18 +637,91 @@ public abstract class util extends mainActivity {
 
     public static boolean isPingServerTrue(){
         try {
-            InetAddress address = InetAddress.getByName(ip+"/api/version");
+            InetAddress address = InetAddress.getByName(ip);
             address.isReachable(3000);
             return true;
         }
         catch (UnknownHostException e) {
             System.err.println("Cannot find the server");
+            if(isPingServerTure2(ip)){
+                return true;
+            }
             return false;
         }
         catch (IOException e) {
             logD("Cannot reach server");
+            if(isPingServerTure2(ip)){
+                return true;
+            }
             return false;
         }
+    }
+    public static boolean isPingServerTrue(String url){
+        if(url.startsWith("http://")){
+            url = url.replace("http://", "");
+        }
+        if(url.startsWith("/")){
+            url = url.replace("/", "");
+        }
+        try {
+            InetAddress address = InetAddress.getByName(url);
+            address.isReachable(3000);
+            return true;
+        }
+        catch (UnknownHostException e) {
+            System.err.println("Cannot find the server");
+            if(isPingServerTure2(url)){
+                return true;
+            }
+                return false;
+        }
+        catch (IOException e) {
+            if(isPingServerTure2(url)){
+                return true;
+            }
+            logD("Cannot reach server");
+            return false;
+        }
+    }
+    public static boolean isPingServerTure2(String url){
+        String[] args = new String[]{"",""};
+        if(url.startsWith("http://")){
+            url = url.replace("http://", "");
+        }
+        if(url.startsWith("/")){
+            url = url.replace("/", "");
+        }
+        if(url.contains(":")){
+            args = url.split(":");
+        }else{
+            args[0] = url;
+            args[1] = "80";
+        }
+        for (String i : args){
+           logD(i + "\n");
+        }
+        int port = 80;
+        try {
+            port = Integer.parseInt(args[1]);
+        }catch (Exception e){
+            port = 80;
+        }
+        String url2 = args[0];
+        Socket socket = null;
+        boolean reachable = false;
+        try {
+            try {
+                socket = new Socket(url2, port);
+                reachable = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                reachable = false;
+            }
+
+        } finally {
+            if (socket != null) try { socket.close(); } catch(IOException e) {}
+        }
+        return reachable;
     }
     public static String checkIPWithServer(String ip, String api){
         try {

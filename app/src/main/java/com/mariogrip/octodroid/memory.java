@@ -154,8 +154,16 @@ public class memory extends mainActivity {
 
     //Booleans
     public static boolean isConnected = false;
-    public static boolean isServerUp = false;
+    public static boolean ServerUp = false;
     public static boolean skipWelcom = false;
+
+    public static boolean isServerUp() {
+        return ServerUp;
+    }
+
+    public static void setServerUp(boolean ServerUp) {
+        memory.ServerUp = ServerUp;
+    }
 
     //User Settings
     public static class user{

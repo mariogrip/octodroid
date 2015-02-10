@@ -94,6 +94,8 @@ public class welcome extends Activity {
             ip1 = ipp[0];
             key1 = ipp[2];
             super.onPostExecute(ipp);
+            new CheckCon2().execute(new String[]{ip1, key1});
+            /**
             if (ipp[1].contains("false")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(welcome.this);
                 builder.setTitle("Failed");
@@ -140,8 +142,9 @@ public class welcome extends Activity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-
+            */
         }
+
     }
 
     public class CheckCon2 extends AsyncTask<String, Void, String[]>{

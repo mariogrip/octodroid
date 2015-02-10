@@ -8,8 +8,8 @@ android {
         applicationId "com.mariogrip.octoprint"
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 17
-        versionName "0.3.8"
+        versionCode 20
+        versionName "0.4.1"
     }
     buildTypes {
         release {

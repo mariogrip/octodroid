@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,14 +67,20 @@ public class mainActivity extends Activity {
     protected static boolean push = true;
     protected static boolean servicerunning = false;
     public static String ip;
+    public boolean firstTimeRunner = false;
+    public boolean lostConnection = false;
     public static String key;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Timer timer2 = new Timer();
     private TimerTask timerTask2;
     private boolean betamode = false;
-    public static boolean server_status = false;
     private static final int RESULT_SETTINGS = 1;
+
+    private ProgressDialog plwaitStart;
+    private ProgressDialog plwaitRecon;
+    private boolean plwateStartR = false;
+    private boolean plwateReconR = false;
 
 
 
@@ -137,11 +144,19 @@ public class mainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-
-
         push = prefs.getBoolean("push", true);
         running = false;
-
+        plwaitStart = new ProgressDialog(this);
+        plwaitStart.setTitle("Please wait....");
+        plwaitStart.setMessage("Connection to "+memory.ip+".....");
+        plwaitStart.setButton(DialogInterface.BUTTON_NEGATIVE,"Dismiss", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                plwaitStart.dismiss();
+            }
+        });
+        plwaitStart.setCancelable(false);
+        plwaitStart.show();
+        plwateStartR = true;
         util.logD("Done!");
     }
     public void startrunner(){
@@ -160,6 +175,25 @@ public class mainActivity extends Activity {
         };
         new Thread(runnable).start();
     }
+    public void reConnM(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                plwaitRecon = new ProgressDialog(mainActivity.this);
+                plwaitRecon.setTitle("Lost Connection....");
+                plwaitRecon.setMessage("Reconnecting to "+memory.ip+".....");
+                plwaitRecon.setButton(DialogInterface.BUTTON_NEGATIVE,"Dismiss", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        plwaitRecon.dismiss();
+                    }
+                });
+                plwaitRecon.setCancelable(false);
+                plwaitRecon.show();
+            }
+        });
+        util.logD("ReConnM");
+        plwateReconR = true;
+    }
     public void startservice(){
         Runnable runnable = new Runnable() {
             @Override
@@ -167,16 +201,24 @@ public class mainActivity extends Activity {
                 util.logD("Starting Service");
                 if (push) {
                     if (!servicerunning) {
-                        servicerunning = true;
-                        Intent mServiceIntent = new Intent(mainActivity.this, service.class);
-                        mainActivity.this.startService(mServiceIntent);
+                        if(service.isIRunning) {
+                            util.logD("Service was starded twice, stopping it!");
+                        }else{
+                            servicerunning = true;
+                            Intent mServiceIntent = new Intent(mainActivity.this, service.class);
+                            mainActivity.this.startService(mServiceIntent);
+                        }
                     }
                 }else{
                     if (servicerunning){
                         util.logD("starting runner");
                         servicerunning = false;
-                        Intent mServiceIntent = new Intent(mainActivity.this, service.class);
-                        mainActivity.this.stopService(mServiceIntent);
+                        try {
+                            Intent mServiceIntent = new Intent(mainActivity.this, service.class);
+                            mainActivity.this.stopService(mServiceIntent);
+                        }catch (Exception e){
+
+                        }
                     }
                 }
                 util.logD("Done startservice()");
@@ -203,6 +245,8 @@ public class mainActivity extends Activity {
         }
         try {
 
+
+
             if (running) {
                 util.logD("Stopping runner, Might started twice");
                 return;
@@ -214,10 +258,16 @@ public class mainActivity extends Activity {
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
+                    decodejobs();
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-new updateTextview().execute();
+                            try{
+                                Fill();
+                            }catch (Exception e){
+
+                            }
                         }
                     });
                 }
@@ -243,7 +293,7 @@ new updateTextview().execute();
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(!AsyncTaskRunning) {
+            if(AsyncTaskRunning) {
                 Fill();
                 AsyncTaskRunning = false;
             }
@@ -251,34 +301,38 @@ new updateTextview().execute();
     }
 
     private void decodejobs(){
-        if(util.isPingServerTrue()){
-            util_decode.decodeJob();
+
+        util_decode.decodeJob();
+        if(memory.isServerUp()){
+            if(plwateStartR){
+                plwateStartR = false;
+                plwaitStart.dismiss();
+            }else{
+                if(plwateReconR){
+                    plwateReconR = false;
+                   plwaitRecon.dismiss();
+                }
+            }
             util_decode.decodeConnections();
             util_decode.decodePrinter();
-            util.logD("DecodeJobs Ping true");
-            memory.isServerUp = true;
         }else{
-            util.logD("DecodeJobs Ping true");
-            memory.isServerUp = false;
+            util.logD("IN ISSERVERUP" + plwateStartR + plwateReconR);
+            if(!plwateReconR && !plwateStartR){
+                util.logD("IN IF RECONNM");
+                reConnM();
+            }
         }
-
+            util.logD("DecodeJobs Ping true");
     }
 
     private void Fill(){
-        if (!memory.isServerUp) {
-            try {
-                TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
-                textmaci.setText("Cannot connect to\n" + ip);
-            }catch (Exception e){
-            }
-            util.logD("Server Error");
-            return;
-        }
         switch (pos) {
             case 0:
                 try{
                     util.logD("Running runner");
-                    if (memory.isServerUp) {
+                    TextView oflline = (TextView) findViewById(R.id.textView_offline);
+                    if (memory.isServerUp()) {
+                        oflline.setText("");
                         try {
                             if (util_get.isConnected()) {
                                 final Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -332,23 +386,31 @@ new updateTextview().execute();
                     } else {
                         TextView textmaci = (TextView) findViewById(R.id.textView10_maci);
                         textmaci.setText("Cannot connect to\n" + ip);
+                        oflline.setText("Offline");
                     }
                 }catch (Exception v){v.printStackTrace();}
                 break;
             case 2:
-                if (memory.isServerUp) {
+                TextView oflline = (TextView) findViewById(R.id.textView_offline);
+                if (memory.isServerUp()) {
+
                     try {
+                        oflline.setText("");
                         ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
                         TextView texttime = (TextView) findViewById(R.id.textView11_time);
                         texttime.setText(" " + util.toHumanRead(memory.job.progress.PrintTimeLeft));
                         progress.setProgress(util.getProgress());
                     }catch(Exception v){
                     }
+                }else{
+                    oflline.setText("Offline");
                 }
                 break;
             case 1:
-                if (memory.isServerUp) {
+                TextView oflline2 = (TextView) findViewById(R.id.textView_offline);
+                if (memory.isServerUp()) {
                     try {
+                        oflline2.setText("");
                         ProgressBar progresss = (ProgressBar) findViewById(R.id.progressBar);
                         TextView texttimes = (TextView) findViewById(R.id.textView11_time);
                         texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
@@ -360,6 +422,8 @@ new updateTextview().execute();
 
                     } catch (Exception v) {
                     }
+                }else{
+                    oflline2.setText("Offline");
                 }
                 break;
             default:
@@ -445,7 +509,11 @@ new updateTextview().execute();
         super.onPause();
         if (running) {
             running = false;
-            timerTask.cancel(); //TODO CRASH NullPointerException
+            try{
+                timerTask.cancel();
+            }catch (Exception e){
+
+            }
         }
     }
     public void onResume(){
@@ -509,7 +577,12 @@ new updateTextview().execute();
         super.onStop();
         if (running) {
             running = false;
-            timerTask.cancel();
+            try{
+                timerTask.cancel();
+            }catch (Exception e){
+
+            }
+
         }
     }
     public void onStart(){

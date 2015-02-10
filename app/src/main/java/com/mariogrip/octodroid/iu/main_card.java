@@ -64,10 +64,16 @@ public class main_card extends Fragment {
         rootView = inflater.inflate(R.layout.card_main, container, false);
 
         try {
+            TextView oflline = (TextView) rootView.findViewById(R.id.textView_offline);
+            if(memory.isServerUp()){
+                oflline.setText("");
             ProgressBar progresss = (ProgressBar) rootView.findViewById(R.id.progressBar);
             TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
             texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
             progresss.setProgress(util.getProgress());
+        } else {
+            oflline.setText("Offline");
+        }
 
         }catch (Exception e){
 
