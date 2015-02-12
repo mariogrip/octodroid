@@ -247,18 +247,6 @@ public abstract class util extends mainActivity {
     }
 
 
-
-    public static void decodeJsonService(){
-        if (!memory.isServerUp()){
-            return;
-        }
-        try {
-            jsonData_job_job = new JSONObject(jsonData_job);
-            jsonData_job_job_progress = new JSONObject(jsonData_job_job.getString("progress"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
     public static String getData(String job,String cmd){
         if (!memory.isServerUp()){
             return "-";

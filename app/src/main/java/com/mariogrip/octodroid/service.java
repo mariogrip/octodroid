@@ -54,8 +54,7 @@ public class service extends IntentService {
             @Override
             public void run() {
                 if (memory.isServerUp()) {
-                    util.refreshJson(mainActivity.ip, "job", mainActivity.key);
-                    util.decodeJsonService();
+                    util_decode.decodeConnections();
                     Log.d("OctoDroid Service", "runner " + mainActivity.printing);
                     if (mainActivity.printing) {
                         mainActivity.printing = true;
@@ -63,15 +62,16 @@ public class service extends IntentService {
                         startPrintService();
                         return;
                     }
-                    if (util.getData("job", "state").equals("Printing") && !mainActivity.printing) {
+                    if (memory.connection.current.getState().equals("Printing") && !mainActivity.printing) {
                         mainActivity.printing = true;
                         timerTask.cancel();
                         startPrintService();
                         return;
                     }
-                    if (!util.getData("job", "state").equals("Printing") && mainActivity.printing) {
+                    if (!memory.connection.current.getState().equals("Printing") && mainActivity.printing) {
                         mainActivity.printing = false;
                     }
+                    util.logD(memory.connection.current.getState());
                 }
             }
         };
@@ -106,13 +106,13 @@ public class service extends IntentService {
             public void run() {
                 Log.d("OctoDroid Service", "startPrintService timertask");
                 try {
-                    util.refreshJson(mainActivity.ip, "job", mainActivity.key);
-                    util.decodeJsonService();
-                    complete = Double.parseDouble(util.getData("job", "completion"));
+                    util_decode.decodeConnections();
+                    util_decode.decodeJob();
+                    complete = memory.job.progress.completion;
                 }catch (Exception e){
                     complete = 0;
                 }
-                if (!util.getData("job", "state").equals("Printing")) {
+                if (!memory.connection.current.getState().equals("Printing")) {
                     Log.d("OctoDroid Service", "startPrintService stopping");
                     mainActivity.printing = false;
                     notefaRunning = false;

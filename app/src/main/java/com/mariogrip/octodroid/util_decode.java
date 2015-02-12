@@ -83,6 +83,19 @@ public class util_decode extends util {
             util.logD(e.toString());
         }
     }
+    public static void decodeJsonService(){
+        if (!memory.isServerUp()){
+            return;
+        }
+        try {
+            JSONObject obj1 = new JSONObject();
+            obj1 = new JSONObject(getResponse(mainActivity.ip, "job", mainActivity.key));
+            memory.progress_dec = new JSONObject(obj1.getString("progress"));
+            memory.job.progress.completion = Float.parseFloat(memory.progress_dec.getString("completion"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public static void decodeJob_V1(){
         JSONObject obj1 = new JSONObject();
         try {
