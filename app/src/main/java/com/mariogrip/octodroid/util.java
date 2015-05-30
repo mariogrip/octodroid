@@ -6,11 +6,14 @@ import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -414,6 +417,9 @@ public abstract class util extends mainActivity {
                 } else {
                     httpGet = new HttpGet("http://" + ip + "/api/" + api + "?apikey=" + key);
                 }
+
+                SetupAuthentication(httpGet);
+
                 try {
                     HttpResponse response = client.execute(httpGet);
                     StatusLine statusLine = response.getStatusLine();
@@ -463,6 +469,9 @@ public abstract class util extends mainActivity {
         }else{
             httpPost = new HttpPost("http://"+ ip + "/api/"+cmd);
         }
+
+        SetupAuthentication(httpPost);
+
         try {
             httpPost.addHeader("X-Api-Key", api);
             httpPost.addHeader("content-type", "application/json");
@@ -486,6 +495,7 @@ public abstract class util extends mainActivity {
     }
 
     public static String getResponse(String ip, String api, String key){
+
         String retu = "";
         if (ip == null || ip.equals("")){
             memory.setServerUp(false);
@@ -501,7 +511,11 @@ public abstract class util extends mainActivity {
             }else{
                 httpGet = new HttpGet("http://"+ ip + "/api/"+api);
             }
+
+            SetupAuthentication(httpGet);
+
             try {
+
                 httpGet.addHeader("X-Api-Key", key);
                 httpGet.addHeader("content-type", "application/json");
 
@@ -536,6 +550,18 @@ public abstract class util extends mainActivity {
 
         }
         return retu;
+    }
+
+    private static void SetupAuthentication(HttpRequestBase request) {
+        if ( memory.user.getUseBasicAuth() )
+        {
+            request.addHeader(
+                    BasicScheme.authenticate(
+                            new UsernamePasswordCredentials(
+                                    memory.user.getUserName(),
+                                    memory.user.getPassword()),"UTF-8",false)
+            );
+        }
     }
 
 

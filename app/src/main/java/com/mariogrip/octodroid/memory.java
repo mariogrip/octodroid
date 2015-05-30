@@ -169,6 +169,9 @@ public class memory extends mainActivity {
     public static class user{
         private static String ip = "none";
         private static String api = "none";
+        private static boolean useBasicAuth;
+        private static String userName;
+        private static String password;
 
         public static String getIp() {
             return ip;
@@ -184,6 +187,31 @@ public class memory extends mainActivity {
 
         public static void setApi(String api) {
             user.api = api;
+        }
+
+
+        public static boolean getUseBasicAuth() {
+            return useBasicAuth;
+        }
+
+        public static void setUseBasicAuth(boolean useBasicAuth) {
+            user.useBasicAuth = useBasicAuth;
+        }
+
+        public static String getUserName() {
+            return userName;
+        }
+
+        public static void setUserName(String userName) {
+            user.userName = userName;
+        }
+
+        public static String getPassword() {
+            return password;
+        }
+
+        public static void setPassword(String password) {
+            user.password = password;
         }
     }
 
