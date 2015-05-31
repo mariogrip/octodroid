@@ -46,4 +46,9 @@
     <string name="flip_summary">Flip the webcam</string>
     <string name="rotate_title">Rotate camera</string>
     <string name="rotate_summary">Rotate the webcam</string>
+    <string name="basic_authentication">Basic Authentication</string>
+    <string name="username_for_authentication">Username for authentication</string>
+    <string name="username">Username</string>
+    <string name="password_for_authentication">Password for authentication</string>
+    <string name="password">Password</string>
 </resources>

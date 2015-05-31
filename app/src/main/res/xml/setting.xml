@@ -76,6 +76,22 @@
             android:title="Enable Beta" >
         </CheckBoxPreference>
      </PreferenceCategory>
+    <PreferenceCategory android:title="@string/basic_authentication">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="enable_basic_auth"
+            android:summary="Enable http basic authentication"
+            android:title="@string/basic_authentication" />
+        <EditTextPreference
+            android:title="@string/username"
+            android:summary="@string/username_for_authentication"
+            android:key="auth_username" />
+        <EditTextPreference
+            android:title="@string/password"
+            android:password="true"
+            android:key="auth_password"
+            android:summary="@string/password_for_authentication" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/error_report" >
     <CheckBoxPreference
         android:defaultValue="true"

@@ -93,11 +93,9 @@ public class mainActivity extends Activity {
        ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
-        ip = prefs.getString("ip", "none");
-        key = prefs.getString("api", "none");
+        getConnectionConfigurationFromPrefs();
+
         senderr = prefs.getBoolean("err", true);
-        memory.user.setApi(key);
-        memory.user.setIp(ip);
         boolean first = false;
         if (!memory.skipWelcom){
         Intent i = new Intent(mainActivity.this, welcome.class);
@@ -484,8 +482,7 @@ public class mainActivity extends Activity {
         switch (requestCode) {
             case RESULT_SETTINGS:
                 prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity.this);
-                ip = prefs.getString("ip", "localhost");
-                key = prefs.getString("api", "0");
+                getConnectionConfigurationFromPrefs();
                 push = prefs.getBoolean("push", true);
                 if (push) {
                     if (!servicerunning) {
@@ -518,10 +515,7 @@ public class mainActivity extends Activity {
     }
     public void onResume(){
         super.onResume();
-        ip = prefs.getString("ip", "none");
-        key = prefs.getString("api", "none");
-        memory.user.setApi(key);
-        memory.user.setIp(ip);
+        getConnectionConfigurationFromPrefs();
         senderr = prefs.getBoolean("err", true);
         push = prefs.getBoolean("push", true);
         betamode = prefs.getBoolean("beta", false);
@@ -694,6 +688,17 @@ public class mainActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void getConnectionConfigurationFromPrefs() {
+        key = prefs.getString("api", "none");
+        ip = prefs.getString("ip", "none");
+        memory.user.setApi(key);
+        memory.user.setIp(ip);
+        memory.user.setUseBasicAuth(prefs.getBoolean("enable_basic_auth", false));
+        memory.user.setUserName(prefs.getString("auth_username", ""));
+        memory.user.setPassword(prefs.getString("auth_password",""));
+
     }
 
     public static class PlanetFragment extends Fragment {
