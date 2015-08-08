@@ -461,6 +461,7 @@ public abstract class util extends mainActivity {
     }
     public static void sendcmd(String ip ,String api, String cmd, String value){
         Log.e("OctoDroid", api + " " + ip + " " + key + " " + cmd + "" + value);
+        try {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost;
@@ -472,7 +473,7 @@ public abstract class util extends mainActivity {
 
         SetupAuthentication(httpPost);
 
-        try {
+
             httpPost.addHeader("X-Api-Key", api);
             httpPost.addHeader("content-type", "application/json");
             httpPost.setEntity(new StringEntity(value));
@@ -490,6 +491,8 @@ public abstract class util extends mainActivity {
             Log.e("OctoDroid", "IOException");
         } catch (IllegalStateException e){
             Log.e("OctoDroid", "IllegalStateException");
+        }catch (Exception e){
+
         }
 
     }
@@ -598,12 +601,14 @@ public abstract class util extends mainActivity {
         if (memory.user.getIp().length() < 1){
             return false;
         }
+        if (memory.user.getIp().toLowerCase() == "none"){ return  false;}
         return true;
     }
     public static boolean doGeneralCheckApi(){
         if (memory.user.getApi().length() < 1){
             return false;
         }
+        if (memory.user.getApi().toLowerCase() == "none"){ return  false;}
         return true;
     }
     public static boolean doGeneralCheckIp(String ip){

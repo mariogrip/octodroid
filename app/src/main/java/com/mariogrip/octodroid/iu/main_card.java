@@ -71,6 +71,8 @@ public class main_card extends Fragment {
             TextView texttimes = (TextView) rootView.findViewById(R.id.textView11_time);
             texttimes.setText(" " + util.toHumanRead(memory.job.progress.getPrintTimeLeft()));
             progresss.setProgress(util.getProgress());
+
+
         } else {
             oflline.setText("Offline");
         }
@@ -79,11 +81,72 @@ public class main_card extends Fragment {
 
         }
 
+        ImageButton up = (ImageButton) rootView.findViewById(R.id.button_stop);
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                util.logD("CLICK STOP!!!");
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(rootView.getContext(), "Please wait ...", "Stopping print ...", true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            util_send.stopprint();
+                        } catch (Exception e) {
+
+                        }
+                        ringProgressDialog.dismiss();
+                    }
+                }).start();
+            }
+        });
+
+        ImageButton button = (ImageButton) rootView.findViewById(R.id.button_start);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(rootView.getContext(), "Starting printing...", Toast.LENGTH_LONG).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            util_send.startprint();
+                        } catch (Exception e){
+
+                        }
+                    }
+                }).start();
+
+            }
+        });
+
+
+        ImageButton right = (ImageButton) rootView.findViewById(R.id.button_pause);
+        right.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(rootView.getContext(), "Please wait ...", "Setting print on pause ...", true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            util_send.pauseprint();
+                        } catch (Exception e){
+
+                        }
+                        ringProgressDialog.dismiss();
+                    }
+
+                }).start();
+
+            }
+        });
+
         ArrayList<Card> cards = new ArrayList<Card>();
         cardtest card = new cardtest(rootView.getContext(),"State", "State");
         cards.add(card);
-        cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
-        cards.add(cardcont);
+      //  cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
+       // cards.add(cardcont);
 
 
 

@@ -38,8 +38,7 @@ public class welcome extends Activity {
             @Override
             public void onClick(View view) {
                 memory.skipWelcom = true;
-                Intent main = new Intent(welcome.this, mainActivity.class);
-                welcome.this.startActivity(main);
+                finish();
             }
         });
         Button check = (Button) findViewById(R.id.button_check_con);
@@ -186,8 +185,7 @@ public class welcome extends Activity {
                         editor.putString("ip", ip1);
                         editor.putString("api", key1);
                         editor.commit();
-                        Intent i = new Intent(welcome.this, mainActivity.class);
-                        startActivity(i);
+                        finish();
                         dialog.dismiss();
                     }
                 });
@@ -201,7 +199,7 @@ public class welcome extends Activity {
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(welcome.this);
                 builder.setTitle("Success");
-                builder.setMessage("OctoDroid could successfully send json response to " + ip1 + "\n\nGo to next step to test the API. NOTE: next step will home x and y axis.");
+                builder.setMessage("OctoDroid could successfully send json response to " + ip1 + "\n\nGo to next step to test the API. NOTE: Next step will home x and y axis!!!");
                 builder.setPositiveButton("Next Step ->", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(welcome.this);
@@ -212,9 +210,30 @@ public class welcome extends Activity {
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton("Try again", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Skip Step", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(welcome.this);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("ip", ip1);
+                        editor.putString("api", key1);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(welcome.this);
+                        builder.setTitle("Success");
+                        builder.setMessage("The setup is complete, You can now enjoy OctoDroid");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("Try Agian", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
                         dialog.dismiss();
+                        AlertDialog dialog2 = builder.create();
+                        dialog2.show();
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -262,8 +281,7 @@ public class welcome extends Activity {
                         editor.putString("ip", ip1);
                         editor.putString("api", key1);
                         editor.commit();
-                        Intent i = new Intent(welcome.this, mainActivity.class);
-                        startActivity(i);
+                        finish();
                         dialog.dismiss();
                     }
                 });
@@ -290,8 +308,8 @@ public class welcome extends Activity {
                                 editor.putString("ip", ip1);
                                 editor.putString("api", key1);
                                 editor.commit();
-                                Intent i = new Intent(welcome.this, mainActivity.class);
-                                startActivity(i);
+
+                                finish();
                                 dialog.dismiss();
                             }
                         });
@@ -317,8 +335,7 @@ public class welcome extends Activity {
                                 editor.putString("ip", ip1);
                                 editor.putString("api", key1);
                                 editor.commit();
-                                Intent i = new Intent(welcome.this, mainActivity.class);
-                                startActivity(i);
+                                finish();
                                 dialog.dismiss();
                             }
                         });

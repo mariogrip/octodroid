@@ -33,7 +33,7 @@
         android:id="@+id/button_extB"
         android:textSize="40dp"
         android:layout_marginLeft="25dp"
-        android:textColor="#99CC00"
+        android:textColor="#757575"
         android:background="@android:color/transparent"
         android:layout_toRightOf="@+id/textView15"
         android:layout_toEndOf="@+id/textView15" />
@@ -45,7 +45,7 @@
         android:textSize="40dp"
         android:background="@android:color/transparent"
         android:id="@+id/button_reac"
-        android:textColor="#99CC00"
+        android:textColor="#757575"
         android:layout_toRightOf="@+id/button_extB"
         android:layout_toEndOf="@+id/button_extB" />
 </RelativeLayout>

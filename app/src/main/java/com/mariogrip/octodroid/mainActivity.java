@@ -16,6 +16,9 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +27,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mariogrip.octodroid.iu.con_card;
 import com.mariogrip.octodroid.iu.cont_card;
@@ -155,8 +160,13 @@ public class mainActivity extends Activity {
         plwaitStart.setCancelable(false);
         plwaitStart.show();
         plwateStartR = true;
+
+
+
         util.logD("Done!");
     }
+
+
     public void startrunner(){
         Runnable runnable = new Runnable() {
             @Override

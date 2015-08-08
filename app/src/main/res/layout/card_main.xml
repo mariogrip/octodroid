@@ -2,36 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+   <!-- <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"/> -->
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout1"
-        android:background="#ededed">
+        android:background="#ffffffff">
 
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/print_time_left"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView10"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="37dp"
-            android:text="00:00:00"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView11_time"
-            android:layout_below="@id/textView10"/>
 
 
         <ProgressBar
-            android:maxHeight="17dp"
-            android:minHeight="17dp"
+            android:maxHeight="20dp"
+            android:minHeight="20dp"
+            android:layout_marginTop="8dp"
             style="@style/CustomProgressBar"
             android:layout_width="fill_parent"
             android:layout_marginLeft="10dp"
@@ -40,11 +30,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_gravity="left|top"
-            android:layout_below="@id/textView11_time"
             android:indeterminate="false"
             android:progress="0" />
 
         <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -53,10 +44,63 @@
             android:layout_alignParentRight="true"
             android:id="@+id/textView_offline" />
 
+
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout2"
+        android:layout_below="@id/progressBar"
+        android:background="#ffffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="36dp"
+            android:text="00:00:00"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ff585858"
+            android:id="@+id/textView11_time" />
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play_grey600_48dp"
+                android:background="@android:color/transparent"
+                android:id="@+id/button_start"
+                />
+
+            <ImageButton
+                android:layout_marginRight="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pause_grey600_48dp"
+                android:background="@android:color/transparent"
+                android:id="@+id/button_pause"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_stop_grey600_48dp"
+                android:background="@android:color/transparent"
+                android:id="@+id/button_stop" />
+
+        </LinearLayout>
+    </RelativeLayout>
     </RelativeLayout>
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
+        android:layout_marginTop="6dp"
         android:layout_height="match_parent"
         android:layout_below="@id/layout1"
         android:id="@+id/card_main_card_list"/>
