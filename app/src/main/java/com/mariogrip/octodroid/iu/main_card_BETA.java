@@ -196,8 +196,8 @@ public class main_card_BETA extends Fragment {
             timerTask1 = new TimerTask() {
                 @Override
                 public void run() {
-                    //new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
-                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
+                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                    //new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
                 }
             };
             timer1.schedule(timerTask1, 0, 7000);
