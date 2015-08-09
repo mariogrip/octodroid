@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -16,11 +19,103 @@
             android:fitsSystemWindows="true"
             android:id="@+id/videoView"
             />-->
-       <ImageView
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout12"
+        android:background="#ffffffff">
+
+
+
+
+        <ProgressBar
+            android:maxHeight="20dp"
+            android:minHeight="20dp"
+            android:layout_marginTop="8dp"
+            style="@style/CustomProgressBar"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="7dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="left|top"
+            android:indeterminate="false"
+            android:progress="0" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=""
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/textView_offline" />
+
+
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout2"
+            android:layout_below="@id/progressBar"
+            android:background="#ffffffff">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="36dp"
+                android:text="00:00:00"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ff585858"
+                android:id="@+id/textView11_time" />
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="2dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_play_grey600_48dp"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/button_start"
+                    />
+
+                <ImageButton
+                    android:layout_marginRight="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pause_grey600_48dp"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/button_pause"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_stop_grey600_48dp"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/button_stop" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <ImageView
        android:scrollbars="none"
        android:clickable="false"
+        android:layout_below="@id/layout12"
        android:layout_width="match_parent"
-       android:layout_alignParentTop="true"
        android:layout_height="287dp"
        android:layout_alignParentLeft="true"
        android:layout_alignParentRight="true"
@@ -31,6 +126,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_below="@id/layout12"
     android:background="@drawable/testshadow2"
     android:layout_height="match_parent">
     <!--
@@ -84,6 +180,7 @@
     android:alpha="1"
     android:id="@+id/beta_alpha_backgroud"
     android:layout_height="match_parent"></RelativeLayout>
+
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

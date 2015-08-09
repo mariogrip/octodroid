@@ -81,6 +81,13 @@ public class main_card_BETA extends Fragment {
         }catch (Exception e){
 
         }
+        ArrayList<Card> cards = new ArrayList<Card>();
+       // card_progressbar cardprpg = new card_progressbar(rootView.getContext());
+       // cards.add(cardprpg);
+        cardtest card = new cardtest(rootView.getContext(),"State", "State");
+        cards.add(card);
+       // cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
+       // cards.add(cardcont);
 
         ImageButton up = (ImageButton) rootView.findViewById(R.id.button_stop);
         up.setOnClickListener(new View.OnClickListener() {
@@ -143,15 +150,6 @@ public class main_card_BETA extends Fragment {
             }
         });
 
-        ArrayList<Card> cards = new ArrayList<Card>();
-        card_progressbar cardprpg = new card_progressbar(rootView.getContext());
-        cards.add(cardprpg);
-        cardtest card = new cardtest(rootView.getContext(),"State", "State");
-        cards.add(card);
-       // cardteststart cardcont = new cardteststart(rootView.getContext(),"Start/Stop", "Startstop");
-       // cards.add(cardcont);
-
-
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(rootView.getContext(),cards);
         mCardArrayAdapter.setInnerViewTypeCount(3);
 
@@ -198,8 +196,8 @@ public class main_card_BETA extends Fragment {
             timerTask1 = new TimerTask() {
                 @Override
                 public void run() {
-                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
-                    //new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
+                    //new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://" + mainActivity.ip + "/webcam/?action=snapshot");
+                    new DownloadImageTask((ImageView) rootView.findViewById(R.id.ImageView)).execute("http://img.youtube.com/vi/OifvRk1K3Gc/0.jpg");
                 }
             };
             timer1.schedule(timerTask1, 0, 7000);
