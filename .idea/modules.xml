@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OctoPrint.iml" filepath="$PROJECT_DIR$/OctoPrint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/libs/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/octodroid.iml" filepath="$PROJECT_DIR$/octodroid.iml" />
     </modules>
   </component>
 </project>
-

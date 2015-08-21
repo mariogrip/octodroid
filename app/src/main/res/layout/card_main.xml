@@ -49,17 +49,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_below="@id/progressBar"
             android:id="@+id/textView_offline" />
 
     </RelativeLayout>
 
+
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@id/layout1"
-        android:id="@+id/card_main_card_list"/>
+        android:id="@+id/card_main_card_list"
+
+        />
 
     <Button
         android:layout_width="wrap_content"
@@ -71,4 +73,5 @@
         android:visibility="gone"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

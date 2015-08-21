@@ -16,6 +16,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.mariogrip.octodroid.iu.con_card;
 import com.mariogrip.octodroid.iu.cont_card;
 import com.mariogrip.octodroid.iu.custom_card;
@@ -81,6 +83,7 @@ public class mainActivity extends Activity {
     private ProgressDialog plwaitRecon;
     private boolean plwateStartR = false;
     private boolean plwateReconR = false;
+    LineChart chart;
 
 
 
@@ -313,6 +316,7 @@ public class mainActivity extends Activity {
             }
             util_decode.decodeConnections();
             util_decode.decodePrinter();
+            util_decode.decodeTempHistory();
         }else{
             util.logD("IN ISSERVERUP" + plwateStartR + plwateReconR);
             if(!plwateReconR && !plwateStartR){
@@ -324,6 +328,7 @@ public class mainActivity extends Activity {
     }
 
     private void Fill(){
+        //pos is the card value
         switch (pos) {
             case 0:
                 try{
@@ -386,7 +391,9 @@ public class mainActivity extends Activity {
                         textmaci.setText("Cannot connect to\n" + ip);
                         oflline.setText("Offline");
                     }
-                }catch (Exception v){v.printStackTrace();}
+                }catch (Exception v){
+                    v.printStackTrace();
+                }
                 break;
             case 2:
                 TextView oflline = (TextView) findViewById(R.id.textView_offline);
@@ -417,8 +424,21 @@ public class mainActivity extends Activity {
                         TextView textext = (TextView) findViewById(R.id.textView_CurentTemp_ext_TempCard);
                         textbed.setText(memory.temp.current.getBed()[0] + "°C");
                         textext.setText(memory.temp.current.getExt()[0] + "°C");
+                       try {
+                           chart = (LineChart) findViewById(R.id.chart);
+                           UpdateGraph.updateChart(chart);
+                           Log.i("Update", "success");
+                       }catch (Exception e){
+                        Log.i("Update", "failed");}
+
+
+
+
+
 
                     } catch (Exception v) {
+                        Log.i("something gone wrong", "");
+                        v.printStackTrace();
                     }
                 }else{
                     oflline2.setText("Offline");

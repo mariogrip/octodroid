@@ -234,6 +234,7 @@ public abstract class util extends mainActivity {
     protected static JSONObject jsonData_job_job_job;
     protected static JSONObject jsonData_printer_printer;
     protected static JSONObject jsonData_printer_printer_temps;
+    protected static JSONObject jsonData_printer_printer_temps_history;
     protected static boolean jsonData_printer_status;
 
     public static boolean isNumeric(String str)
