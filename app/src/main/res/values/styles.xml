@@ -10,4 +10,5 @@
     <color name="card_text_color_header">#ff000000</color>
     <dimen name="card_header_simple_title_text_size">24dp</dimen>
     <color name="card_backgroundExpand">#515254</color>
+    <color name="graph_backGround">#FFFFFF</color>
 </resources>

@@ -2,6 +2,7 @@ package com.mariogrip.octodroid;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,18 @@ public class memory extends mainActivity {
                 return Ext;
             }
         }
+        public static class history {
+            public static ArrayList<HistoryObject> HistoryArray= new ArrayList<>();
+
+
+
+            public static ArrayList<HistoryObject> getHistoryArray() {
+                return HistoryArray;
+            }
+        }
+
+
+
     }
     public static class job {
         public static class file{
